@@ -1,0 +1,58 @@
+:root{
+    --bg-color: #FEFAE0;
+    --text-color: #283618;
+    --contact-bg: #BC6C25;
+    --light-green: #606C38;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Playfair", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+}
+
+body{
+    background-color: #283618;
+    width: 1536;
+    height: 990;
+}
+
+main{
+    color: #FEFAE0;
+    font-size: 28px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}
+
+p{
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.content{
+    padding-top: 20px;
+    padding-left: 40px;
+}
+
+.info div{
+    display: flex;
+    padding-top: 20px;
+}
+
+.textbody{
+    display: flex;
+}
+
+.imgInfo{
+    padding-left: 100px;
+}
+
+.info div{
+    
+}
