@@ -1,0 +1,83 @@
+/* Root Container (Parent of all other container inside Landing Page) */
+.LandingPageRootContainer {
+  display: flex;
+  margin: auto;
+  max-width: 80%;
+  min-height: 100vh;
+  display: flex;
+  place-items: center;
+}
+
+/* Container for left and right side of main content */
+.LandingPageMainContent {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* Container for left side of LandingPage (Texts and Buttons) */
+.LandingPageLeft {
+  max-width: 40%;
+  display: flex;
+  flex-direction: column;
+  place-items: top;
+  margin-right: 5%;
+}
+
+.LandingPageLeft h1 {
+  font-size: 3em;
+  color:#FEFAE0;
+  font-weight: 800;
+  margin-top: 0;
+}
+
+.LandingPageLeft p {
+  font-size: 1.75em;
+  margin-top: 5%;
+  margin-right: 5%;
+}
+
+.ButtonSection {
+  margin-top: auto;
+  max-width: 100%;
+  display: flex;
+  justify-content: space-between 
+}
+
+#LogInButton {
+  background-color: #606C38;
+}
+
+/* Container for right side of LandingPage (Images) */
+.LandingPageRight {
+  display: flex;
+  max-width: 60%;
+}
+
+#lpIMGOne {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Media Query for Mobile Devices */
+@media (max-width: 768px) {
+  .LandingPageMainContent {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .LandingPageLeft,
+  .LandingPageRight {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .LandingPageLeft h1 {
+    font-size: 2.5em;
+  }
+
+  .LandingPageLeft p {
+    font-size: 1.2em;
+  }
+}
