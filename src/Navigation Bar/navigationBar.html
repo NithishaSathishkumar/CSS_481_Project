@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NavigationBar</title>
+    <link rel="stylesheet" href="navigationBar.css">
+
+    <!--Playfair Font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <header>
+        <h1>MentorMe</h1>
+        <nav>
+            <ul class="nav_links">
+                <li><a href="#">Students</a></li>
+                <li><a href="#">Tutor</a></li>
+                <li><a href="#">StudyBuddy</a></li>
+                <li><a href="#">Formus</a></li>
+            </ul>
+        </nav>
+
+        <div class="contact_profile_container">
+            <a class="contact_button" href="#"><button>Contact Us</button></a>
+            <img class="profile" src="/assests/6.png" alt="profile" width="63" height="65" onclick="toggleMenu()">
+
+            <div class="sub-menu-wrap" id="subMenu">
+                <div class="sub-menu">
+                    <div class="user-info">
+                        <img src="/assests/6.png" alt="profile" width="63" height="65">
+                        <h3>Nithisha Sathishkumar</h3>
+                    </div>
+                    <hr>
+                    <a href="#" class="sub-menu-link">
+                        <img src="/assests/6.png" alt="profile" width="63" height="65">
+                        <p>Edit profile</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="/assests/6.png" alt="profile" width="63" height="65">
+                        <p>Edit profile</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="/assests/9.png" alt="profile" width="63" height="65">
+                        <p>Logout</p>
+                        <span>></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let subMenu = document.getElementById("subMenu");
+
+            function toggleMenu(){
+                subMenu.classList.toggle("open-menu");
+
+            }
+        </script>
+    </header>
+    
+</body>
+</html>
