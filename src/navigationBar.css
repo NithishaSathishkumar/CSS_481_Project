@@ -26,7 +26,7 @@ li, a, button{
 
 h1{
     font-size: 38px;
-    margin: 0px;
+    margin: 20px;
 }
 
 header{
@@ -45,6 +45,7 @@ header{
     display: flex;
     justify-content: flex-end; /* Align to the right */
     align-items: center;
+    margin-left: auto; /* Push this container to the far right */
     position: relative; /* Makes this the reference for sub-menu */
 }
 
@@ -56,6 +57,7 @@ header{
 .nav_links{
     list-style: none;
     display: flex;
+    margin-left: 20px;
 }
 
 .nav_links li{
@@ -172,21 +174,32 @@ button:hover{
 @media (max-width: 768px) {
     header {
         flex-direction: column; /* Stack elements vertically */
-        text-align: center;
+        text-align: center; /* Center align text */
     }
 
     .nav_links {
-        flex-direction: column;
-        margin: 10px 0;
+        flex-direction: column; /* Stack nav links */
+        align-items: center; /* Center align nav links */
+        margin: 15px 0; /* Add spacing around links */
     }
 
     .nav_links li {
-        margin: 5px 0;
+        margin: 8px 0; /* Space between each nav link */
+    }
+
+    h1 {
+        margin-bottom: 10px; /* Add spacing below the title */
     }
 
     .contact_profile_container {
-        justify-content: center;
-        margin-top: 10px;
+        flex-direction: column; /* Stack contact button and profile */
+        align-items: center; /* Center align */
+        margin-left: 0; /* Override the auto margin for alignment */
+        margin-top: 15px; /* Add spacing above */
+    }
+
+    .contact_button {
+        margin: 0 0 10px 0; /* Reset margins and add spacing below */
     }
 }
 
