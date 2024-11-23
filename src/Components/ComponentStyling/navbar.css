@@ -15,34 +15,38 @@
     font-variation-settings: "wdth" 100;
 }
 
+.navbarContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FEFAE0;
 
-li, a {
-    font-family: "Playfair", serif;
-    color:#283618;
-    font-weight: bold;
-    font-size: 20px;
-    text-decoration: none;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
-button {
-    font-family: "Playfair", serif;
-    color: var(--bg-color);
-    font-size: 20px;
-    text-decoration: none;
+.leftSideNavbarContent {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
-h1{
-    font-size: 38px;
+h1 {
+    font-size: 35px;
     margin: 0px;
     color: var(--text-color);
 }
 
-header{
+li {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 5%;
-    background-color: #FEFAE0;
+}
+
+a {
+    color:#283618;
+    font-weight: bold;
+    font-size: 17px;
+    text-decoration: none;
 }
 
 .contact_button, .profile {

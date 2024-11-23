@@ -1,5 +1,5 @@
+import { Link } from 'react-router-dom';  // import Link
 import '../Styling/LandingPage.css';
-import '../Styling/index.css';
 import franInnocentiUnsplash from '../assets/franInnocentiUnsplash.jpg';
 
 function LandingPage() {
@@ -7,8 +7,8 @@ function LandingPage() {
     <div className="LandingPageRootContainer">
       <div className="LandingPageMainContent">
         <div className="LandingPageLeft">
-          <h1>MentorMe</h1>
-          <p>
+          <h1 id="MentorMeLP">MentorMe</h1>
+          <p id="MentorMeLPText">
             MentorMe is a tutoring platform offering accessible, affordable education.
             Students can connect with tutors and other students across subjects, with options
             for free or paid sessions, easy scheduling, and personalized profiles for flexible,
@@ -16,7 +16,9 @@ function LandingPage() {
           </p>
 
           <div className="ButtonSection">
-            <button id="LogInButton">Log In</button>
+            <Link to="/login">
+              <button id="LogInButton">Log In</button>
+            </Link>
 
             <button>Sign Up</button> 
           </div>
@@ -30,4 +32,4 @@ function LandingPage() {
   )
 }
 
-export default LandingPage
+export default LandingPage;

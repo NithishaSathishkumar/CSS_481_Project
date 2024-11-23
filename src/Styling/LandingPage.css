@@ -4,7 +4,6 @@
   margin: auto;
   max-width: 80%;
   min-height: 100vh;
-  display: flex;
   place-items: center;
 }
 
@@ -24,17 +23,18 @@
   margin-right: 5%;
 }
 
-.LandingPageLeft h1 {
+#MentorMeLP {
   font-size: 3em;
   color:#FEFAE0;
   font-weight: 800;
   margin-top: 0;
 }
 
-.LandingPageLeft p {
+#MentorMeLPText {
   font-size: 1.75em;
   margin-top: 5%;
   margin-right: 5%;
+  margin-bottom: 5%;
 }
 
 .ButtonSection {
