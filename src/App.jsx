@@ -3,6 +3,8 @@ import LandingPage from './Pages/LandingPage';
 import LogInPage from './Pages/LogInPage';
 import SignUpPage from './Pages/SignUpPage';
 import Layout from './Components/Layout';
+import Contact from './Components/contact';
+import About from './Components/About';
 
 function App() {
   return (
@@ -18,6 +20,17 @@ function App() {
         {/* Route for LogInPage without Layout */}
         <Route path="/login" element={<LogInPage />} />
         <Route path="/CreateAccount" element={<SignUpPage />} />
+        <Route path="/contact" element={
+          <Layout>
+            <Contact />
+          </Layout>
+        } />
+
+        <Route path="/About" element={
+          <Layout>
+            <About />
+          </Layout>
+        } />
       </Routes>
     </Router>
   );
