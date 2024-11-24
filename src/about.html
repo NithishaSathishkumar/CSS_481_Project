@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="about.css">
+
+    <!--Playfair Font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap" rel="stylesheet">
+ 
+</head>
+<body>
+    <!-- Placeholder for the navigation bar -->
+    <div id="nav-placeholder"></div>
+
+    <script>
+        // Load the navigation bar dynamically
+        fetch("navigationBar.html")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not OK: " + response.statusText);
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById("nav-placeholder").innerHTML = data;
+    
+                // Attach the dropdown functionality after the navigation bar is loaded
+                let subMenu = document.getElementById("subMenu");
+                function toggleMenu() {
+                    subMenu.classList.toggle("open-menu");
+                }
+    
+                // Add the event listener to the profile image
+                const profileImage = document.querySelector(".profile");
+                if (profileImage) {
+                    profileImage.addEventListener("click", toggleMenu);
+                }
+            })
+            .catch(error => {
+                console.error("Error loading navigation bar:", error);
+            });
+    </script>
+    
+    
+    <main class="section1">
+        <h2>About Us</h2>
+        <div class="content">
+            <p>We are here to help and answer any questions you might have. We forward to hearing from you!</p>
+            <div class="textbody">
+                <div class="info">
+                    <div>
+                        <img src="/assests/2.png" alt="location" width="40px">
+                        <p>Seattle, Washington</p> 
+                    </div>
+                    <div>
+                        <img src="/assests/3.png" alt="location" width="40px">
+                        <p>+1 425 123 5678</p> 
+                    </div>
+                    <div>
+                        <img src="/assests/4.png" alt="location" width="40px">
+                        <p>mentorMe@gmail.com</p> 
+                    </div>
+                </div>
+    
+                <div class="imgInfo">
+                    <img src="/assests/1.png" alt="location" width="600px">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main class="section2">
+        <div class="imgInfo2">
+            <img src="/assests/7.png" alt="location" width="400px">
+        </div>
+        
+        <div class="info2">
+            <h2 class="title2">Our Mission</h2>
+            <ul class="ul2">
+                <li>Providing students with dependable, easily accessible academic support in a variety of subjects</li>
+                <li>Offering tutoring services that cater to individual learning styles, academic levels, and schedules.</li>
+                <li>Enabling students to connect with knowledgeable tutors from around the globe, giving them the flexibility to learn anytime, anywhere.</li>
+            </ul>
+        </div>
+    </main>
+
+    <main class="section3">
+        <div class="info3">
+            <h2 class="title3">Why Choose MentorMe?</h2>
+            <p class="p3">We understand that finding dependable academic support outside of school can be challenging due to limited local options, high costs, or scheduling issues. MentorMe tackles these barriers by offering</p>
+            <ul class="ul3">
+                <li><strong>Expert Tutors:</storng> Our tutors are carefully selected for their expertise, experience, and passion for teaching.</li>
+                <li><strong>Affordable Options:</storng> With a choice between free and paid sessions, we make quality tutoring accessible to all students.</li>
+                <li><strong>Secure Payments:</strong> We offer various secure payment options for paid sessions, so you can focus on learning without worrying about payment hassles.</li>  
+                <li><strong>Customized Learning:</strong> MentorMe's platform lets students personalize their learning by selecting tutors based on their academic goals, learning pace, and personal preferences.</li>
+            </ul>
+        </div>
+
+        <div class="imgInfo3">
+            <img src="/assests/8.png" alt="location" width="400px">
+        </div>
+    </main>
+    
+</body>
+</html>
