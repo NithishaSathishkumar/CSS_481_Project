@@ -3,8 +3,8 @@ import LandingPage from './Pages/LandingPage';
 import LogInPage from './Pages/LogInPage';
 import SignUpPage from './Pages/SignUpPage';
 import Layout from './Components/Layout';
-import Contact from './Components/contact';
-import About from './Components/About';
+import Contact from './Pages/contact';
+import About from './Pages/About';
 
 function App() {
   return (

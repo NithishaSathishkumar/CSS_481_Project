@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '/src/Components/ComponentStyling/navbar.css'; // Optional: for component-specific styling
-import Contact from './contact';
-import About from './About';
 
 // IMPORTING PICTURES
 import profilePic from '../assets/6.png';
@@ -24,7 +22,7 @@ const Navbar = () => {
 
                     <ul className="nav_links">
                         <li><Link to="/About">About Us</Link></li>
-                        <li><a href="#">Student</a></li>
+                        <li><a href="">Student</a></li>
                         <li><a href="#">Teacher</a></li>
                     </ul>
                 </nav>

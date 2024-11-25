@@ -1,11 +1,11 @@
 import React from 'react';
-import '/src/Components/ComponentStyling/about.css'; // Optional: for component-specific styling
+import '/src/Styling/about.css'; // Optional: for component-specific styling
 
 // IMPORTING PICTURES
 import aboutUs from '../assets/10.png';
 import mission from '../assets/7.png';
-import mail from '../assets/4.png';
 import whyChoose from '../assets/8.png';
+import team from '../assets/5.png';
 
 const About = () => {
     return (
@@ -20,13 +20,13 @@ const About = () => {
                 </div>
 
                 <div class="imgInfo">
-                    <img src={aboutUs} alt="about us" width="400px"></img>
+                    <img src={aboutUs} alt="location" width="400px"></img>
                 </div>
             </main>
 
             <main class="section2">
                 <div class="imgInfo2">
-                    <img src={mission} alt="our mission" width="400px"></img>
+                    <img src={mission} alt="location" width="400px"></img>
                 </div>
                 
                 <div class="info2">
@@ -52,7 +52,31 @@ const About = () => {
                 </div>
 
                 <div class="imgInfo3">
-                    <img src={whyChoose} alt="choose mentorUs" width="400px"></img>
+                    <img src={whyChoose} alt="location" width="400px"></img>
+                </div>
+            </main>
+
+            <main class="section4">
+                <h2>Meet Our Team</h2>
+                <div class="content4">
+                    <p>Our team is a passionate group of students, educators, and tech enthusiasts committed to making a difference in education. We bring together our skills in technology, teaching, and customer service to create a seamless, enriching experience for both students and tutors</p>
+                    <div class="imgInfo4">
+                        <img src={team} alt="location" width="600px" style="float:right"></img>
+                    </div>
+                
+                </div>
+            </main>
+
+            <main class="section5">
+                <div class="imgInfo5">
+                    <h2 class="title5">Join Us in Our Journey</h2>
+                    <a class="signup_button" href="contact.html"><button>Sign up</button></a>
+                </div>
+                
+                <div class="info5">
+                    <p class="ul2">
+                        Whether you’re looking for academic support, career advancement, or just a new way to learn, MentorMe is here to help. Join us and take your first step towards a brighter, more confident academic future.
+                    </p>
                 </div>
             </main>
         </>
