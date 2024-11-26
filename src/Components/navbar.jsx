@@ -21,7 +21,11 @@ const Navbar = () => {
                     <h1>MentorMe</h1>
 
                     <ul className="nav_links">
-                        <li><Link to="/About">About Us</Link></li>
+                        <li>
+                            <Link to="/AboutUs">
+                                About Us
+                            </Link>
+                        </li>
                         <li><a href="">Student</a></li>
                         <li><a href="#">Teacher</a></li>
                     </ul>
@@ -30,7 +34,7 @@ const Navbar = () => {
                 <div className="contact_profile_container">
                     {/* <a className="contact_button" href={Contact}><button>Contact Us</button></a> */}
                     {/* <img className="profile" src={profilePic} alt="profile" width="63" height="65" onClick={toggleMenu}/> */}
-                    <Link to="/contact">
+                    <Link to="/ContactUs">
                         <button className="contact_button">Contact Us</button>
                     </Link>
 
@@ -43,12 +47,6 @@ const Navbar = () => {
                                 <h3>Nithisha Sathishkumar</h3>
                             </div>
                         
-                            <a href="#" className="sub-menu-link">
-                                <img src={profilePic} alt="profile" width="63" height="65"/>
-                                <p>Edit profile</p>
-                                <span></span>
-                            </a>
-
                             <a href="#" className="sub-menu-link">
                                 <img src={profilePic} alt="profile" width="63" height="65"/>
                                 <p>Edit profile</p>
