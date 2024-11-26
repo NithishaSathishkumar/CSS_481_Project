@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="paymentpage.css">
+  <title>Payment Portal</title>
+</head>
+<body>
+  <div class="main-content">
+    <div class="payment-header">
+      <h1>Payment Portal</h1>
+    </div>
+    <div class="payment-body">
+      <div class="payment-body-left">
+        <!-- Payment Form -->
+        <form class="payment-form" action="payment.php" method="post">
+          <p class="section-title">Card Info</p>
+          <!-- Card Info Fields -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="card-number">Card Number</label>
+              <input
+                type="text"
+                id="card-number"
+                name="card-number"
+                placeholder="1234 5678 9101 1121"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="expiry-date">Expiry Date</label>
+              <input
+                type="text"
+                id="expiry-date"
+                name="expiry-date"
+                placeholder="MM/YY"
+                maxlength="5"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="card-name">Name on Card</label>
+              <input
+                type="text"
+                id="card-name"
+                name="card-name"
+                placeholder="John Doe"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="cvv">CVV</label>
+              <input
+                type="password"
+                id="cvv"
+                name="cvv"
+                placeholder="123"
+                maxlength="3"
+                required
+              />
+            </div>
+          </div>
+          <p class="section-title">Billing Info</p>
+          <!-- Billing Info Fields -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="address">Address</label>
+              <input
+                class="address"
+                type="text"
+                id="address"
+                name="address"
+                placeholder="1234 Elm St"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="city">City</label>
+              <input
+                type="text"
+                id="city"
+                name="city"
+                placeholder="San Francisco"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="zipcode">Zip Code</label>
+              <input
+                type="text"
+                id="zipcode"
+                name="zipcode"
+                placeholder="12345"
+                maxlength="5"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="state">State</label>
+              <select id="state" name="state" required>
+                <option value="" disabled>Select State</option>
+                <option value="CA">California</option>
+                <option value="NY">New York</option>
+                <option value="TX">Texas</option>
+                <option value="WA">Washington</option>
+                <!-- Add other states as needed -->
+              </select>
+            </div>
+          </div>
+          <input
+            class="payment-submit"
+            type="submit"
+            value="Complete Purchase"
+          />
+        </form>
+      </div>
+      <div class="payment-body-right">
+        <!-- Order Summary -->
+        <div class="payment-total">
+          <h2>Order Summary</h2>
+          <div class="payment-total-items">
+            <ul>
+              <li>30-minute tutor session: $35.00</li>
+              <li>30-minute follow-up session: $35.00</li>
+              <li>1-hour tutor session: $30.00</li>
+            </ul>
+          </div>
+          <div class="payment-total-price">
+            <p>
+              <strong>Total: $100.00</strong>
+            </p>
+          </div>
+        </div>
+        <!-- Express Checkout -->
+        <div class="payment-express">
+          <h2>Express Checkout</h2>
+          <div class="payment-express-buttons">
+            <!-- Google Pay button will be rendered here -->
+            <div id="google-pay-button-container"></div>
+          </div>
+          <!-- Other payment methods can be added here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const googlePayButtonContainer = document.getElementById("google-pay-button-container");
+      let scriptLoaded = false;
+
+      const loadGooglePay = () => {
+        if (
+          window.google &&
+          window.google.payments &&
+          window.google.payments.api
+        ) {
+          initializeGooglePay();
+        } else if (!scriptLoaded) {
+          scriptLoaded = true;
+          const script = document.createElement("script");
+          script.src = "https://pay.google.com/gp/p/js/pay.js";
+          script.async = true;
+          script.onload = initializeGooglePay;
+          document.body.appendChild(script);
+        }
+      };
+
+      const initializeGooglePay = () => {
+        const googlePayClient = new window.google.payments.api.PaymentsClient({
+          environment: "TEST",
+        });
+
+        const allowedPaymentMethods = [
+          {
+            type: "CARD",
+            parameters: {
+              allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+              allowedCardNetworks: ["VISA", "MASTERCARD"],
+            },
+            tokenizationSpecification: {
+              type: "PAYMENT_GATEWAY",
+              parameters: {
+                gateway: "example",
+                gatewayMerchantId: "exampleGatewayMerchantId",
+              },
+            },
+          },
+        ];
+
+        const paymentDataRequest = {
+          apiVersion: 2,
+          apiVersionMinor: 0,
+          allowedPaymentMethods: allowedPaymentMethods,
+          transactionInfo: {
+            totalPriceStatus: "FINAL",
+            totalPrice: "1.00",
+            currencyCode: "USD",
+          },
+          merchantInfo: {
+            merchantName: "Example Merchant",
+          },
+        };
+
+        const button = googlePayClient.createButton({
+          buttonColor: "default",
+          buttonType: "buy",
+          buttonSizeMode: "static",
+          onClick: () => {
+            googlePayClient
+              .loadPaymentData(paymentDataRequest)
+              .then((paymentData) => {
+                console.log("Payment successful!", paymentData);
+              })
+              .catch((err) => {
+                console.error("Google Pay Error: ", err);
+              });
+          },
+        });
+
+        googlePayButtonContainer.innerHTML = "";
+        googlePayButtonContainer.appendChild(button);
+      };
+
+      loadGooglePay();
+    });
+  </script>
+</body>
+</html>

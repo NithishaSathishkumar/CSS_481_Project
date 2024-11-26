@@ -1,0 +1,205 @@
+:root{
+    --bg-color: #FEFAE0;
+    --text-color: #283618;
+    --contact-bg: #BC6C25;
+    --light-green: #606C38;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Playfair", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+}
+
+
+li, a, button{
+    font-family: "Playfair", serif;
+    color:#283618;
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+h1{
+    font-size: 38px;
+    margin: 20px;
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5%;
+    background-color: #FEFAE0;
+}
+
+.contact_button, .profile {
+    margin-left: 20px; /* Add some spacing between the elements */
+}
+
+.contact_profile_container {
+    display: flex;
+    justify-content: flex-end; /* Align to the right */
+    align-items: center;
+    margin-left: auto; /* Push this container to the far right */
+    position: relative; /* Makes this the reference for sub-menu */
+}
+
+.profile img {
+    vertical-align: middle; /* Ensures the image aligns with text */
+    border-radius: 50%; /* Makes the profile image circular */
+}
+
+.nav_links{
+    list-style: none;
+    display: flex;
+    margin-left: 20px;
+}
+
+.nav_links li{
+    display: inline-block;
+    padding: 0px 20px;
+}
+
+.nav_links li a{
+    transition: all 0.3s ease 0s;
+}
+
+.nav_links li a:hover{ /*animation*/
+    border: 1px solid #606C38;
+    fill: #606C38;
+    padding: 10px;
+    background-color: #283618;
+    color: #FEFAE0;
+}
+
+button{
+    padding: 9px 25px;
+    background-color: rgba(188, 108, 37, 1);
+    color: #FEFAE0;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+}
+
+button:hover{
+    background-color: rgba(188, 108, 37, 0.8);
+}
+
+.sub-menu-wrap{
+    position: absolute; /* Dropdown behavior */
+    top: 110%; /* Slightly below the profile icon */
+    right: 0; /* Align to the right edge of the container */
+    width: 250px; /* Adjust as needed */
+    max-height: 0; /* Start collapsed */
+    overflow: hidden; /* Hide contents when collapsed */
+    background-color: var(--bg-color); /* Dropdown background */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    border-radius: 8px; /* Rounded corners */
+    transition: max-height 0.5s ease-in-out; /* Smooth dropdown animation */
+    z-index: 100; /* Ensure it appears above other content */
+}
+
+
+.sub-menu-wrap.open-menu{
+    max-height: 400px;
+}
+
+.sub-menu{
+    background-color: #FEFAE0;
+    padding: 20px;
+    margin: 10px;
+}
+
+.user-info{
+    display: flex;
+    align-items: center;
+}
+
+.user-info h3{
+    font-weight: 500;
+}
+
+.user-info img{
+    width:60px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.sub-menu hr{
+    border: 0;
+    height: 1px;
+    width: 100%;
+    background: #283618;
+    margin: 10px 0 5px;
+}
+
+.sub-menu-link{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    margin: 12px 0;
+}
+
+.sub-menu-link p{
+    width: 100%;
+}
+
+.sub-menu-link img{
+    width: 50px;
+    height: 60px;
+    padding: 8px;
+    margin-right: 15px;
+}
+
+.sub-menu-link span{
+    font-size: 22px;
+    transition: transform 0.5s;
+}
+
+.sub-menu-link:hover span{
+    transform: translateX(5px);
+}
+
+.sub-menu-link p:hover{
+    font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column; /* Stack elements vertically */
+        text-align: center; /* Center align text */
+    }
+
+    .nav_links {
+        flex-direction: column; /* Stack nav links */
+        align-items: center; /* Center align nav links */
+        margin: 15px 0; /* Add spacing around links */
+    }
+
+    .nav_links li {
+        margin: 8px 0; /* Space between each nav link */
+    }
+
+    h1 {
+        margin-bottom: 10px; /* Add spacing below the title */
+    }
+
+    .contact_profile_container {
+        flex-direction: column; /* Stack contact button and profile */
+        align-items: center; /* Center align */
+        margin-left: 0; /* Override the auto margin for alignment */
+        margin-top: 15px; /* Add spacing above */
+    }
+
+    .contact_button {
+        margin: 0 0 10px 0; /* Reset margins and add spacing below */
+    }
+}
+
