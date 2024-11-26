@@ -3,34 +3,35 @@ import LandingPage from './Pages/LandingPage';
 import LogInPage from './Pages/LogInPage';
 import SignUpPage from './Pages/SignUpPage';
 import Layout from './Components/Layout';
-import Contact from './Pages/contact';
-import About from './Pages/About';
+import ContactUs from './Pages/ContactUs';
+import AboutUs from './Pages/AboutUs';
 
 function App() {
   return (
     <Router>
       <Routes>
-        Route for LandingPage with Layout (Navbar)
+        {/* Route for pages with Navbar */}
         <Route path="/" element={
           <Layout>
             <LandingPage />
           </Layout>
         } />
 
-        {/* Route for LogInPage without Layout */}
-        <Route path="/login" element={<LogInPage />} />
-        <Route path="/CreateAccount" element={<SignUpPage />} />
-        <Route path="/contact" element={
+        <Route path="/ContactUs" element={
           <Layout>
-            <Contact />
+            <ContactUs />
           </Layout>
         } />
 
-        <Route path="/About" element={
+        <Route path="/AboutUs" element={
           <Layout>
-            <About />
+            <AboutUs />
           </Layout>
         } />
+
+        {/* Route for LogInPage without Navbar*/}
+        <Route path="/Login" element={<LogInPage />} />
+        <Route path="/CreateAccount" element={<SignUpPage />} />
       </Routes>
     </Router>
   );
