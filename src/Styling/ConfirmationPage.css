@@ -74,3 +74,10 @@ main,
     padding: 3px 40px;
     border-radius: 20px;
 }
+
+.date-time-choosen {
+    margin-top: 50px;
+    font-weight: bold;
+    font-size: 50px;
+    color: bisque;
+}

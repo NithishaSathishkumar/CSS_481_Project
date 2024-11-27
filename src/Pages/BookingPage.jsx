@@ -8,11 +8,33 @@ import chat from '../assets/chat.png';
 import globe from '../assets/globe.png';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { Link } from 'react-router-dom';  // import Link
 
 function BookingPage() {
 
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(new Date());// react help use to set date as selected date when we recall on change
+    const [selectedTime, setSelectedTime] = useState(null); // the current selected time
 
+    const timeSlots = [
+        "09:00 AM",
+        "10:00 AM",
+        "11:00 AM",
+        "12:00 PM",
+        "01:00 PM",
+        "02:00 PM",
+        "03:00 PM",
+        "04:00 PM",
+    ];
+
+    const handleTimeClick = (time) => {
+        if (selectedTime === time) {
+            setSelectedTime(null);
+        } else {
+            setSelectedTime(time);
+        }
+
+
+    };
     return (
         <div className="container booking-container">
             <div className="row">
@@ -58,30 +80,41 @@ function BookingPage() {
                                         <option>Pacific Time (PT)</option>
                                     </select>
                                 </div>
+                                <Link to="/questions">
+                                    <button className="help">FAQ/Help</button>
+                                </Link>
                             </div>
                             <div className="col-6">
                                 <h3>{date.toDateString()}</h3>
                                 <div className="time-list">
-                                    <div className="time-slot">09:00 AM</div>
-                                    <div className="time-slot">10:00 AM</div>
-                                    <div className="time-slot">11:00 AM</div>
-                                    <div className="time-slot">12:00 PM</div>
-                                    <div className="time-slot">01:00 PM</div>
-                                    <div className="time-slot">02:00 PM</div>
-                                    <div className="time-slot">03:00 PM</div>
-                                    <div className="time-slot">04:00 PM</div>
-
+                                    {timeSlots.map((time) => (
+                                        <button
+                                            key={time}
+                                            className={`time-slot ${selectedTime === time ? "selected" : ""}`}
+                                            onClick={() => handleTimeClick(time)}
+                                            disabled={selectedTime && selectedTime != time} // disable other time slots
+                                        >
+                                            {time}
+                                        </button>
+                                    ))}
                                 </div>
-                                <button className="btn-confirm">CONFIRM</button>
+                                <Link
+                                    to="/confirmation"
+                                    state={{ date: date.toDateString(), time: selectedTime }}
+                                >
+                                    <button className="btn-confirm" disabled={!selectedTime}>
+                                        CONFIRM
+                                    </button>
+                                </Link>
                                 <img className="chat" src={chat}></img>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            </div >
+                        </div >
+                    </div >
+                </div >
 
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
 
-export default BookingPage
+export default BookingPage;

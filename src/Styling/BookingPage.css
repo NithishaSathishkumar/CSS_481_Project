@@ -95,13 +95,22 @@ main,
 
 }
 
+.time-slot:hover {
+    background-color: darkorange;
+}
+
 .btn-confirm {
     color: white;
+    font-weight: bold;
     background-color: #BC6C25;
     padding: 3px 40px;
     border-radius: 20px;
     margin-top: 30px;
     margin-left: 25PX;
+}
+
+.btn-confirm:hover {
+    background-color: rgb(126, 76, 76);
 }
 
 .time-zone {
@@ -113,4 +122,27 @@ main,
     right: 20px;
     bottom: 20px;
     height: 100px;
+}
+
+.time-slot:disabled {
+    background-color: #f0f0f0;
+    color: #a0a0a0;
+    cursor: not-allowed;
+    border: 1px solid #d0d0d0;
+}
+
+.help {
+    margin-top: 15px;
+    color: black;
+    background-color: darkorange;
+    padding: 5px 10px;
+    /* Adjust padding to make it smaller */
+    font-size: 15px;
+    /* Reduce font size */
+    height: 35px;
+    border-radius: 5px;
+}
+
+.help:hover {
+    background-color: chocolate;
 }

@@ -2,9 +2,13 @@
 import '../Styling/ConfirmationPage.css';
 import balloon from '../assets/15.png';
 import celebrationCorn from '../assets/13.png';
+import { Link, useLocation } from 'react-router-dom';  // import Link
 
 
 function ConfirmationPage() {
+    const location = useLocation();
+    const { date, time } = location.state || {}; // Destructure state to get date and time
+
 
 
     return (
@@ -18,7 +22,18 @@ function ConfirmationPage() {
                 <div className="col-6 mid-part">
                     <h2>Your Booking was successful!</h2>
                     <h4>Thank You for Choosing Us!</h4>
-                    <button className="button-cancle">Go to Home Page</button>
+                    {date && time ? (
+                        <div className="date-time-choosen">
+                            <p><strong>Date:</strong> {date}</p>
+                            <p><strong>Time:</strong> {time}</p>
+                        </div>
+                    ) : (
+                        <p>No booking details available. Please go back and select a date and time.</p>
+                    )}
+
+                    <Link to="/AboutUs">
+                        <button className="button-cancle">Go to Home Page</button>
+                    </Link>
 
                 </div>
                 <div className="col-3 right-part"><img className="balloon-right" src={balloon} ></img>

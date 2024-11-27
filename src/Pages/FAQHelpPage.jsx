@@ -1,5 +1,7 @@
 import '../Styling/FAQHelpPage.css';
 import React, { useState } from 'react';
+import backButton from '../assets/ReturnArrow.png';
+import { Link } from 'react-router-dom';  // import Link
 
 function FAQHelpPage() {
     // State to track which question is active
@@ -65,6 +67,9 @@ function FAQHelpPage() {
                     </div>
                 ))}
             </div>
+            <Link to="/booking">
+                <button className="backButton"><img src={backButton} alt="Back" /></button>
+            </Link>
 
         </div>
     );
