@@ -1,6 +1,10 @@
 import React from "react";
 import "./ProfilePage.css";
 import "./tutorprofile.css";
+import profileImg from "./assets/profile.png";
+import instructor1Img from "./assets/instructor1.png";
+import instructor2Img from "./assets/instructor2.png";
+import instructor3Img from "./assets/instructor3.png";
 
 const TutorProfilePage = () => {
   return (
@@ -9,7 +13,11 @@ const TutorProfilePage = () => {
       <div className="profile-left">
         {/* Profile Info */}
         <div className="profile-info">
-          <img src="profile.png" className="profile-image" alt="Tutor Profile" />
+          <img
+            src={profileImg}
+            className="profile-image"
+            alt="Tutor Profile"
+          />
           <div className="profile-basic-info">
             <p className="profile-name">Daniel Jackson</p>
             <p className="profile-time">Local Time: 11:24 AM</p>
@@ -70,7 +78,7 @@ const TutorProfilePage = () => {
             <div className="tutor-item">
               <a href="#tutor">
                 <img
-                  src="instructor1.png"
+                  src={instructor1Img}
                   className="tutor-image"
                   alt="Tutor 1"
                 />
@@ -87,7 +95,7 @@ const TutorProfilePage = () => {
             <div className="tutor-item">
               <a href="#tutor">
                 <img
-                  src="instructor2.png"
+                  src={instructor2Img}
                   className="tutor-image"
                   alt="Tutor 2"
                 />
@@ -103,7 +111,7 @@ const TutorProfilePage = () => {
             <div className="tutor-item">
               <a href="#tutor">
                 <img
-                  src="instructor3.png"
+                  src={instructor3Img}
                   className="tutor-image"
                   alt="Tutor 3"
                 />
@@ -143,7 +151,7 @@ const TutorProfilePage = () => {
               <div className="review-info">
                 <img
                   className="student-image"
-                  src="instructor1.png"
+                  src={instructor1Img}
                   alt="Student"
                 />
                 <div className="reviewer-details">
@@ -165,7 +173,7 @@ const TutorProfilePage = () => {
               <div className="review-info">
                 <img
                   className="student-image"
-                  src="instructor1.png"
+                  src={instructor1Img}
                   alt="Student"
                 />
                 <div className="reviewer-details">

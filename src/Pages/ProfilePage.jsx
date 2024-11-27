@@ -1,5 +1,9 @@
 import React from "react";
 import "./ProfilePage.css";
+import profileImg from "./assets/profile.png";
+import instructor1Img from "./assets/instructor1.png";
+import instructor2Img from "./assets/instructor2.png";
+import instructor4Img from "./assets/instructor4.png";
 
 const ProfilePage = () => {
   return (
@@ -8,7 +12,7 @@ const ProfilePage = () => {
       <div className="profile-left">
         {/* Profile Info */}
         <div className="profile-info">
-          <img src="profile.png" className="profile-image" alt="Profile" />
+          <img src={profileImg} className="profile-image" alt="Profile" />
           <div className="profile-basic-info">
             <p className="profile-name">Daniel Jackson</p>
             <p className="profile-time">Local Time: 11:24 AM</p>
@@ -90,7 +94,7 @@ const ProfilePage = () => {
               <div className="session-info">
                 <img
                   className="instructor-image"
-                  src="instructor1.png"
+                  src={instructor1Img}
                   alt="Instructor 1"
                 />
                 <div className="session-details">
@@ -112,7 +116,7 @@ const ProfilePage = () => {
               <div className="session-info">
                 <img
                   className="instructor-image"
-                  src="instructor2.png"
+                  src={instructor2Img}
                   alt="Instructor 2"
                 />
                 <div className="session-details">
@@ -134,7 +138,7 @@ const ProfilePage = () => {
               <div className="session-info">
                 <img
                   className="instructor-image"
-                  src="instructor4.png"
+                  src={instructor4Img}
                   alt="Instructor 3"
                 />
                 <div className="session-details">
