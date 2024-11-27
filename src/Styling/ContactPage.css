@@ -1,4 +1,4 @@
-:root{
+:root {
     --bg-color: #FEFAE0;
     --text-color: #283618;
     --contact-bg: #BC6C25;
@@ -14,7 +14,7 @@
     flex-direction: column;
 }
 
-.ContactUsMainContent  {
+.ContactUsMainContent {
     width: 80%;
     margin: auto;
 
@@ -32,8 +32,8 @@
     justify-content: space-between;
     margin-top: 3%;
     margin-left: 3%;
-
     font-size: 40px;
+    color: var(--bg-color);
 }
 
 .IndContent {
@@ -42,7 +42,7 @@
     gap: 2%;
 }
 
-.imgInfo{
+.imgInfo {
     display: flex;
     justify-content: flex-end;
 }
