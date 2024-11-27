@@ -7,7 +7,6 @@ import inperson from '../assets/inperson.png';
 import chat from '../assets/chat.png';
 import globe from '../assets/globe.png';
 import Calendar from 'react-calendar';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-calendar/dist/Calendar.css';
 
 function BookingPage() {

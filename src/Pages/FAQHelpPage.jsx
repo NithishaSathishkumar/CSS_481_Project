@@ -1,5 +1,4 @@
 import '../Styling/FAQHelpPage.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState } from 'react';
 
 function FAQHelpPage() {

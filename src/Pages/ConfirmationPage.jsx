@@ -2,7 +2,6 @@
 import '../Styling/ConfirmationPage.css';
 import balloon from '../assets/15.png';
 import celebrationCorn from '../assets/13.png';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function ConfirmationPage() {
