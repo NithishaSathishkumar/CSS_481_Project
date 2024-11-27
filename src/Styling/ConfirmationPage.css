@@ -1,0 +1,76 @@
+:root {
+    min-height: 100vh;
+    background-color: #283618;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        min-height: 100vh;
+        background-color: #283618;
+    }
+}
+
+main,
+.confirmation-container {
+
+    background-color: #283618;
+}
+
+
+.mid-part {
+    color: white;
+
+    align-items: center;
+    text-align: center;
+    margin-top: 200px;
+    margin-bottom: 300px;
+}
+
+.right-part {
+    position: relative;
+}
+
+.left-part {
+    position: relative;
+}
+
+.balloon-left {
+    right: 0;
+}
+
+.balloon-right {
+    left: 0;
+}
+
+.balloon-left,
+.balloon-right {
+    top: 50px;
+    position: absolute;
+    max-width: 70%;
+}
+
+.celebration-left {
+    right: 0;
+    bottom: 0;
+}
+
+.celebration-right {
+    left: 0;
+    bottom: 0;
+    transform: scaleX(-1);
+}
+
+.celebration-left,
+.celebration-right {
+    position: absolute;
+    max-width: 70%;
+}
+
+
+.button-cancle {
+    margin-top: 100px;
+    color: white;
+    background-color: #BC6C25;
+    padding: 3px 40px;
+    border-radius: 20px;
+}

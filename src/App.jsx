@@ -5,6 +5,9 @@ import SignUpPage from './Pages/SignUpPage';
 import Layout from './Components/Layout';
 import ContactUs from './Pages/ContactUs';
 import AboutUs from './Pages/AboutUs';
+import BookingPage from './Pages/BookingPage';
+import ConfirmationPage from './Pages/ConfirmationPage';
+import FAQHelpPage from './Pages/FAQHelpPage';
 
 function App() {
   return (
@@ -26,6 +29,21 @@ function App() {
         <Route path="/AboutUs" element={
           <Layout>
             <AboutUs />
+          </Layout>
+        } />
+        <Route path="/booking" element={
+          <Layout>
+            <BookingPage />
+          </Layout>
+        } />
+        <Route path="/confirmation" element={
+          <Layout>
+            <ConfirmationPage />
+          </Layout>
+        } />
+        <Route path="/questions" element={
+          <Layout>
+            <FAQHelpPage />
           </Layout>
         } />
 
