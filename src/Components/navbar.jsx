@@ -23,7 +23,7 @@ const Navbar = () => {
                     <ul className="nav_links">
                         <li><Link to="/About">About Us</Link></li>
                         <li><a href="">Student</a></li>
-                        <li><a href="#">Teacher</a></li>
+                        <li><Link to="/FilterTutor">Tutor</Link></li>
                     </ul>
                 </nav>
 

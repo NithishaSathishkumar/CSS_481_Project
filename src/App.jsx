@@ -5,6 +5,7 @@ import SignUpPage from './Pages/SignUpPage';
 import Layout from './Components/Layout';
 import Contact from './Pages/contact';
 import About from './Pages/About';
+import FilterTutor from './Pages/FilterTutor';
 
 function App() {
   return (
@@ -29,6 +30,12 @@ function App() {
         <Route path="/About" element={
           <Layout>
             <About />
+          </Layout>
+        } />
+
+        <Route path="/FilterTutor" element={
+          <Layout>
+            <FilterTutor />
           </Layout>
         } />
       </Routes>

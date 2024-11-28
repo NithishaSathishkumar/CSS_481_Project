@@ -1,0 +1,141 @@
+:root{
+    --bg-color: #FEFAE0;
+    --text-color: #283618;
+    --contact-bg: #BC6C25;
+    --light-green: #606C38;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Playfair", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+}
+
+body {
+    background-color: var(--text-color);
+    color: var(--text-color);
+    width: 80%;
+    max-width: 1536px;
+
+    height: 990px;
+    margin: 0 auto; /* Centers the body horizontally in the viewport */
+ 
+}
+
+.content{
+    background-color: #FEFAE0;
+    margin: 20px;
+    display: flex;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.right {
+    flex-grow: 1; /* Takes up remaining space */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center; /* Align items vertically in the center */
+}
+
+.btn-group{
+    margin: 5px;
+    background-color: #606C38;
+}
+
+.btn{
+    color: #FEFAE0;
+    flex-grow: 1;
+    text-align: center;
+}
+
+
+.btn-primary{
+    background-color: #BC6C25;
+    color: #FEFAE0;
+    border: none;
+    padding: 10px; /* Adjust padding for a consistent size */
+    border: none; /* Remove borders */
+}
+
+.card .btn-primary:hover {
+    background-color: #606C38; /* Darker green for hover */
+    color: #FEFAE0; /* Keep the text color consistent */
+    border: none; /* Ensure no border appears on hover */
+}
+
+.cardsGallery{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px;
+    gap: 20px; 
+    justify-content: flex start; 
+}
+
+.card{
+    flex: 0 1 calc(25% - 20px); 
+    margin: 0; 
+    background-color: #FEFAE0;
+    height: 100%;
+    justify-content: space-between;
+    flex-direction: column;
+    
+}
+
+.category{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; 
+    width: 100%;
+}
+
+.card .btn-primary:focus, .card .btn-primary:active {
+    background-color: #606C38; 
+    color: #FEFAE0;
+    border: none;
+    outline: none;
+    box-shadow: none; 
+}
+
+.card-body{
+    color:#283618;
+}
+
+.card-title{
+    text-align: center;
+    font-weight: bold;
+}
+
+.star {
+    display: flex; /* Align stars horizontally */
+    justify-content: center; /* Center the stars horizontally */
+    align-items: center; /* Center the stars vertically (if needed) */
+    gap: 5px; /* Add spacing between stars */
+    margin: 10px 0; /* Add spacing above and below the stars */
+}
+
+.star .fa-star {
+    color: #dbb18c; /* Default star color */
+    font-size: 1.2rem; /* Adjust size of stars */
+}
+
+.star .fa-star.checked {
+    color: orange; /* Gold color for checked stars */
+}
+
+.card-text {
+    text-align: center;
+}
+
+.dropdown-menu{
+    background-color: #FEFAE0;
+}
+
+.dropdown-menu:hover{
+    background-color: #606C38; /* Darker green for hover */
+    color: #FEFAE0; /* Keep the text color consistent */
+    border: none; /* Ensure no border appears on hover */
+}
