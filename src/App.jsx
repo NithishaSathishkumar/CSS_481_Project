@@ -2,9 +2,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './Pages/LandingPage';
 import LogInPage from './Pages/LogInPage';
 import SignUpPage from './Pages/SignUpPage';
-import Layout from './Components/Layout';
+import Layout from './Components/layout';
 import ForgotPassword from './Pages/forgotPassword';
 import ResetPassword from './Pages/resetPassword';
+import ConfirmationAccountPage from './Pages/ConfirmationAccountPage';
 import AboutUs from './Pages/AboutUs';
 import ContactUs from './Pages/ContactUs';
 import FAQHelpPage from './Pages/FAQHelpPage';
@@ -80,7 +81,7 @@ function App() {
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/reset" element={<ResetPassword />} />
         <Route path="/confirmation" element={<ConfirmationPage />} />
-
+        <Route path="/AccountConfirmation" element={<ConfirmationAccountPage />} />
       </Routes>
     </Router>
   );
