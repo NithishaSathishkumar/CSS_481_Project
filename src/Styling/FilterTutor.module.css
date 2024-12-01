@@ -169,7 +169,6 @@
 .star.checked {
     color: orange;
 }
-@import '@fortawesome/fontawesome-free/css/all.min.css';
 
 .tutor-card-text {
     text-align: center;
@@ -197,6 +196,13 @@
 
 .checked {
     color: #ffcc00;
+}
+
+.noTutorsMessage {
+    color: var(--contact-bg);
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 20px;
 }
 
 @media (max-width: 768px) {
