@@ -64,14 +64,8 @@ const Navbar = () => {
                         <div className="sub-menu">
                             <div className="user-info">
                                 <img src={profilePic} alt="profile" width="63" height="65" />
-                                <h3>Nithisha Sathishkumar</h3>
+                                <h3>User</h3>
                             </div>
-
-                            <a href="#" className="sub-menu-link" onClick={closeMenu}>
-                                <img src={profilePic} alt="profile" width="63" height="65" />
-                                <p>Edit profile</p>
-                                <span></span>
-                            </a>
 
                             <a href="#" className="sub-menu-link" onClick={closeMenu}>
                                 <img src={profilePic} alt="profile" width="63" height="65" />
