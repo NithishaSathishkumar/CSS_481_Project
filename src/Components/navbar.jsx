@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '/src/Components/ComponentStyling/navbar.css'; // Optional: for component-specific styling
 
@@ -10,53 +10,77 @@ const Navbar = () => {
     const toggleMenu = () => {
         const subMenu = document.getElementById("subMenu");
         if (subMenu) {
-          subMenu.classList.toggle("open-menu");
+            subMenu.classList.toggle("open-menu");
         }
     };
-    
+
+    const closeMenu = () => {
+        const subMenu = document.getElementById("subMenu");
+        if (subMenu && subMenu.classList.contains("open-menu")) {
+            subMenu.classList.remove("open-menu");
+        }
+    };
+
+    useEffect(() => {
+        // Close the menu when clicking outside
+        const handleOutsideClick = (event) => {
+            if (!event.target.closest(".profile") && !event.target.closest("#subMenu")) {
+                closeMenu();
+            }
+        };
+
+        document.addEventListener("click", handleOutsideClick);
+
+        return () => {
+            document.removeEventListener("click", handleOutsideClick);
+        };
+    }, []);
+
     return (
         <>
-            <header class="navbarContent">
-                <nav class="leftSideNavbarContent">
-                <Link to="/">
-                    <h1>MentorMe</h1>
-                </Link>
+            <header className="navbarContent">
+                <nav className="leftSideNavbarContent">
+                    <Link to="/" onClick={closeMenu}>
+                        <h1>MentorMe</h1>
+                    </Link>
 
-                    <ul class="nav_links">
-                        <li><Link to="/about">About us</Link></li>
-                        <li><Link to="/tutorFind">Tutor</Link></li>
-                        <li><a href="#">Student</a></li>
-                        <li><Link to="/faq">FAQ</Link></li>
+                    <ul className="nav_links">
+                        <li><Link to="/about" onClick={closeMenu}>About us</Link></li>
+                        <li><Link to="/tutorFind" onClick={closeMenu}>Tutor</Link></li>
+                        <li><a href="#" onClick={closeMenu}>Student</a></li>
+                        <li><Link to="/faq" onClick={closeMenu}>FAQ</Link></li>
                     </ul>
                 </nav>
 
-                <div class="contact_profile_container">
-                <Link className="contact_button" to="/contact">
-                    <button>Contact Us</button>
-                </Link>
-                <div className="profile" onClick={toggleMenu}> <img src={profilePic} alt="profile" width="63" height="65"></img></div>
+                <div className="contact_profile_container">
+                    <Link className="contact_button" to="/contact" onClick={closeMenu}>
+                        <button>Contact Us</button>
+                    </Link>
+                    <div className="profile" onClick={toggleMenu}>
+                        <img src={profilePic} alt="profile" width="63" height="65" />
+                    </div>
 
-                    <div class="sub-menu-wrap" id="subMenu">
-                        <div class="sub-menu">
-                            <div class="user-info">
-                                <img src={profilePic} alt="profile" width="63" height="65"/>
+                    <div className="sub-menu-wrap" id="subMenu">
+                        <div className="sub-menu">
+                            <div className="user-info">
+                                <img src={profilePic} alt="profile" width="63" height="65" />
                                 <h3>Nithisha Sathishkumar</h3>
                             </div>
-                        
-                            <a href="#" class="sub-menu-link">
-                                <img src={profilePic} alt="profile" width="63" height="65"/>
+
+                            <a href="#" className="sub-menu-link" onClick={closeMenu}>
+                                <img src={profilePic} alt="profile" width="63" height="65" />
                                 <p>Edit profile</p>
                                 <span></span>
                             </a>
 
-                            <a href="#" class="sub-menu-link">
-                                <img src={profilePic} alt="profile" width="63" height="65"/>
+                            <a href="#" className="sub-menu-link" onClick={closeMenu}>
+                                <img src={profilePic} alt="profile" width="63" height="65" />
                                 <p>Edit profile</p>
                                 <span></span>
                             </a>
 
-                            <a href="#" class="sub-menu-link">
-                                <img src={logOut} alt="profile" width="63" height="65"/>
+                            <a href="#" className="sub-menu-link" onClick={closeMenu}>
+                                <img src={logOut} alt="profile" width="63" height="65" />
                                 <p>Logout</p>
                                 <span></span>
                             </a>
@@ -65,7 +89,7 @@ const Navbar = () => {
                 </div>
             </header>
         </>
-    )
-}
+    );
+};
 
 export default Navbar;

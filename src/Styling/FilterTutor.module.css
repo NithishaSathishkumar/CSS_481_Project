@@ -1,0 +1,197 @@
+:root {
+    --bg-color: #FEFAE0;
+    --text-color: #283618;
+    --contact-bg: #BC6C25;
+    --light-green: #606C38;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Playfair", serif;
+}
+
+.tutorBody {
+    background-color: var(--text-color);
+    color: var(--text-color);
+    width: 80%;
+    max-width: 1536px;
+    height: 100vh;
+    margin: 0 auto;
+}
+
+.filter-tutor-content {
+    background-color: var(--bg-color);
+    margin: 20px;
+    display: flex;
+    padding: 15px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.tutorSearch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+.tutorButton {
+    background-color: var(--contact-bg);
+    color: var(--bg-color);
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.tutorButton:hover {
+    background-color: var(--light-green);
+    color: var(--bg-color);
+}
+
+.tutoRight {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.filterBar {
+    margin: 5px;
+    position: relative;
+    display: inline-block;
+}
+
+.filterOption {
+    padding: 8px 15px;
+    font-size: 1rem;
+    background-color: var(--light-green);
+    border: none;
+    color: var(--bg-color);
+    cursor: pointer;
+    border-radius: 5px;
+    display: block;
+    position: relative;
+    padding: 10px;
+    width: 100%; /* Ensure the button fills the parent space */
+    text-align: left; /* Left-align the text in the button */
+}
+
+.hiddenMenu {
+    display: none;
+}
+
+.filterMenu {
+    position: absolute; /* Position the dropdown outside the parent */
+    top: 100%; /* Position it directly below the button */
+    left: 0;
+    min-width: 150px; /* Optional: Adjust width */
+    display: none; /* Hide the dropdown by default */
+    background-color: white;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Optional: Adds a shadow effect */
+    z-index: 1000; /* Ensure the dropdown appears above other content */
+}
+
+.filterMenu.openMenu {
+    display: block;
+}
+
+.filterMenu a {
+    text-decoration: none;
+    color: #333;
+    padding: 8px;
+    display: block;
+}
+
+.filterMenu a:hover {
+    background-color: var(--light-green);
+    color: var(--bg-color);
+}
+
+.tutorList {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+.tutorCard {
+    flex: 0 1 calc(25% - 20px);
+    background-color: var(--bg-color);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cardImgTop {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+}
+
+.tutorCard-body {
+    color: var(--text-color);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.tutorCardTitle {
+    text-align: center;
+    font-weight: bold;
+}
+
+.ratingStar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+.star {
+    font-size: 1.5rem;
+    color: #dbb18c;
+}
+
+.star.checked {
+    color: orange;
+}
+
+.tutor-card-text {
+    text-align: center;
+    font-size: 1rem;
+}
+
+.tutor-category {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.tutorButton {
+    padding: 8px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .tutorCard {
+        flex: 0 1 calc(50% - 20px);
+    }
+}
+
+@media (max-width: 480px) {
+    .tutorCard {
+        flex: 0 1 100%;
+    }
+}
+
