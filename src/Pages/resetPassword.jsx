@@ -1,7 +1,7 @@
 // import React, { useState } from "react";
 // import { useLocation, useNavigate } from "react-router-dom";
 // import { getDatabase, ref, update } from "firebase/database"; // Firebase imports
-// import app from "../../firebaseConfi"; // Firebase configuration
+// import {app} from "../../firebaseConfi"; // Firebase configuration
 // import "../Styling/resetPassword.css";
 
 // function ResetPassword() {
@@ -97,7 +97,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom"; // Added Link import
 import { getDatabase, ref, update, get } from "firebase/database"; // Added 'get' import
-import app from "../../firebaseConfi";
+import {app} from "../../firebaseConfi";
 import "../Styling/resetPassword.css";
 
 function ResetPassword() {

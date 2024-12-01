@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { getDatabase, ref, get } from 'firebase/database';
-import bcrypt from 'bcryptjs'; // Import bcryptjs to compare passwords
-import app from '../../firebaseConfi';
-
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import '../Styling/LogInPage.css';
 import loginIcon from '../assets/9.png';
 import wavingIcon from '../assets/wavingIcon.png';
@@ -12,57 +9,38 @@ import backButton from '../assets/ReturnArrow.png';
 function LogInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
+  const auth = getAuth();
 
-  const fetchData = async (email, password) => {
-    const db = getDatabase(app);
-    const dbRef = ref(db, 'account/user');
-    const snapshot = await get(dbRef);
-
-    if (snapshot.exists()) {
-      let emailFound = false;
-      snapshot.forEach((childSnapshot) => {
-        const userData = childSnapshot.val();
-        const storedEmail = userData.email_;
-        const storedPassword = userData.password_;
-
-        // Check if the email matches
-        if (storedEmail === email) {
-          emailFound = true;
-
-          // Compare the entered password with the stored hashed password
-          bcrypt.compare(password, storedPassword, (err, result) => {
-            if (result) {
-              // Password matches, login successful
-              alert('Welcome back!');
-            } else {
-              // Password mismatch
-              alert('Password does not match. Click on Forgot Password to change password');
-            }
-          });
-          return; // Exit the loop once email is found
-        }
-      });
-
-      if (!emailFound) {
-        // If email was not found in the database
-        alert('Email not found. Please create an account.');
+  // Check if user is already logged in
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is logged in, redirect to dashboard
+        navigate('/');
       }
-    } else {
-      alert('No users found in the database.');
-    }
-  };
+    });
+    return () => unsubscribe();
+  }, [auth, navigate]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission (page refresh)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage('');
 
-    // Client-side validation: Check if email and password are filled in
     if (!email || !password) {
-      alert('Please fill in both email and password.');
+      setErrorMessage('Please fill in both email and password.');
       return;
     }
 
-    // Call fetchData to validate credentials after basic validation
-    fetchData(email, password);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      alert('Login successful!');
+      navigate('/'); // Redirect to dashboard
+    } catch (error) {
+      console.error('Login error:', error);
+      setErrorMessage(error.message || 'An error occurred during login.');
+    }
   };
 
   return (
@@ -73,7 +51,6 @@ function LogInPage() {
             LOGIN <img id="LogInIcon" src={loginIcon} alt="loginIcon" />
           </h1>
 
-          {/* Ensure the form uses onSubmit */}
           <form className="LoginForm" onSubmit={handleSubmit}>
             <div className="FormGroupLogInPage">
               <label className="labelForEmail" htmlFor="email">
@@ -84,9 +61,9 @@ function LogInPage() {
                 id="email"
                 name="email"
                 placeholder="Enter your email"
-                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
 
@@ -99,11 +76,13 @@ function LogInPage() {
                 id="password"
                 name="password"
                 placeholder="Enter your password"
-                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
+
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
 
             <div className="FormActions">
               <div className="RememberMeSection">
@@ -113,7 +92,6 @@ function LogInPage() {
                 </label>
               </div>
 
-              {/* Submit button should not trigger default form submission */}
               <button className="LogInPageButtons" type="submit">
                 Log In
               </button>
@@ -151,4 +129,3 @@ function LogInPage() {
 }
 
 export default LogInPage;
-
