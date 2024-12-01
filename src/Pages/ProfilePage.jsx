@@ -1,156 +1,119 @@
-import React from "react";
-import "./ProfilePage.css";
-import profileImg from "./assets/profile.png";
-import instructor1Img from "./assets/instructor1.png";
-import instructor2Img from "./assets/instructor2.png";
-import instructor4Img from "./assets/instructor4.png";
+import React from 'react';
+import styles from '../Styling/ProfilePage.module.css'; 
 
-const ProfilePage = () => {
+function ProfilePage() {
   return (
-    <div className="main-content">
-      {/* Left Section */}
-      <div className="profile-left">
-        {/* Profile Info */}
-        <div className="profile-info">
-          <img src={profileImg} className="profile-image" alt="Profile" />
-          <div className="profile-basic-info">
-            <p className="profile-name">Daniel Jackson</p>
-            <p className="profile-time">Local Time: 11:24 AM</p>
-            <button className="email-button">Send Email</button>
+
+  <div className = {styles.pageContainer}>
+    <div className={styles.mainContent}> 
+      <div className={styles.profileLeft}>
+        <div className={styles.profileInfo}>
+          <img src="./assets/profile.png" className={styles.profileImage} alt="Profile" />
+          <div className={styles.profileBasicInfo}>
+            <p className={styles.profileName}>Daniel Jackson</p>
+            <p className={styles.profileTime}>Local Time: 11:24 AM</p>
+            <button className={styles.emailButton}>Send Email</button>
           </div>
-          <button className="edit-button">Edit my Profile</button>
+          <button className={styles.editButton}>Edit my Profile</button>
         </div>
 
-        {/* Profile Topics */}
-        <div className="profile-topics">
-          <p className="profile-subjects">Primary Subjects</p>
-          <div className="subjects">
-            <span className="subject">Mathematics</span>
-            <span className="subject">Science</span>
-            <span className="subject">English</span>
+        <div className={styles.profileTopics}>
+          <p className={styles.profileSubjects}>Primary Subjects</p>
+          <div className={styles.subjects}>
+            <span className={styles.subject}>Mathematics</span>
+            <span className={styles.subject}>Science</span>
+            <span className={styles.subject}>English</span>
           </div>
         </div>
 
-        {/* Education Section */}
-        <div className="profile-education">
-          <p className="education-title">Education</p>
-          <ul className="education-info">
-            <li className="education-item">
+        <div className={styles.profileEducation}>
+          <p className={styles.educationTitle}>Education</p>
+          <ul className={styles.educationInfo}>
+            <li className={styles.educationItem}>
               <p>School: LinkedIn University</p>
             </li>
-            <li className="education-item">
+            <li className={styles.educationItem}>
               <p>Degree: Bachelor of Science in Environment Science</p>
             </li>
-            <li className="education-item">
+            <li className={styles.educationItem}>
               <p>Graduation Year: 2023</p>
             </li>
           </ul>
         </div>
 
-        {/* Goals Section */}
-        <div className="profile-goals">
-          <p className="goals-title">Goals</p>
-          <ul className="goals-info">
-            <li className="goals-item">
-              <p>Improve my Math skills</p>
-            </li>
-            <li className="goals-item">
-              <p>Pursue a career in engineering</p>
-            </li>
-            <li className="goals-item">
-              <p>Improve in speaking</p>
-            </li>
-            <li className="goals-item">
-              <p>Understand the quadratic formula</p>
-            </li>
-            <li className="goals-item">
-              <p>Improve my writing skills</p>
-            </li>
+        <div className={styles.profileGoals}>
+          <p className={styles.goalsTitle}>Goals</p>
+          <ul className={styles.goalsInfo}>
+            <li className={styles.goalsItem}>Improve my Math skills</li>
+            <li className={styles.goalsItem}>Pursue a career in engineering</li>
+            <li className={styles.goalsItem}>Improve in speaking</li>
+            <li className={styles.goalsItem}>Understand the quadratic formula</li>
+            <li className={styles.goalsItem}>Improve my writing skills</li>
           </ul>
         </div>
       </div>
 
-      {/* Right Section */}
-      <div className="profile-right">
-        {/* About Section */}
-        <div className="profile-about">
-          <p className="profile-about-title">About</p>
-          <p className="about-body">
-            My name is Daniel Jackson, and I am a dedicated student with a
-            passion for learning. I excel in Mathematics, Science, and English,
-            and I am always eager to explore new subjects. In my free time, I
-            enjoy reading, solving puzzles, and participating in science fairs.
-            My goal is to pursue a career in engineering and make a positive
-            impact on the world.
+      <div className={styles.profileRight}>
+        <div className={styles.profileAbout}>
+          <p className={styles.profileAboutTitle}>About</p>
+          <p className={styles.aboutBody}>
+            My name is Daniel Jackson, and I am a dedicated student with a passion for learning. 
+            I excel in Mathematics, Science, and English, and I am always eager to explore new subjects. 
+            In my free time, I enjoy reading, solving puzzles, and participating in science fairs. 
+            My goal is to pursue a career in engineering and make a positive impact on the world.
           </p>
         </div>
 
-        {/* Previous Sessions */}
-        <div className="previous-sessions">
-          <p className="previous-sessions-title">Previous Sessions</p>
-          <div className="session-list">
-            {/* Session 1 */}
-            <div className="profile-session-item">
-              <div className="session-info">
-                <img
-                  className="instructor-image"
-                  src={instructor1Img}
-                  alt="Instructor 1"
-                />
-                <div className="session-details">
-                  <p className="instructor-name">Instructor: John Smith</p>
-                  <p className="instructor-rating">
+        <div className={styles.previousSessions}>
+          <p className={styles.previousSessionsTitle}>Previous Sessions</p>
+          <div className={styles.sessionList}>
+            <div className={styles.profileSessionItem}>
+              <div className={styles.sessionInfo}>
+                <img className={styles.instructorImage} src="./assets/instructor1.png" alt="Instructor 1" />
+                <div className={styles.sessionDetails}>
+                  <p className={styles.instructorName}>Instructor: John Smith</p>
+                  <p className={styles.instructorRating}>
                     <span>&#9733;</span>
                     <span>&#9733;</span>
                     <span>&#9733;</span>
                     <span>&#9733;</span>
                     <span>&#9734;</span>
                   </p>
-                  <p className="session-date">Date: 09/12/2021</p>
+                  <p className={styles.sessionDate}>Date: 09/12/2021</p>
                 </div>
               </div>
             </div>
 
-            {/* Session 2 */}
-            <div className="profile-session-item">
-              <div className="session-info">
-                <img
-                  className="instructor-image"
-                  src={instructor2Img}
-                  alt="Instructor 2"
-                />
-                <div className="session-details">
-                  <p className="instructor-name">Instructor: Emily Davis</p>
-                  <p className="instructor-rating">
+            <div className={styles.profileSessionItem}>
+              <div className={styles.sessionInfo}>
+                <img className={styles.instructorImage} src="./assets/instructor2.png" alt="Instructor 2" />
+                <div className={styles.sessionDetails}>
+                  <p className={styles.instructorName}>Instructor: Emily Davis</p>
+                  <p className={styles.instructorRating}>
                     <span>&#9733;</span>
                     <span>&#9733;</span>
                     <span>&#9733;</span>
                     <span>&#9734;</span>
                     <span>&#9734;</span>
                   </p>
-                  <p className="session-date">Date: 08/22/2021</p>
+                  <p className={styles.sessionDate}>Date: 08/22/2021</p>
                 </div>
               </div>
             </div>
 
-            {/* Session 3 */}
-            <div className="profile-session-item">
-              <div className="session-info">
-                <img
-                  className="instructor-image"
-                  src={instructor4Img}
-                  alt="Instructor 3"
-                />
-                <div className="session-details">
-                  <p className="instructor-name">Instructor: Sarah Johnson</p>
-                  <p className="instructor-rating">
+            <div className={styles.profileSessionItem}>
+              <div className={styles.sessionInfo}>
+                <img className={styles.instructorImage} src="./assets/instructor4.png" alt="Instructor 3" />
+                <div className={styles.sessionDetails}>
+                  <p className={styles.instructorName}>Instructor: Sarah Johnson</p>
+                  <p className={styles.instructorRating}>
                     <span>&#9733;</span>
                     <span>&#9733;</span>
                     <span>&#9733;</span>
                     <span>&#9734;</span>
                     <span>&#9734;</span>
                   </p>
-                  <p className="session-date">Date: 06/18/2021</p>
+                  <p className={styles.sessionDate}>Date: 06/18/2021</p>
                 </div>
               </div>
             </div>
@@ -158,7 +121,8 @@ const ProfilePage = () => {
         </div>
       </div>
     </div>
+    </div>
   );
-};
+}
 
 export default ProfilePage;

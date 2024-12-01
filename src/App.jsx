@@ -12,6 +12,7 @@ import BookingPage from './Pages/BookingPage';
 import ConfirmationPage from './Pages/ConfirmationPage';
 import FilterTutor from './Pages/FilterTutor';
 import PaymentPortal from './Pages/PaymentPage';
+import ProfilePage from './Pages/ProfilePage';
 
 function App() {
   return (
@@ -59,6 +60,14 @@ function App() {
             <PaymentPortal />
           </Layout>
         } />
+
+        <Route path="/profile" element={
+          <Layout>
+            <ProfilePage />
+          </Layout>
+        } />
+
+
 
         {/* Route for LogInPage without Layout */}
         <Route path="/login" element={<LogInPage />} />
