@@ -17,7 +17,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        Route for LandingPage with Layout (Navbar)
+        {/*Route for LandingPage with Layout (Navbar)}*/}
         <Route path="/" element={
           <Layout>
             <LandingPage />
