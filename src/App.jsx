@@ -13,6 +13,7 @@ import ConfirmationPage from './Pages/ConfirmationPage';
 import FilterTutor from './Pages/FilterTutor';
 import TutorProfilePage from './Pages/TutorProfilePage';
 import ProfilePage from './Pages/ProfilePage';
+import PaymentPortal from './Pages/PaymentPage';
 
 function App() {
   return (
@@ -64,6 +65,12 @@ function App() {
         <Route path="/profile" element={
           <Layout>
             <ProfilePage />
+          </Layout>
+        } />
+
+        <Route path="/payment" element={
+          <Layout>
+            <PaymentPortal />
           </Layout>
         } />
 
