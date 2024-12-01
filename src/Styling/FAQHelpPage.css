@@ -1,0 +1,59 @@
+:root {
+    min-height: 100vh;
+    background-color: #283618;
+}
+
+main,
+.faq-container {
+    background-color: #283618;
+    padding-left: 50px;
+    padding-right: 50px;
+
+}
+
+.head {
+    color: #FEFAE0;
+    text-align: center;
+    padding-top: 20px;
+    margin-bottom: 30px;
+}
+
+/* Container for the FAQ section */
+
+.faq-item {
+    background-color: #606C38;
+    border-radius: 2px;
+    margin-bottom: 0.8rem;
+    /* 间隔设置 */
+    overflow: hidden;
+}
+
+.faq-question {
+    padding: 1rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #283618;
+    background-color: #FEFAE0;
+    /* 乳白色背景 */
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.faq-question.active {
+    background-color: #e6e2cf;
+    /* 较深的乳白色背景 */
+    color: #2f4f2f;
+}
+
+.faq-answer {
+    padding: 1rem;
+    background-color: #606C38;
+    color: #FEFAE0;
+    font-size: 1rem;
+    border-top: 1px solid #ccc;
+}

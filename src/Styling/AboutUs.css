@@ -1,0 +1,140 @@
+:root{
+    --bg-color: #FEFAE0;
+    --text-color: #283618;
+    --contact-bg: #BC6C25;
+    --light-green: #606C38;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Playfair", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+}
+
+body{
+    background-color: #283618;
+    margin: 0;
+    height: auto;
+    padding: 0;
+    width: 100vw;
+}
+
+main{
+    width: 100%;
+}
+
+.section1, .section2, .section3, .section4, .section5{
+    width: 100%;
+}
+
+.section1, .section2, .section3{
+    width: 100%;
+}
+
+.section1{
+    color: #FEFAE0;
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}
+
+p{
+    font-size: 20px;
+    font-weight: normal;
+}
+
+/*Section 2*/
+.section2{
+    background-color: #606C38;
+    color: #FEFAE0;
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}
+.title2{
+    text-align: right;
+}
+
+.ul2 li{
+    padding: 10px;
+    margin-left: 50px;
+    color: #FEFAE0;
+}
+
+.info2{
+    padding-right: 100px;
+}
+
+.imgInfo2{
+    transform: rotate(-10deg);
+} 
+
+.main2{
+    background-color: #606C38;
+}
+
+/*Section 3*/
+.section3{
+    background-color:#FEFAE0;
+    color:#283618;
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px;
+}
+
+.p3{
+    margin: 10px;
+}
+
+.ul3 li{
+    margin-left: 73px;
+    padding: 10px;
+}
+
+/*Section 4*/
+.section4{
+    color: #FEFAE0;
+    font-size: 28px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    padding-bottom: 0px;
+    text-align: center;
+}
+
+p{
+    font-size: 20px;
+    font-weight: normal;
+}
+
+/*Section 5*/
+.section5{
+    background-color: #606C38;
+    color: #FEFAE0;
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    text-align: center;
+}
+
+.info5 p{
+    color: #FEFAE0;
+    margin: 10px;
+}
+
+.signup_button{
+    margin-top: 20px;
+}

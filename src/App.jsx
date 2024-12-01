@@ -3,6 +3,14 @@ import LandingPage from './Pages/LandingPage';
 import LogInPage from './Pages/LogInPage';
 import SignUpPage from './Pages/SignUpPage';
 import Layout from './Components/Layout';
+import ForgotPassword from './Pages/forgotPassword';
+import ResetPassword from './Pages/resetPassword';
+import AboutUs from './Pages/AboutUs';
+import ContactUs from './Pages/ContactUs';
+import FAQHelpPage from './Pages/FAQHelpPage';
+import BookingPage from './Pages/BookingPage';
+import ConfirmationPage from './Pages/ConfirmationPage';
+import FilterTutor from './Pages/FilterTutor';
 
 function App() {
   return (
@@ -15,9 +23,43 @@ function App() {
           </Layout>
         } />
 
+        <Route path="/about" element={
+          <Layout>
+            <AboutUs />
+          </Layout>
+        } />
+
+        <Route path="/contact" element={
+          <Layout>
+            <ContactUs />
+          </Layout>
+        } />
+
+        <Route path="/faq" element={
+          <Layout>
+            <FAQHelpPage />
+          </Layout>
+        } />
+
+        <Route path="/booking" element={
+          <Layout>
+            <BookingPage />
+          </Layout>
+        } />
+
+        <Route path="/tutorFind" element={
+          <Layout>
+            <FilterTutor />
+          </Layout>
+        } />
+
         {/* Route for LogInPage without Layout */}
         <Route path="/login" element={<LogInPage />} />
         <Route path="/CreateAccount" element={<SignUpPage />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/reset" element={<ResetPassword />} />
+        <Route path="/confirmation" element={<ConfirmationPage />} />
+
       </Routes>
     </Router>
   );

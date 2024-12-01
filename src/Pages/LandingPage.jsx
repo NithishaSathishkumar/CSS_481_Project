@@ -20,7 +20,10 @@ function LandingPage() {
               <button id="LogInButton">Log In</button>
             </Link>
 
-            <button>Sign Up</button> 
+            <Link to="/CreateAccount">
+              <button>Sign Up</button> 
+            </Link>
+            
           </div>
         </div>
 

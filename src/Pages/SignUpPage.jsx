@@ -3,11 +3,26 @@ import { Link } from 'react-router-dom';
 import backButton from '../assets/ReturnArrow.png';
 import userProfile from '../assets/6.png';
 import '../Styling/SignUpPage.css';
+import { getDatabase, ref, set, push, get } from "firebase/database";
+import app from '../../firebaseConfi';
+import bcrypt from 'bcryptjs'; // Import bcryptjs for hashing the password
 
 function SignUpPage() {
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedState, setSelectedState] = useState('');
   const [errorMessage, setErrorMessage] = useState(''); // State for error messages
+
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    country: '',
+    state: '',
+    city: '',
+    postalCode: '',
+    username: '',
+    email: '',
+    password: '',
+  });
 
   const countries = [
     { value: '', label: 'Select your country' },
@@ -34,49 +49,100 @@ function SignUpPage() {
   ];
 
   const handleCountryChange = (e) => {
-    setSelectedCountry(e.target.value);
-    setSelectedState(''); // Reset state when country changes
+    // setSelectedCountry(e.target.value);
+    // setSelectedState(''); // Reset state when country changes
+    const value = e.target.value;
+    setSelectedCountry(value);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      country: value, // Update formData
+      state: '', // Reset state when country changes
+    }));
+
+    setSelectedState(''); // Reset selected state
   };
 
   const handleStateChange = (e) => {
-    setSelectedState(e.target.value);
+    // setSelectedState(e.target.value);
+    const value = e.target.value;
+    setSelectedState(value);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      state: value, // Update formData
+    }));
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission
 
-    const form = e.target;
-    const firstName = form.firstName.value.trim();
-    const lastName = form.lastName.value.trim();
-    const country = form.country.value.trim();
-    const state = form.state.value.trim();
-    const city = form.city.value.trim();
-    const postalCode = form.postalCode.value.trim();
-    const username = form.username.value.trim();
-    const email = form.newEmail.value.trim();
-    const password = form.newUserPassword.value.trim();
-    const termsAccepted = form.TermsAndService.checked;
-
-    // Validate required fields
-    if (!firstName || !lastName || !country || !city || !postalCode || !username || !email || !password || !termsAccepted) {
-      setErrorMessage('Please fill out all required fields and accept the Terms of Service.');
-      console.log('Form validation failed.');
+    // Check if all required fields are filled
+    const { firstName, lastName, country, state, city, postalCode, username, email, password } = formData;
+    
+    if ( !firstName || !lastName || !country || !state || !city || !postalCode || !username || !email || !password) {
+      setErrorMessage('Please fill out all required fields.');
+      console.log('Form validation failed: Missing required fields');
       return;
     }
 
-    // Reset error message and submit form logic
-    setErrorMessage('');
-    console.log('Form submitted successfully:', {
-      firstName,
-      lastName,
-      country,
-      state,
-      city,
-      postalCode,
-      username,
-      email,
-      password,
-    });
+    // Check if Terms and Conditions checkbox is checked
+    const termsAccepted = document.getElementById('TermsAndService').checked;
+    if (!termsAccepted) {
+      setErrorMessage('You must agree to the Terms of Service and Privacy Policy.');
+      console.log('Form validation failed: Terms not accepted');
+      return;
+    }
+
+    // If validation passes, proceed to submit form
+    setErrorMessage(''); // Reset error message
+    console.log('Form submitted successfully:', formData);
+
+    // Save data to the database
+    saveData(formData);
+  };
+  
+  const saveData = async (data) => {
+    try {
+      const db = getDatabase(app);
+      const userRef = ref(db, "account/user");
+
+      const snapshot = await get(userRef);
+      let emailExists = false;
+
+      if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+          const userData = childSnapshot.val();
+          if (userData.email_ === data.email) {
+            emailExists = true; // Email found
+          }
+        });
+      }
+
+      if (emailExists) {
+        alert('Email already exists. Please log in.');
+        return; // Stop execution
+      }
+
+      const hashedPassword = await bcrypt.hash(data.password, 10);
+      const newDocRef = push(ref(db, "account/user"));
+
+      await set(newDocRef, {
+        firstName_: data.firstName,
+        lastName_: data.lastName,
+        country_: data.country,
+        state_: data.state,
+        city_: data.city,
+        postalCode_: data.postalCode,
+        username_: data.username,
+        email_: data.email,
+        password_: hashedPassword,
+      });
+
+      alert('Account created successfully!');
+
+    }catch (error) {
+      console.error('Error saving data:', error.message); // Log the error message
+      alert(`An error occurred while saving your data: ${error.message}`); // Show specific error to the user
+    }
   };
 
   return (
@@ -97,6 +163,7 @@ function SignUpPage() {
               name="firstName"
               placeholder="First Name*"
               required
+              onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
             />
             
             <input
@@ -105,11 +172,12 @@ function SignUpPage() {
               name="lastName"
               placeholder="Last Name*"
               required
+              onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
             />
           </div>
 
           <div className="InputSecondRow">
-            <select id="country" name="country" value={selectedCountry} onChange={handleCountryChange} required>
+            <select id="country" name="country" value={formData.country} onChange={handleCountryChange} required>
               {countries.map((country) => (
                 <option id="countryOptions" key={country.value} value={country.value}>
                   {country.label}
@@ -117,7 +185,7 @@ function SignUpPage() {
               ))}
             </select>
 
-            <select id="state" name="state" value={selectedState} onChange={handleStateChange} required>
+            <select id="state" name="state" value={formData.state} onChange={handleStateChange} required>
               {selectedCountry === 'usa' ? (usStates.map((state) => (
                 <option id="stateOptions" key={state} value={state}>
                   {state}
@@ -133,6 +201,7 @@ function SignUpPage() {
               name="city"
               placeholder="City*"
               required
+              onChange={(e) => setFormData({ ...formData, city: e.target.value })}
             />
 
             <input
@@ -141,6 +210,7 @@ function SignUpPage() {
               name="postalCode"
               placeholder="Postal Code*"
               required
+              onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
             />
           </div>
 
@@ -151,6 +221,7 @@ function SignUpPage() {
               name="username"
               placeholder="Username*"
               required
+              onChange={(e) => setFormData({ ...formData, username: e.target.value })}
             />
 
             <input
@@ -159,6 +230,7 @@ function SignUpPage() {
               name="newEmail"
               placeholder="Email*"
               required
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
 
             <input
@@ -167,6 +239,7 @@ function SignUpPage() {
               name="newUserPassword"
               placeholder="Password*"
               required
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
             
             <div className="TermsAndServiceSection">
