@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../Styling/FilterTutor.module.css'; // Scoped styles for this component
+import styles from '../Styling/FilterTutor.module.css';
 import photo1 from '../assets/26.png';
 import photo2 from '../assets/21.png';
 import photo3 from '../assets/22.png';
@@ -9,6 +9,21 @@ import photo6 from '../assets/25.png';
 
 const FilterTutor = () => {
     const [openIndex, setOpenIndex] = useState(null);
+    const [filters, setFilters] = useState({
+        day: '',
+        time: '',
+        subject: '',
+        price: '',
+        rating: '',
+    });
+
+    const filterOptions = {
+        Day: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        Time: ['Morning', 'Afternoon', 'Evening'],
+        Subject: ['Math', 'Computer Science', 'English', 'Physics', 'Chemistry', 'SAT Prep'],
+        Price: ['Free', '<$20/hour', '$20-$50/hour', '>$50/hour'],
+        Rating: ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars'],
+    };
 
     const toggleMenu = (index) => {
         setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
@@ -18,10 +33,13 @@ const FilterTutor = () => {
         setOpenIndex(null);
     };
 
-    // Close dropdown when clicking anywhere outside
+    const selectFilter = (category, value) => {
+        setFilters((prev) => ({ ...prev, [category.toLowerCase()]: value }));
+        closeDropdown();
+    };
+
     useEffect(() => {
         const handleOutsideClick = (event) => {
-            // Check if the click is outside the component
             if (!event.target.closest(`.${styles.filterBar}`)) {
                 closeDropdown();
             }
@@ -37,17 +55,17 @@ const FilterTutor = () => {
     return (
         <div className={styles.tutorBody}>
             <div className={styles['filter-tutor-content']}>
-                <div className={styles.tutorSearch}>
-                    <button
-                        type="button"
-                        className={styles.tutorButton}
-                        onClick={closeDropdown} // Close dropdown when this button is clicked
-                    >
-                        <h4>🔍</h4>
-                    </button>
+            <div className={styles.tutorSearch}>
+                <button
+                    type="button"
+                    className={styles.tutorButton}
+                    onClick={closeDropdown} // Close dropdown when this button is clicked
+                >
+                    <h4>🔍</h4>
+                </button>
                 </div>
                 <div className={styles.tutoRight}>
-                    {['Day', 'Time', 'Subject', 'Price', 'Rating'].map((label, index) => (
+                    {Object.keys(filterOptions).map((label, index) => (
                         <div className={styles.filterBar} key={index}>
                             <button
                                 type="button"
@@ -62,10 +80,14 @@ const FilterTutor = () => {
                                     openIndex === index ? styles.openMenu : ''
                                 }`}
                             >
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li><a href="#">Separated link</a></li>
+                                {filterOptions[label].map((option, optionIndex) => (
+                                    <li
+                                        key={optionIndex}
+                                        onClick={() => selectFilter(label, option)}
+                                    >
+                                        <a href="#">{option}</a>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                     ))}
@@ -73,7 +95,7 @@ const FilterTutor = () => {
                         <button
                             type="button"
                             className={styles.tutorButton}
-                            onClick={closeDropdown} // Close dropdown when Reset is clicked
+                            onClick={() => setFilters({ day: '', time: '', subject: '', price: '', rating: '' })}
                         >
                             Reset
                         </button>
@@ -89,44 +111,47 @@ const FilterTutor = () => {
                     { img: photo4, title: 'Kesh', description: 'I am physics enthusiast dedicated to simplifying complex concepts in mechanics and electromagnetism', rating: 4 },
                     { img: photo5, title: 'Anna', description: 'I am chemistry tutor with a focus on organic chemistry and lab techniques for academic success', rating: 1 },
                     { img: photo6, title: 'Mia', description: 'I am professional SAT coach with a proven track record of boosting students test scores', rating: 5 },
-                ].map((card, index) => (
-                    <div className={styles.tutorCard} key={index}>
-                        <img src={card.img} className={styles.cardImgTop} alt={card.title} />
-                        <div className={styles['tutorCard-body']}>
-                            <h5 className={styles.tutorCardTitle}>{card.title}</h5>
-                            <div className={styles.ratingStar}>
-                                {[...Array(5)].map((_, starIndex) => (
-                                    <span
-                                        key={starIndex}
-                                        className={`${styles.star} ${
-                                            starIndex < card.rating ? styles.checked : ''
-                                        }`}
-                                    />
-                                ))}
-                            </div>
-                            <p className={styles['tutor-card-text']}>{card.description}</p>
-                            <div className={styles['tutor-category']}>
-                                <a
-                                    href="#"
-                                    className={styles.tutorButton}
-                                    onClick={closeDropdown} // Close dropdown when About is clicked
-                                >
-                                    About
-                                </a>
-                                <a
-                                    href="#"
-                                    className={styles.tutorButton}
-                                    onClick={closeDropdown} // Close dropdown when Booking is clicked
-                                >
-                                    Booking
-                                </a>
+                ]
+                    .filter((tutor) => {
+                        if (filters.rating && parseInt(filters.rating[0]) > tutor.rating) return false;
+                        return true;
+                    })
+                    .map((card, index) => (
+                        <div className={styles.tutorCard} key={index}>
+                            <img src={card.img} className={styles.cardImgTop} alt={card.title} />
+                            <div className={styles['tutorCard-body']}>
+                                <h4 className={styles.tutorCardTitle}>{card.title}</h4>
+                                <div className={styles.star}>
+                                    {[...Array(5)].map((_, starIndex) => (
+                                        <span
+                                            key={starIndex}
+                                            className={`fa fa-star ${
+                                                starIndex < card.rating ? 'checked' : ''
+                                            }`}
+                                            style={{
+                                                fontSize: '0.8em', // Smaller star size
+                                                color: starIndex < card.rating ? '#ffcc00' : '#e4e5e9',
+                                                margin: '0 2px',
+                                            }}
+                                        ></span>
+                                    ))}
+                                </div>
+                                <p className={styles['tutor-card-text']}>{card.description}</p>
+                                <div className={styles['tutor-category']}>
+                                    <a href="#" className={styles.tutorButton}>
+                                        About
+                                    </a>
+                                    <a href="#" className={styles.tutorButton}>
+                                        Booking
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
             </div>
         </div>
     );
 };
 
 export default FilterTutor;
+

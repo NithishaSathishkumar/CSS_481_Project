@@ -11,6 +11,8 @@ import FAQHelpPage from './Pages/FAQHelpPage';
 import BookingPage from './Pages/BookingPage';
 import ConfirmationPage from './Pages/ConfirmationPage';
 import FilterTutor from './Pages/FilterTutor';
+import TutorProfilePage from './Pages/TutorProfilePage';
+import ProfilePage from './Pages/ProfilePage';
 
 function App() {
   return (
@@ -50,6 +52,18 @@ function App() {
         <Route path="/tutorFind" element={
           <Layout>
             <FilterTutor />
+          </Layout>
+        } />
+
+        <Route path="/tutor" element={
+          <Layout>
+            <TutorProfilePage />
+          </Layout>
+        } />
+
+        <Route path="/profile" element={
+          <Layout>
+            <ProfilePage />
           </Layout>
         } />
 
