@@ -42,10 +42,13 @@
 }
 
 .NewUserProfile {
-    width: 20%;
-    border-radius: 50%;
+    width: 200px; /* Set a fixed width */
+    height: 200px; /* Set a fixed height */
+    border-radius: 50%; /* Make the image circular */
     margin-bottom: 30px;
-    object-fit: cover;
+    object-fit: cover; /* Ensure the image covers the circle without distortion */
+    background-color: #f0f0f0; /* Optional: Background color for empty state */
+    border: 2px solid #ccc; /* Optional: Add a border to match your design */
 }
 
 .AddNewProfilePicButton {
@@ -54,18 +57,18 @@
     right: calc(50% - 110px);
     width: 40px;
     height: 40px;
-    background-color:#B45309;
+    background-color: #B45309;
     color: white;
     font-size: 40px;
     border: none;
     border-radius: 100px;
-    padding: 30px 30px;
-
+    padding: 0; /* Remove extra padding to keep button consistent */
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
 }
+
 
 .AddButton:hover {
     background-color: #B45309;

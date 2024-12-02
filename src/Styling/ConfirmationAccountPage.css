@@ -1,0 +1,38 @@
+.SignUpCelebrationRoot {
+    background-color: #BC6C25;
+    height: 100vh;
+
+    display: flex;
+    position: relative;
+}
+
+.SignUpMainContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 80%;
+    height: 100%;
+    margin: auto;
+
+    gap: 20px;
+}
+
+#hoorayTitle {
+    font-family: "Protest Riot", sans-serif;
+    font-size: 5rem;
+    color:#FEFAE0;
+    font-weight: bold;
+}
+
+#WelcomeUser {
+    font-size: 2.5rem;
+    color:#FEFAE0;
+    font-weight: bold;
+}
+
+.BackToHomeButton {
+    background-color: #606C38;
+    font-size: 1.3rem;
+}
+

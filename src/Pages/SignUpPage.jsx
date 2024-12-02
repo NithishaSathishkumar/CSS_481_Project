@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import backButton from '../assets/ReturnArrow.png';
-import userProfile from '../assets/6.png';
+import userProfilePlaceholder from '../assets/6.png';
 import '../Styling/SignUpPage.css';
 import { getDatabase, ref, set, push, get } from "firebase/database";
 import app from '../../firebaseConfi';
@@ -11,6 +11,8 @@ function SignUpPage() {
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedState, setSelectedState] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [profilePic, setProfilePic] = useState(null);
+  const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -67,6 +69,17 @@ function SignUpPage() {
       ...prevFormData,
       state: value,
     }));
+  };
+
+  const handleProfilePicChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfilePic(URL.createObjectURL(file));
+    }
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
   };
 
   const handleFormSubmit = (e) => {
@@ -131,6 +144,9 @@ function SignUpPage() {
         password_: hashedPassword,
       });
 
+      // Store the username in localStorage
+      localStorage.setItem('username', data.username);
+
       navigate('/AccountConfirmation');
     } catch (error) {
       console.error('Error saving data:', error.message);
@@ -141,14 +157,22 @@ function SignUpPage() {
   return (
     <div className="SignUpPageRootContainer">
       <div className="SignUpPageMainContent">
-        <div className="NewUserPPSec">
-          <img className="NewUserProfile" src={userProfile} alt="userProfile" />
-          <button className="AddNewProfilePicButton" type="button">+</button>
-        </div>
-
-        <h1 className="heading">Create New Account</h1>
 
         <form onSubmit={handleFormSubmit}>
+          <div className="NewUserPPSec">
+            <img className="NewUserProfile" src={profilePic || userProfilePlaceholder} alt="userProfile" />
+            <button type="button" className="AddNewProfilePicButton" onClick={handleUploadClick}>+</button>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleProfilePicChange}
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+            />
+          </div>
+
+          <h1 className="heading">Create New Account</h1>
+
           <div className="InputFirstRow">
             <input
               type="text"
