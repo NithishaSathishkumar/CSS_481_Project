@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import '../Styling/paymentpage.css';
 
+
 const PaymentPortal = () => {
   useEffect(() => {
     const googlePayButtonContainer = document.getElementById(
@@ -237,3 +238,4 @@ return (
 };
 
 export default PaymentPortal;
+

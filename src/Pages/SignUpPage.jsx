@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import backButton from '../assets/ReturnArrow.png';
 import userProfile from '../assets/6.png';
 import '../Styling/SignUpPage.css';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { getDatabase, ref, set, push, get } from "firebase/database";
-import app from '../../firebaseConfi';
-import bcrypt from 'bcryptjs';
+import { app } from '../../firebaseConfi';
+import bcrypt from 'bcryptjs'; // Import bcryptjs for hashing the password
 
 function SignUpPage() {
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedState, setSelectedState] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState(''); // State for error messages
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -54,10 +55,10 @@ function SignUpPage() {
     setSelectedCountry(value);
     setFormData((prevFormData) => ({
       ...prevFormData,
-      country: value,
-      state: '',
+      country: value, // Update formData
+      state: '', // Reset state when country changes
     }));
-    setSelectedState('');
+    setSelectedState(''); // Reset selected state
   };
 
   const handleStateChange = (e) => {
@@ -65,38 +66,42 @@ function SignUpPage() {
     setSelectedState(value);
     setFormData((prevFormData) => ({
       ...prevFormData,
-      state: value,
+      state: value, // Update formData
     }));
   };
 
   const handleFormSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
 
+    // Check if all required fields are filled
     const { firstName, lastName, country, state, city, postalCode, username, email, password } = formData;
 
     if (!firstName || !lastName || !country || !state || !city || !postalCode || !username || !email || !password) {
       setErrorMessage('Please fill out all required fields.');
+      console.log('Form validation failed: Missing required fields');
       return;
     }
 
-    if (state === '') {
-      setErrorMessage('Please select your state.');
-      return;
-    }
-
+    // Check if Terms and Conditions checkbox is checked
     const termsAccepted = document.getElementById('TermsAndService').checked;
     if (!termsAccepted) {
       setErrorMessage('You must agree to the Terms of Service and Privacy Policy.');
+      console.log('Form validation failed: Terms not accepted');
       return;
     }
 
-    setErrorMessage('');
+    // If validation passes, proceed to submit form
+    setErrorMessage(''); // Reset error message
+    console.log('Form submitted successfully:', formData);
+
+    // Save data to the database
     saveData(formData);
   };
 
   const saveData = async (data) => {
     try {
       const db = getDatabase(app);
+      const auth = getAuth(app);
       const userRef = ref(db, "account/user");
 
       const snapshot = await get(userRef);
@@ -106,15 +111,18 @@ function SignUpPage() {
         snapshot.forEach((childSnapshot) => {
           const userData = childSnapshot.val();
           if (userData.email_ === data.email) {
-            emailExists = true;
+            emailExists = true; // Email found
           }
         });
       }
 
       if (emailExists) {
         alert('Email already exists. Please log in.');
-        return;
+        return; // Stop execution
       }
+
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      const user = userCredential.user;
 
       const hashedPassword = await bcrypt.hash(data.password, 10);
       const newDocRef = push(ref(db, "account/user"));
@@ -131,10 +139,16 @@ function SignUpPage() {
         password_: hashedPassword,
       });
 
-      navigate('/AccountConfirmation');
+      alert('Account created successfully!');
+
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+
+      
+      navigate("/");
+
     } catch (error) {
-      console.error('Error saving data:', error.message);
-      alert(`An error occurred while saving your data: ${error.message}`);
+      console.error('Error saving data:', error.message); // Log the error message
+      alert(`An error occurred while saving your data: ${error.message}`); // Show specific error to the user
     }
   };
 
@@ -158,7 +172,6 @@ function SignUpPage() {
               required
               onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
             />
-
             <input
               type="text"
               id="lastName"
@@ -177,9 +190,7 @@ function SignUpPage() {
                 </option>
               ))}
             </select>
-
             <select id="state" name="state" value={formData.state} onChange={handleStateChange} required>
-              <option value="" disabled>Select your state</option>
               {selectedCountry === 'usa' ? (
                 usStates.map((state) => (
                   <option id="stateOptions" key={state} value={state}>
@@ -190,7 +201,6 @@ function SignUpPage() {
                 <option value="International">International</option>
               )}
             </select>
-
             <input
               type="text"
               id="city"
@@ -199,7 +209,6 @@ function SignUpPage() {
               required
               onChange={(e) => setFormData({ ...formData, city: e.target.value })}
             />
-
             <input
               type="number"
               id="postalCode"
@@ -219,7 +228,6 @@ function SignUpPage() {
               required
               onChange={(e) => setFormData({ ...formData, username: e.target.value })}
             />
-
             <input
               type="email"
               id="newEmail"
@@ -228,7 +236,6 @@ function SignUpPage() {
               required
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
-
             <input
               type="password"
               id="newUserPassword"
@@ -237,14 +244,15 @@ function SignUpPage() {
               required
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
-
             <div className="TermsAndServiceSection">
               <input type="checkbox" id="TermsAndService" required />
-              <label className="TermsAndServiceLabel" htmlFor="TermsAndService">I agree to the Terms of Service and Privacy Policy</label>
+              <label className="TermsAndServiceLabel" htmlFor="TermsAndService">
+                I agree to the Terms of Service and Privacy Policy
+              </label>
             </div>
           </div>
 
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message */}
 
           <button className="LogInPageButtons" type="submit">Sign Up</button>
         </form>

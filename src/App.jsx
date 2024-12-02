@@ -12,15 +12,16 @@ import FAQHelpPage from './Pages/FAQHelpPage';
 import BookingPage from './Pages/BookingPage';
 import ConfirmationPage from './Pages/ConfirmationPage';
 import FilterTutor from './Pages/FilterTutor';
-import TutorProfilePage from './Pages/TutorProfilePage';
-import ProfilePage from './Pages/ProfilePage';
+
 import PaymentPortal from './Pages/PaymentPage';
+import ProfilePage from './Pages/ProfilePage';
+import TutorProfilePage from './Pages/TutorProfilePage';
 
 function App() {
   return (
     <Router>
       <Routes>
-        Route for LandingPage with Layout (Navbar)
+        {/*Route for LandingPage with Layout (Navbar)}*/}
         <Route path="/" element={
           <Layout>
             <LandingPage />
@@ -55,7 +56,10 @@ function App() {
           <Layout>
             <FilterTutor />
           </Layout>
-        } />
+   
+        <Route path="/payment" element={
+          <Layout>
+            <PaymentPortal />
 
         <Route path="/tutor" element={
           <Layout>
@@ -69,12 +73,17 @@ function App() {
           </Layout>
         } />
 
+        <Route path="/tutorProfile" element={
+          <Layout>
+            <TutorProfilePage />
+          </Layout>
+        } />
+
         <Route path="/payment" element={
           <Layout>
             <PaymentPortal />
           </Layout>
-        } />
-
+        
         {/* Route for LogInPage without Layout */}
         <Route path="/login" element={<LogInPage />} />
         <Route path="/CreateAccount" element={<SignUpPage />} />
