@@ -1,0 +1,194 @@
+/* Global Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Profile Page Layout */
+.profile-page {
+    background-color: #283618;
+    font-family: 'Playfair Display', serif;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
+/* Main Content Container */
+.profile-page .main-content {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    max-width: 1536px;
+    flex-wrap: wrap;  /* To ensure responsiveness */
+}
+
+/* Profile Sections (Left and Right) */
+.profile-page .profile-left, .profile-page .profile-right {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 48%;  /* Adjust width for spacing */
+    border-radius: 14px;
+}
+
+.profile-page .profile-left {
+    background-color: #FEFAE0;
+}
+
+.profile-page .profile-right {
+    background-color: #606C38;
+    overflow: hidden;
+}
+
+/* Profile Info (Name, Image, Edit Button) */
+.profile-page .profile-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.profile-image {
+    width: 115px;
+    height: 115px;
+    border-radius: 50%;
+    margin: 20px;
+    border: 1px solid rgba(40, 54, 24, 0.5);
+}
+
+.profile-name {
+    font-weight: bold;
+    font-size: 35px;
+}
+
+.edit-button {
+    background-color: #BC6C25;
+    color: #FEFAE0;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+}
+
+.edit-button:hover {
+    background-color: #a05a1d;
+}
+
+/* Subjects Section */
+.profile-topics {
+    margin-top: 20px;
+}
+
+.subjects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.subject {
+    background-color: #BC6C25;
+    color: #FEFAE0;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 15px;
+}
+
+/* About Section */
+.profile-about-title {
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.about-body {
+    margin-top: 10px;
+    font-size: 20px;
+    margin-left: 20px;
+}
+
+/* Education and Goals Sections */
+.education-title, .goals-title {
+    font-size: 32px;
+}
+
+.education-item, .goals-item {
+    font-size: 20px;
+}
+
+.education-info, .goals-info {
+    margin-left: 20px;
+}
+
+/* Previous Sessions Section */
+.previous-sessions-title, .profile-about {
+    font-size: 32px;
+    color: #FEFAE0;
+    margin-bottom: 10px;
+}
+
+.session-list {
+    background-color: #FEFAE0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.profile-session-item {
+    display: flex;
+    padding: 15px;
+    border-bottom: 1px solid #ccc;
+}
+
+.profile-session-item:last-child {
+    border-bottom: none;
+}
+
+.session-info {
+    display: flex;
+    align-items: center;
+}
+
+.instructor-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.session-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.instructor-name {
+    font-size: 18px;
+    color: #333;
+}
+
+.instructor-rating {
+    color: #BC6C25;
+    font-size: 16px;
+}
+
+.session-date {
+    font-size: 14px;
+    color: #333;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .profile-page .main-content {
+        flex-direction: column;
+    }
+
+    .profile-page .profile-left, .profile-page .profile-right {
+        width: 100%;
+        margin-bottom: 20px; /* Adds spacing between sections on small screens */
+    }
+
+    .profile-left, .profile-right {
+        border-radius: 0;
+    }
+}
