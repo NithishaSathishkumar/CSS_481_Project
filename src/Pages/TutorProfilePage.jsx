@@ -1,29 +1,95 @@
-import React from "react";
-import styles from "../Styling/tutorprofile.module.css"; 
-import profileImg from "../assets/6.png";
-import instructor1Img from "../assets/6.png";
-import instructor2Img from "../assets/6.png";
-import instructor3Img from "../assets/6.png";
+// TutorProfilePage.js
+
+import React, { useState, useEffect } from "react";
+import { useParams } from 'react-router-dom'; // Import useParams
+import styles from "../Styling/tutorprofile.module.css";
+import profileImg from "../assets/6.png"; // Default profile image
+import { getDatabase, ref, onValue } from "firebase/database";
+import app from "/firebaseConfi"; 
 
 const TutorProfilePage = () => {
+  const { tutorId } = useParams(); // Get tutorId from URL
+  const [tutorData, setTutorData] = useState(null);
+  const [similarTutors, setSimilarTutors] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!tutorId) return;
+
+    const db = getDatabase(app);
+    const tutorRef = ref(db, `tutors/${tutorId}`);
+
+    onValue(tutorRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setTutorData(data);
+
+        // Fetch all tutors to find similar ones
+        const tutorsRef = ref(db, 'tutors');
+        onValue(tutorsRef, (tutorsSnapshot) => {
+          const tutorsData = tutorsSnapshot.val();
+          const tutorsList = Object.entries(tutorsData).map(([id, tutor]) => ({
+            id,
+            ...tutor,
+          }));
+
+          // Filter similar tutors based on subjects
+          const similar = tutorsList.filter((tutor) => {
+            if (tutor.id === tutorId) return false; // Exclude current tutor
+            if (!tutor.subjects || !data.subjects) return false;
+            // Check if there is any common subject
+            return tutor.subjects.some((subject) => data.subjects.includes(subject));
+          });
+
+          // Limit the number of similar tutors to 3
+          setSimilarTutors(similar.slice(0, 3));
+          setLoading(false);
+        });
+      } else {
+        // Tutor not found
+        setTutorData(null);
+        setLoading(false);
+      }
+    });
+  }, [tutorId]);
+
+  const renderStars = (rating) => {
+    const ratingNumber = parseFloat(rating) || 0;
+    const fullStars = Math.round(ratingNumber);
+    const emptyStars = 5 - fullStars;
+    return '★'.repeat(fullStars) + '☆'.repeat(emptyStars);
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!tutorData) {
+    return <div>Tutor not found.</div>;
+  }
+
   return (
-    <div className={styles.container}> 
+    <div className={styles.container}>
       <div className={styles.mainContent}>
         {/* Left Section */}
         <div className={styles.profileLeft}>
           {/* Profile Info */}
           <div className={styles.profileInfo}>
             <img
-              src={profileImg}
+              src={tutorData.photo || profileImg}
               className={styles.profileImage}
               alt="Tutor Profile"
             />
             <div className={styles.profileBasicInfo}>
-              <p className={styles.profileName}>Daniel Jackson</p>
-              <p className={styles.profileTime}>Local Time: 11:24 AM</p>
-              <p className={styles.profileHourlyRate}>Hourly Rate: $30</p>
+              <p className={styles.profileName}>
+                {tutorData.firstName} {tutorData.lastName}
+              </p>
+              <p className={styles.profileTime}>Local Time: {tutorData.localTime}</p>
+              <p className={styles.profileHourlyRate}>
+                Hourly Rate: {tutorData.price === 'free' ? 'Free' : `$${tutorData.price}`}
+              </p>
               <p className={styles.profileRating}>
-                <span>&#9733;&#9733;&#9733;&#9733;&#9734;</span> 
+                <span>{renderStars(tutorData.rating)}</span>
               </p>
               <div className={styles.profileButtons}>
                 <button className={styles.emailButton}>Send Email</button>
@@ -37,24 +103,12 @@ const TutorProfilePage = () => {
           <div className={styles.profileTopics}>
             <p className={styles.profileSubjects}>Approved Qualifications</p>
             <div className={styles.subjects}>
-              <span
-                className={styles.subject}
-                data-topics="Calculus I, Algebra, Geometry"
-              >
-                Mathematics
-              </span>
-              <span
-                className={styles.subject}
-                data-topics="Physics, Chemistry, Biology"
-              >
-                Science
-              </span>
-              <span
-                className={styles.subject}
-                data-topics="Grammar, Literature, Composition"
-              >
-                English
-              </span>
+              {tutorData.subjects &&
+                tutorData.subjects.map((subject, index) => (
+                  <span key={index} className={styles.subject}>
+                    {subject}
+                  </span>
+                ))}
             </div>
           </div>
 
@@ -63,72 +117,53 @@ const TutorProfilePage = () => {
             <p className={styles.educationTitle}>Education</p>
             <ul className={styles.educationInfo}>
               <li className={styles.educationItem}>
-                <p>School: LinkedIn University</p>
+                <p>School: {tutorData.education?.school || 'Not specified'}</p>
               </li>
               <li className={styles.educationItem}>
-                <p>Degree: Bachelor of Science in Environment Science</p>
+                <p>Degree: {tutorData.education?.degree || 'Not specified'}</p>
               </li>
               <li className={styles.educationItem}>
-                <p>Graduation Year: 2023</p>
+                <p>
+                  Graduation Year: {tutorData.education?.graduationYear || 'Not specified'}
+                </p>
               </li>
             </ul>
           </div>
 
           {/* Similar Tutors */}
-          <div className={styles.similarTutors}> 
+          <div className={styles.similarTutors}>
             <p className={styles.similarTutorsTitle}>Similar Tutors</p>
             <div className={styles.tutorContainer}>
-              <div className={styles.tutorItem}>
-                <a href="#tutor">
-                  <img
-                    src={instructor1Img}
-                    className={styles.tutorImage}
-                    alt="Tutor 1"
-                  />
-                  <p className={styles.tutorName}>John Doe</p>
-                  <p className={styles.tutorRating}>★★★★☆ (4.3)</p>
-                  <ul className={styles.tutorSubjects}>
-                    <li>Mathematics</li>
-                    <li>Science</li>
-                    <li>English</li>
-                  </ul>
-                </a>
-              </div>
-
-              <div className={styles.tutorItem}>
-                <a href="#tutor">
-                  <img
-                    src={instructor2Img}
-                    className={styles.tutorImage}
-                    alt="Tutor 2"
-                  />
-                  <p className={styles.tutorName}>Jane Smith</p>
-                  <p className={styles.tutorRating}>★★★★★ (4.8)</p>
-                  <ul className={styles.tutorSubjects}>
-                    <li>Physics</li>
-                    <li>Chemistry</li>
-                  </ul>
-                </a>
-              </div>
-
-              <div className={styles.tutorItem}>
-                <a href="#tutor">
-                  <img
-                    src={instructor3Img}
-                    className={styles.tutorImage}
-                    alt="Tutor 3"
-                  />
-                  <p className={styles.tutorName}>Alice Brown</p>
-                  <p className={styles.tutorRating}>★★★☆☆ (3.7)</p>
-                  <ul className={styles.tutorSubjects}>
-                    <li>Biology</li>
-                    <li>Geography</li>
-                  </ul>
-                </a>
-              </div>
+              {similarTutors.length > 0 ? (
+                similarTutors.map((tutor, index) => (
+                  <div className={styles.tutorItem} key={index}>
+                    <a href={`/tutor/${tutor.id}`}>
+                      <img
+                        src={tutor.photo || profileImg}
+                        className={styles.tutorImage}
+                        alt={`Tutor ${index + 1}`}
+                      />
+                      <p className={styles.tutorName}>
+                        {tutor.firstName} {tutor.lastName}
+                      </p>
+                      <p className={styles.tutorRating}>
+                        {renderStars(tutor.rating)} ({tutor.rating})
+                      </p>
+                      <ul className={styles.tutorSubjects}>
+                        {tutor.subjects &&
+                          tutor.subjects.map((subject, idx) => (
+                            <li key={idx}>{subject}</li>
+                          ))}
+                      </ul>
+                    </a>
+                  </div>
+                ))
+              ) : (
+                <p>No similar tutors available.</p>
+              )}
             </div>
           </div>
-        </div> 
+        </div>
 
         {/* Right Section */}
         <div className={styles.profileRight}>
@@ -136,64 +171,40 @@ const TutorProfilePage = () => {
           <div className={styles.profileAbout}>
             <p className={styles.profileAboutTitle}>About</p>
             <p className={styles.aboutBody}>
-              My name is Daniel Jackson, and I am a dedicated tutor with a passion
-              for teaching. I specialize in Mathematics, Science, and English,
-              and I am always eager to help students understand and excel in these
-              subjects. In my free time, I enjoy reading, solving puzzles, and
-              staying updated with the latest educational techniques. My goal is
-              to inspire and guide my students to achieve their academic potential
-              and develop a love for learning.
+              {tutorData.about || tutorData.description || 'No description available.'}
             </p>
           </div>
 
           {/* Reviews Section */}
-          <div className={styles.previousSessions}> {/* Changed to "Reviews" */}
-            <p className={styles.previousSessionsTitle}>Reviews</p> 
-            <div className={styles.sessionList}> 
-              <div className={styles.reviewItem}> {/* Changed to reviewItem */}
-                <div className={styles.reviewInfo}> {/* Changed to reviewInfo */}
-                  <img
-                    className={styles.studentImage} 
-                    src={instructor1Img}
-                    alt="Student"
-                  />
-                  <div className={styles.reviewerDetails}> 
-                    <div className={styles.nameAndRating}> 
-                      <p className={styles.reviewerName}>Jerry Smith</p> 
-                      <p className={styles.studentRating}> 
-                        <span>&#9733;&#9733;&#9733;&#9733;&#9734;</span> 
-                      </p>
+          {/* Assuming you have reviews in your database; adjust accordingly */}
+          <div className={styles.previousSessions}>
+            <p className={styles.previousSessionsTitle}>Reviews</p>
+            <div className={styles.sessionList}>
+              {tutorData.reviews ? (
+                tutorData.reviews.map((review, index) => (
+                  <div className={styles.reviewItem} key={index}>
+                    <div className={styles.reviewInfo}>
+                      <img
+                        className={styles.studentImage}
+                        src={review.reviewerImage || profileImg}
+                        alt="Student"
+                      />
+                      <div className={styles.reviewerDetails}>
+                        <div className={styles.nameAndRating}>
+                          <p className={styles.reviewerName}>{review.reviewerName}</p>
+                          <p className={styles.studentRating}>
+                            <span>{renderStars(review.rating)}</span>
+                          </p>
+                        </div>
+                        <p className={styles.reviewDate}>{review.date}</p>
+                        <p className={styles.reviewText}>{review.text}</p>
+                      </div>
                     </div>
-                    <p className={styles.reviewDate}>9/21/21</p> 
-                    <p className={styles.reviewText}>
-                      Daniel was very helpful in explaining calculus concepts!
-                    </p>
                   </div>
-                </div>
-              </div>
-
-              <div className={styles.reviewItem}>
-                <div className={styles.reviewInfo}>
-                  <img
-                    className={styles.studentImage}
-                    src={instructor1Img}
-                    alt="Student"
-                  />
-                  <div className={styles.reviewerDetails}>
-                    <div className={styles.nameAndRating}>
-                      <p className={styles.reviewerName}>Sarah Lee</p>
-                      <p className={styles.studentRating}>
-                        <span>&#9733;&#9733;&#9733;&#9734;&#9734;</span>
-                      </p>
-                    </div>
-                    <p className={styles.reviewDate}>8/12/21</p>
-                    <p className={styles.reviewText}>
-                      Helped me understand physics concepts clearly.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              {/* ... more reviews ... */}
+                ))
+              ) : (
+                <p>No reviews available.</p>
+              )}
             </div>
           </div>
         </div>
