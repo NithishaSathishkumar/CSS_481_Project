@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import backButton from '../assets/ReturnArrow.png';
 import userProfile from '../assets/6.png';
 import '../Styling/SignUpPage.css';
 import { getDatabase, ref, set, push, get } from "firebase/database";
 import app from '../../firebaseConfi';
-import bcrypt from 'bcryptjs'; // Import bcryptjs for hashing the password
+import bcrypt from 'bcryptjs';
 
 function SignUpPage() {
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedState, setSelectedState] = useState('');
-  const [errorMessage, setErrorMessage] = useState(''); // State for error messages
+  const [errorMessage, setErrorMessage] = useState('');
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -22,7 +22,10 @@ function SignUpPage() {
     username: '',
     email: '',
     password: '',
+    signupAsTutor: false,
   });
+
+  const navigate = useNavigate();
 
   const countries = [
     { value: '', label: 'Select your country' },
@@ -39,117 +42,82 @@ function SignUpPage() {
   ];
 
   const usStates = [
-    'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 
-    'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 
-    'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 
-    'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 
-    'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 
-    'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 
+    'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
+    'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
+    'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
+    'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York',
+    'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
+    'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington',
     'West Virginia', 'Wisconsin', 'Wyoming'
   ];
 
   const handleCountryChange = (e) => {
-    // setSelectedCountry(e.target.value);
-    // setSelectedState(''); // Reset state when country changes
     const value = e.target.value;
     setSelectedCountry(value);
     setFormData((prevFormData) => ({
       ...prevFormData,
-      country: value, // Update formData
-      state: '', // Reset state when country changes
+      country: value,
+      state: '',
     }));
-
-    setSelectedState(''); // Reset selected state
+    setSelectedState('');
   };
 
   const handleStateChange = (e) => {
-    // setSelectedState(e.target.value);
     const value = e.target.value;
     setSelectedState(value);
     setFormData((prevFormData) => ({
       ...prevFormData,
-      state: value, // Update formData
+      state: value,
     }));
   };
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+    const { email, password, signUpAsTutor, ...userData } = formData;
 
-    // Check if all required fields are filled
-    const { firstName, lastName, country, state, city, postalCode, username, email, password } = formData;
-    
-    if ( !firstName || !lastName || !country || !state || !city || !postalCode || !username || !email || !password) {
+    if (Object.values(userData).some((field) => field === '')) {
       setErrorMessage('Please fill out all required fields.');
-      console.log('Form validation failed: Missing required fields');
       return;
     }
 
-    // Check if Terms and Conditions checkbox is checked
     const termsAccepted = document.getElementById('TermsAndService').checked;
     if (!termsAccepted) {
       setErrorMessage('You must agree to the Terms of Service and Privacy Policy.');
-      console.log('Form validation failed: Terms not accepted');
       return;
     }
 
-    // If validation passes, proceed to submit form
-    setErrorMessage(''); // Reset error message
-    console.log('Form submitted successfully:', formData);
-
-    // Save data to the database
-    saveData(formData);
-  };
-  
-  const saveData = async (data) => {
-    try {
-      const db = getDatabase(app);
-      const userRef = ref(db, "account/user");
-
-      const snapshot = await get(userRef);
-      let emailExists = false;
-
-      if (snapshot.exists()) {
-        snapshot.forEach((childSnapshot) => {
-          const userData = childSnapshot.val();
-          if (userData.email_ === data.email) {
-            emailExists = true; // Email found
-          }
-        });
-      }
-
+    // Check for existing email
+    const db = getDatabase(app);
+    const userRef = ref(db, "account/user");
+    const snapshot = await get(userRef);
+    if (snapshot.exists()) {
+      const emailExists = Object.values(snapshot.val()).some((user) => user.email_ === email);
       if (emailExists) {
-        alert('Email already exists. Please log in.');
-        return; // Stop execution
+        setErrorMessage('Email already exists. Please log in.');
+        return;
       }
-
-      const hashedPassword = await bcrypt.hash(data.password, 10);
-      const newDocRef = push(ref(db, "account/user"));
-
-      await set(newDocRef, {
-        firstName_: data.firstName,
-        lastName_: data.lastName,
-        country_: data.country,
-        state_: data.state,
-        city_: data.city,
-        postalCode_: data.postalCode,
-        username_: data.username,
-        email_: data.email,
-        password_: hashedPassword,
-      });
-
-      alert('Account created successfully!');
-
-    }catch (error) {
-      console.error('Error saving data:', error.message); // Log the error message
-      alert(`An error occurred while saving your data: ${error.message}`); // Show specific error to the user
     }
-  };
+
+    setErrorMessage('');
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const dataToSave = { ...userData, email_: email, password_: hashedPassword };
+
+    if (signUpAsTutor) {
+      navigate('/tutorSignup', { state: dataToSave });
+    } else {
+      // Save user data directly
+      const userRef = push(ref(db, "account/user"));
+      await set(userRef, dataToSave);
+      navigate('/AccountConfirmation');
+    }
+  }; 
 
   return (
     <div className="SignUpPageRootContainer">
       <div className="SignUpPageMainContent">
         <div className="NewUserPPSec">
-          <img class="NewUserProfile" src={userProfile} alt="userProfile" />
+          <img className="NewUserProfile" src={userProfile} alt="userProfile" />
           <button className="AddNewProfilePicButton" type="button">+</button>
         </div>
 
@@ -165,7 +133,7 @@ function SignUpPage() {
               required
               onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
             />
-            
+
             <input
               type="text"
               id="lastName"
@@ -186,11 +154,14 @@ function SignUpPage() {
             </select>
 
             <select id="state" name="state" value={formData.state} onChange={handleStateChange} required>
-              {selectedCountry === 'usa' ? (usStates.map((state) => (
-                <option id="stateOptions" key={state} value={state}>
-                  {state}
-                </option>
-              ))) : (
+              <option value="" disabled>Select your state</option>
+              {selectedCountry === 'usa' ? (
+                usStates.map((state) => (
+                  <option id="stateOptions" key={state} value={state}>
+                    {state}
+                  </option>
+                ))
+              ) : (
                 <option value="International">International</option>
               )}
             </select>
@@ -213,7 +184,7 @@ function SignUpPage() {
               onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
             />
           </div>
-
+ 
           <div className="InputThirdSection">
             <input
               type="text"
@@ -230,6 +201,7 @@ function SignUpPage() {
               name="newEmail"
               placeholder="Email*"
               required
+              value={formData.email}  // Make sure value is set here
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
 
@@ -239,18 +211,32 @@ function SignUpPage() {
               name="newUserPassword"
               placeholder="Password*"
               required
+              value={formData.password}  // Make sure value is set here
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
-            
+
+            <div className="TutorSelection">
+              <input
+                type="checkbox"
+                id="signUpAsTutor"
+                name="signUpAsTutor"
+                checked={formData.signUpAsTutor}
+                onChange={(e) => setFormData({ ...formData, signUpAsTutor: e.target.checked })}
+              />
+              <label htmlFor="signUpAsTutor">Sign up as a Tutor</label>
+            </div>
+
             <div className="TermsAndServiceSection">
               <input type="checkbox" id="TermsAndService" required />
               <label className="TermsAndServiceLabel" htmlFor="TermsAndService">I agree to the Terms of Service and Privacy Policy</label>
             </div>
           </div>
 
-          {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message */}
-          
-          <button className="LogInPageButtons" type="submit">Sign Up</button>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+          <button className="LogInPageButtons" type="submit">
+            {formData.signUpAsTutor ? 'Next' : 'Sign Up'}
+          </button>
         </form>
 
         <Link to="/Login">

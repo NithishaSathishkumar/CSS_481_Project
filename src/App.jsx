@@ -5,6 +5,7 @@ import SignUpPage from './Pages/SignUpPage';
 import Layout from './Components/Layout';
 import ForgotPassword from './Pages/forgotPassword';
 import ResetPassword from './Pages/resetPassword';
+import ConfirmationAccountPage from './Pages/ConfirmationAccountPage';
 import AboutUs from './Pages/AboutUs';
 import ContactUs from './Pages/ContactUs';
 import FAQHelpPage from './Pages/FAQHelpPage';
@@ -14,6 +15,7 @@ import FilterTutor from './Pages/FilterTutor';
 import TutorProfilePage from './Pages/TutorProfilePage';
 import ProfilePage from './Pages/ProfilePage';
 import PaymentPortal from './Pages/PaymentPage';
+import TutorSignup from './Pages/TutorSignup';
 
 function App() {
   return (
@@ -80,7 +82,8 @@ function App() {
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/reset" element={<ResetPassword />} />
         <Route path="/confirmation" element={<ConfirmationPage />} />
-
+        <Route path="/AccountConfirmation" element={<ConfirmationAccountPage />} />
+        <Route path='/tutorSignup' element={<TutorSignup />} />
       </Routes>
     </Router>
   );
