@@ -56,10 +56,13 @@ function App() {
           <Layout>
             <FilterTutor />
           </Layout>
+        } />
    
         <Route path="/payment" element={
           <Layout>
             <PaymentPortal />
+          </Layout>
+        } />
 
         <Route path="/tutor" element={
           <Layout>
@@ -83,6 +86,8 @@ function App() {
           <Layout>
             <PaymentPortal />
           </Layout>
+
+        } />
         
         {/* Route for LogInPage without Layout */}
         <Route path="/login" element={<LogInPage />} />
