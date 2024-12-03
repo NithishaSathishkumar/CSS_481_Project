@@ -9,7 +9,8 @@
     padding-right: 0;
 }
 
-main, .booking-container {
+main,
+.booking-container {
     background-color: #283618;
 }
 
@@ -42,7 +43,8 @@ main, .booking-container {
     max-width: 200px;
     height: auto;
     object-fit: contain;
-    padding-top: 10px;
+    padding-top: 30px;
+    margin-bottom: 20px;
 }
 
 .tutor-name {
@@ -53,6 +55,7 @@ main, .booking-container {
 
 .course {
     color: white;
+    text-align: left;
 }
 
 .icon {
