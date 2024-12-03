@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { getDatabase, ref, set, push } from "firebase/database";
 import app from '../../firebaseConfi';  // Ensure this import points to your Firebase config
 import '../Styling/TutorSignup.css';  // Add your styles as needed
+import bcrypt from 'bcryptjs';
 
 function TutorSignup() {
     const navigate = useNavigate();
@@ -70,6 +71,7 @@ function TutorSignup() {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
+
         const { availableTime, daysAvailable, price, subjects, primarySubject, description, about, education, goals, localTime, photo } = formData;
         
         if (!availableTime || !daysAvailable.length || !price || !subjects.length || !primarySubject || !description || !about|| !education.school || !education.degree || !education.graduationYear || !goals.some(goal => goal.trim()) || !localTime) {
@@ -98,8 +100,10 @@ function TutorSignup() {
             const tutorRef = ref(db, 'tutors'); // Define where to store tutors' data
             const newTutorRef = push(tutorRef); // Generate a unique ID for the new tutor entry
             
+            const hashedPassword = await bcrypt.hash(data.password, 10);
+
             await set(newTutorRef, {
-                ...data, // Spread all data (SignUp and Tutor data combined)
+                ...data, password: hashedPassword // Spread all data (SignUp and Tutor data combined)
             });
                 
             //navigate('/tutor-dashboard'); // Redirect user to tutor dashboard or profile page
