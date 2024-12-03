@@ -5,6 +5,10 @@
     --light-green: #606C38;
 }
 
+.AboutUsMainContent {
+    width: 100%;
+}
+
 *{
     padding: 0;
     margin: 0;
@@ -15,24 +19,9 @@
     font-variation-settings: "wdth" 100;
 }
 
-body{
-    background-color: #283618;
-    margin: 0;
-    height: auto;
-    padding: 0;
-    width: 100%;
-}
-
-main{
-    width: 100%;
-}
-
 .section1, .section2, .section3, .section4, .section5{
-    width: 100%;
-}
-
-.section1, .section2, .section3{
-    width: 100%;
+    margin: auto;
+    width: 80%;
 }
 
 .section1{
@@ -64,6 +53,7 @@ p{
 }
 
 .ul2 li{
+    size: 28px;
     padding: 10px;
     margin-left: 50px;
     color: #FEFAE0;
