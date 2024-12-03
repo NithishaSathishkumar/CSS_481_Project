@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '/src/Components/ComponentStyling/navbar.css'; // Optional: for component-specific styling
 
@@ -7,6 +7,16 @@ import profilePic from '../assets/6.png';
 import logOut from '../assets/9.png';
 
 const Navbar = () => {
+    const [username, setUsername] = useState('User'); // Default to 'User'
+
+    useEffect(() => {
+        // Retrieve the username from localStorage when the component mounts
+        const storedUsername = localStorage.getItem('username');
+        if (storedUsername) {
+            setUsername(storedUsername);
+        }
+    }, []);
+
     const toggleMenu = () => {
         const subMenu = document.getElementById("subMenu");
         if (subMenu) {
@@ -36,6 +46,15 @@ const Navbar = () => {
         };
     }, []);
 
+    const handleLogout = () => {
+        // Clear the username from localStorage
+        localStorage.removeItem('username');
+        // Reset the username state to 'User'
+        setUsername('User');
+        // Optionally close the menu after logging out
+        closeMenu();
+    };
+
     return (
         <>
             <header className="navbarContent">
@@ -64,7 +83,7 @@ const Navbar = () => {
                         <div className="sub-menu">
                             <div className="user-info">
                                 <img src={profilePic} alt="profile" width="63" height="65" />
-                                <h3>Nithisha Sathishkumar</h3>
+                                <h3>{username}</h3> {/* Display the username here */}
                             </div>
 
                             <a href="#" className="sub-menu-link" onClick={closeMenu}>
@@ -73,14 +92,8 @@ const Navbar = () => {
                                 <span></span>
                             </a>
 
-                            <a href="#" className="sub-menu-link" onClick={closeMenu}>
-                                <img src={profilePic} alt="profile" width="63" height="65" />
-                                <p>Edit profile</p>
-                                <span></span>
-                            </a>
-
-                            <a href="#" className="sub-menu-link" onClick={closeMenu}>
-                                <img src={logOut} alt="profile" width="63" height="65" />
+                            <a href="#" className="sub-menu-link" onClick={handleLogout}>
+                                <img src={logOut} alt="Logout" width="63" height="65" />
                                 <p>Logout</p>
                                 <span></span>
                             </a>

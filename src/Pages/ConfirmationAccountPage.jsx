@@ -1,33 +1,59 @@
-import '../Styling/ConfirmationPage.css';
-import balloon from '../assets/15.png';
-import celebrationCorn from '../assets/13.png';
-import { Link, useLocation } from 'react-router-dom';  // import Link
+import React, { useState, useEffect } from 'react';
+import ReactConfetti from 'react-confetti';
+import { Link } from 'react-router-dom';
+import '../Styling/ConfirmationAccountPage.css';
 
 function ConfirmationAccountPage() {
-    const location = useLocation();
-    const { date, time } = location.state || {}; // Destructure state to get date and time
+  const [username, setUsername] = useState('User'); // Default to 'User' until fetched
 
-    return (
-        <div className="container confirmation-container">
-            <div className="row">
-                <div className="col-3 left-part"> <img className="balloon-left" src={balloon} ></img>
-                    <img className="celebration-left" src={celebrationCorn} ></img>
+  useEffect(() => {
+    // Retrieve the username from localStorage
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
 
-                </div>
-                <div className="col-6 mid-part">
-                    <h2>Thank you for creating a new account!</h2>
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
-                    <Link to="/about">
-                        <button className="button-cancle">Go to Home Page</button>
-                    </Link>
+  useEffect(() => {
+    const handleResize = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
 
-                </div>
-                <div className="col-3 right-part"><img className="balloon-right" src={balloon} ></img>
-                    <img className="celebration-right" src={celebrationCorn} ></img>
-                </div>
-            </div>
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return (
+    <div>
+      <ReactConfetti
+        width={dimensions.width}
+        height={dimensions.height}
+        numberOfPieces={150}
+        gravity={0.04}
+        initialVelocityY={20}
+        recycle={true}
+        colors={['#FFD700', '#FFFFFF', '#283618']}
+      />
+
+      <div className="SignUpCelebrationRoot">
+        <div className="SignUpMainContent">
+          <h1 id="hoorayTitle">Hooray!</h1>
+          <h2 id="WelcomeUser">Welcome to MentorMe, {username}</h2>
+          <Link to="/about">
+            <button className="BackToHomeButton">Home</button>
+          </Link>
         </div>
-    )
+      </div>
+    </div>
+  );
 }
 
-export default ConfirmationAccountPage
+export default ConfirmationAccountPage;

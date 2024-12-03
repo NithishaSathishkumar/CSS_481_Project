@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import backButton from '../assets/ReturnArrow.png';
-import userProfile from '../assets/6.png';
+import userProfilePlaceholder from '../assets/6.png';
 import '../Styling/SignUpPage.css';
 import { getDatabase, ref, set, push, get } from "firebase/database";
 import app from '../../firebaseConfi';
@@ -11,6 +11,8 @@ function SignUpPage() {
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedState, setSelectedState] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [profilePic, setProfilePic] = useState(null);
+  const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -77,7 +79,30 @@ function SignUpPage() {
     const { email, password, signUpAsTutor, ...userData } = formData;
 
     if (Object.values(userData).some((field) => field === '')) {
+  
+  const handleProfilePicChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfilePic(URL.createObjectURL(file));
+    }
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    const { firstName, lastName, country, state, city, postalCode, username, email, password } = formData;
+
+    if (!firstName || !lastName || !country || !state || !city || !postalCode || !username || !email || !password) {
       setErrorMessage('Please fill out all required fields.');
+      return;
+    }
+
+    if (state === '') {
+      setErrorMessage('Please select your state.');
       return;
     }
 
@@ -97,6 +122,54 @@ function SignUpPage() {
         setErrorMessage('Email already exists. Please log in.');
         return;
       }
+    setErrorMessage('');
+    saveData(formData);
+  };
+
+  const saveData = async (data) => {
+    try {
+      const db = getDatabase(app);
+      const userRef = ref(db, "account/user");
+
+      const snapshot = await get(userRef);
+      let emailExists = false;
+
+      if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+          const userData = childSnapshot.val();
+          if (userData.email_ === data.email) {
+            emailExists = true;
+          }
+        });
+      }
+
+      if (emailExists) {
+        alert('Email already exists. Please log in.');
+        return;
+      }
+
+      const hashedPassword = await bcrypt.hash(data.password, 10);
+      const newDocRef = push(ref(db, "account/user"));
+
+      await set(newDocRef, {
+        firstName_: data.firstName,
+        lastName_: data.lastName,
+        country_: data.country,
+        state_: data.state,
+        city_: data.city,
+        postalCode_: data.postalCode,
+        username_: data.username,
+        email_: data.email,
+        password_: hashedPassword,
+      });
+
+      // Store the username in localStorage
+      localStorage.setItem('username', data.username);
+
+      navigate('/AccountConfirmation');
+    } catch (error) {
+      console.error('Error saving data:', error.message);
+      alert(`An error occurred while saving your data: ${error.message}`);
     }
 
     setErrorMessage('');
@@ -124,6 +197,20 @@ function SignUpPage() {
         <h1 className="heading">Create New Account</h1>
 
         <form onSubmit={handleFormSubmit}>
+          <div className="NewUserPPSec">
+            <img className="NewUserProfile" src={profilePic || userProfilePlaceholder} alt="userProfile" />
+            <button type="button" className="AddNewProfilePicButton" onClick={handleUploadClick}>+</button>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleProfilePicChange}
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+            />
+          </div>
+
+          <h1 className="heading">Create New Account</h1>
+
           <div className="InputFirstRow">
             <input
               type="text"
@@ -237,6 +324,7 @@ function SignUpPage() {
           <button className="LogInPageButtons" type="submit">
             {formData.signUpAsTutor ? 'Next' : 'Sign Up'}
           </button>
+
         </form>
 
         <Link to="/Login">
