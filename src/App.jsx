@@ -15,6 +15,7 @@ import FilterTutor from './Pages/FilterTutor';
 import TutorProfilePage from './Pages/TutorProfilePage';
 import ProfilePage from './Pages/ProfilePage';
 import PaymentPortal from './Pages/PaymentPage';
+import ChatApp from './Pages/ChatApp';
 import TutorSignup from './Pages/TutorSignup';
 
 function App() {
@@ -73,6 +74,12 @@ function App() {
         <Route path="/payment" element={
           <Layout>
             <PaymentPortal />
+          </Layout>
+        } />
+
+        <Route path="/Chat" element={
+          <Layout>
+            <ChatApp/>
           </Layout>
         } />
 

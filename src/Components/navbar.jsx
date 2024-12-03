@@ -68,6 +68,7 @@ const Navbar = () => {
                         <li><Link to="/tutorFind" onClick={closeMenu}>Tutor</Link></li>
                         <li><a href="#" onClick={closeMenu}>Student</a></li>
                         <li><Link to="/faq" onClick={closeMenu}>FAQ</Link></li>
+                        <li><Link to="/Chat" onClick={closeMenu}>Chat</Link></li>
                     </ul>
                 </nav>
 
@@ -82,8 +83,7 @@ const Navbar = () => {
                     <div className="sub-menu-wrap" id="subMenu">
                         <div className="sub-menu">
                             <div className="user-info">
-                                <img src={profilePic} alt="profile" width="63" height="65" />
-                                <h3>{username}</h3> {/* Display the username here */}
+                                <h3>Welcome, {username}</h3> {/* Display the username here */}
                             </div>
 
                             <a href="#" className="sub-menu-link" onClick={closeMenu}>
