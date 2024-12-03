@@ -58,7 +58,7 @@ function App() {
           </Layout>
         } />
 
-        <Route path="/tutor" element={
+        <Route path="/tutor/:tutorId" element={
           <Layout>
             <TutorProfilePage />
           </Layout>
