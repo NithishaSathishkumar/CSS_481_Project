@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 // import '../Styling/ChatApp.css';
 
 // Import Firebase app from firebaseConfig.js
-import app from '../../firebaseConfi';
+import app from '/firebaseConfi.js';
 
 // Import the functions you need from the Firebase SDK
 import { getFirestore, collection, addDoc, query, orderBy, limit, serverTimestamp } from 'firebase/firestore';

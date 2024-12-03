@@ -47,7 +47,7 @@ function App() {
           </Layout>
         } />
 
-        <Route path="/booking" element={
+        <Route path="/booking/:tutorId" element={
           <Layout>
             <BookingPage />
           </Layout>
