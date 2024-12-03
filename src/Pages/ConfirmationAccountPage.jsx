@@ -38,7 +38,7 @@ function ConfirmationAccountPage() {
         height={dimensions.height}
         numberOfPieces={150}
         gravity={0.04}
-        initialVelocityY={20}
+        initialVelocityY={30}
         recycle={true}
         colors={['#FFD700', '#FFFFFF', '#283618']}
       />
