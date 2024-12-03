@@ -47,7 +47,7 @@ function App() {
           </Layout>
         } />
 
-        <Route path="/booking" element={
+        <Route path="/booking/:tutorId" element={
           <Layout>
             <BookingPage />
           </Layout>
@@ -65,7 +65,7 @@ function App() {
           </Layout>
         } />
 
-        <Route path="/profile" element={
+        <Route path="/edit-profile/" element={
           <Layout>
             <ProfilePage />
           </Layout>

@@ -511,8 +511,8 @@ const FilterTutor = () => {
                                 </div>
                                 <p className={styles['tutor-card-text']}>{card.description}</p>
                                 <div className={styles['tutor-category']}>
-                                    <a href="#" className={styles.tutorButton}>About</a>
-                                    <a href="#" className={styles.tutorButton}>Booking</a>
+                                    <a href={`tutor/${card.id}`} className={styles.tutorButton}>About</a>
+                                    <a href={`booking/${card.id}`} className={styles.tutorButton}>Booking</a>
                                 </div>
                             </div>
                         </div>

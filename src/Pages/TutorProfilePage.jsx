@@ -1,17 +1,25 @@
 // TutorProfilePage.js
 
 import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom'; // Import useParams
+import { useParams } from 'react-router-dom';
 import styles from "../Styling/tutorprofile.module.css";
-import profileImg from "../assets/6.png"; // Default profile image
-import { getDatabase, ref, onValue } from "firebase/database";
+import profileImg from "../assets/6.png";
+import { getDatabase, ref, onValue, push, set } from "firebase/database";
 import app from "/firebaseConfi"; 
 
 const TutorProfilePage = () => {
-  const { tutorId } = useParams(); // Get tutorId from URL
+  const { tutorId } = useParams();
   const [tutorData, setTutorData] = useState(null);
   const [similarTutors, setSimilarTutors] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // State for review form
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [reviewFormData, setReviewFormData] = useState({
+    reviewerName: '',
+    rating: '',
+    text: '',
+  });
 
   useEffect(() => {
     if (!tutorId) return;
@@ -22,6 +30,34 @@ const TutorProfilePage = () => {
     onValue(tutorRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
+        // Convert reviews object to array
+        if (data.reviews) {
+          data.reviews = Object.values(data.reviews);
+        }
+
+        // Compute average rating from reviews
+        if (data.reviews && data.reviews.length > 0) {
+          const ratings = data.reviews.map((review) => parseFloat(review.rating));
+          const totalRating = ratings.reduce((sum, rating) => sum + rating, 0);
+          const averageRating = totalRating / ratings.length;
+
+          // Round according to specified rules
+          let roundedRating = Math.floor(averageRating);
+          if (averageRating - roundedRating >= 0.5) {
+            roundedRating += 1;
+          }
+
+          data.rating = roundedRating.toString();
+
+          // Update rating in the database
+          const tutorRatingRef = ref(db, `tutors/${tutorId}/rating`);
+          set(tutorRatingRef, data.rating);
+        } else {
+          data.rating = '0';
+          const tutorRatingRef = ref(db, `tutors/${tutorId}/rating`);
+          set(tutorRatingRef, data.rating);
+        }
+
         setTutorData(data);
 
         // Fetch all tutors to find similar ones
@@ -35,9 +71,8 @@ const TutorProfilePage = () => {
 
           // Filter similar tutors based on subjects
           const similar = tutorsList.filter((tutor) => {
-            if (tutor.id === tutorId) return false; // Exclude current tutor
+            if (tutor.id === tutorId) return false;
             if (!tutor.subjects || !data.subjects) return false;
-            // Check if there is any common subject
             return tutor.subjects.some((subject) => data.subjects.includes(subject));
           });
 
@@ -54,10 +89,43 @@ const TutorProfilePage = () => {
   }, [tutorId]);
 
   const renderStars = (rating) => {
-    const ratingNumber = parseFloat(rating) || 0;
-    const fullStars = Math.round(ratingNumber);
+    const ratingNumber = parseInt(rating, 10) || 0;
+    const fullStars = ratingNumber;
     const emptyStars = 5 - fullStars;
     return '★'.repeat(fullStars) + '☆'.repeat(emptyStars);
+  };
+
+  const handleReviewInputChange = (event) => {
+    const { name, value } = event.target;
+    setReviewFormData({ ...reviewFormData, [name]: value });
+  };
+
+  const handleReviewSubmit = (event) => {
+    event.preventDefault();
+
+    const newReview = {
+      reviewerName: reviewFormData.reviewerName,
+      rating: reviewFormData.rating,
+      text: reviewFormData.text,
+      date: new Date().toISOString(),
+      reviewerImage: '',
+    };
+
+    const db = getDatabase(app);
+    const reviewsRef = ref(db, `tutors/${tutorId}/reviews`);
+
+    push(reviewsRef, newReview)
+      .then(() => {
+        setReviewFormData({
+          reviewerName: '',
+          rating: '',
+          text: '',
+        });
+        setShowReviewForm(false);
+      })
+      .catch((error) => {
+        console.error('Error adding review:', error);
+      });
   };
 
   if (loading) {
@@ -86,17 +154,20 @@ const TutorProfilePage = () => {
               </p>
               <p className={styles.profileTime}>Local Time: {tutorData.localTime}</p>
               <p className={styles.profileHourlyRate}>
-                Hourly Rate: {tutorData.price === 'free' ? 'Free' : `$${tutorData.price}`}
+                Hourly Rate: {tutorData.price === 'free' ? 'Free' : `$${tutorData.exactPrice}`}
               </p>
               <p className={styles.profileRating}>
                 <span>{renderStars(tutorData.rating)}</span>
               </p>
               <div className={styles.profileButtons}>
                 <button className={styles.emailButton}>Send Email</button>
-                <button className={styles.scheduleButton}>Schedule</button>
+                <a href={`/booking/${tutorData.id}`}>
+                  <button className={styles.scheduleButton}>Book</button>
+                </a>
+
               </div>
             </div>
-            <button className={styles.editButton}>Edit my Profile</button>
+            <button className={styles.editButton} onClick={() => setShowReviewForm(true)}>Add Review</button>
           </div>
 
           {/* Approved Qualifications */}
@@ -176,11 +247,10 @@ const TutorProfilePage = () => {
           </div>
 
           {/* Reviews Section */}
-          {/* Assuming you have reviews in your database; adjust accordingly */}
           <div className={styles.previousSessions}>
             <p className={styles.previousSessionsTitle}>Reviews</p>
             <div className={styles.sessionList}>
-              {tutorData.reviews ? (
+              {tutorData.reviews && tutorData.reviews.length > 0 ? (
                 tutorData.reviews.map((review, index) => (
                   <div className={styles.reviewItem} key={index}>
                     <div className={styles.reviewInfo}>
@@ -196,7 +266,7 @@ const TutorProfilePage = () => {
                             <span>{renderStars(review.rating)}</span>
                           </p>
                         </div>
-                        <p className={styles.reviewDate}>{review.date}</p>
+                        <p className={styles.reviewDate}>{new Date(review.date).toLocaleDateString()}</p>
                         <p className={styles.reviewText}>{review.text}</p>
                       </div>
                     </div>
@@ -207,6 +277,53 @@ const TutorProfilePage = () => {
               )}
             </div>
           </div>
+
+          {/* Review Form */}
+          {showReviewForm && (
+            <div className={styles.reviewFormContainer}>
+              <form onSubmit={handleReviewSubmit} className={styles.reviewForm}>
+                <label>
+                  Name:
+                  <input
+                    type="text"
+                    name="reviewerName"
+                    value={reviewFormData.reviewerName}
+                    onChange={handleReviewInputChange}
+                    required
+                  />
+                </label>
+                <label>
+                  Rating:
+                  <select
+                    name="rating"
+                    value={reviewFormData.rating}
+                    onChange={handleReviewInputChange}
+                    required
+                  >
+                    <option value="">Select rating</option>
+                    <option value="5">5 - Excellent</option>
+                    <option value="4">4 - Good</option>
+                    <option value="3">3 - Average</option>
+                    <option value="2">2 - Poor</option>
+                    <option value="1">1 - Terrible</option>
+                  </select>
+                </label>
+                <label>
+                  Review:
+                  <textarea
+                    name="text"
+                    value={reviewFormData.text}
+                    onChange={handleReviewInputChange}
+                    required
+                  />
+                </label>
+                <div className={styles.reviewFormButtons}>
+                  <button type="submit">Submit Review</button>
+                  <button type="button" onClick={() => setShowReviewForm(false)}>Cancel</button>
+                </div>
+              </form>
+            </div>
+          )}
         </div>
       </div>
     </div>
