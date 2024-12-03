@@ -116,6 +116,7 @@ function TutorSignup() {
             <div className="TutorSignupPage">
                 <h1>Complete Your Tutor Profile</h1>
                 <form onSubmit={handleFormSubmit}>
+
                     {/* Time Availability */}
                     <div className="inputGroup">
                     <label>Preferred Time of Day:</label>
@@ -189,7 +190,7 @@ function TutorSignup() {
                     {/* Subjects */}
                     <div className="inputGroup">
                     <label>Subjects:</label>
-                    {['Math', 'Computer Science', 'English', 'Physics', 'Chemistry', 'SAT Prep'].map(subject => (
+                    {['Math', 'Computer Science', 'English', 'Physics', 'Chemistry', 'SAT Prep', 'Other'].map(subject => (
                         <div key={subject}>
                         <input
                             type="checkbox"

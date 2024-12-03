@@ -82,7 +82,8 @@ function App() {
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/reset" element={<ResetPassword />} />
         <Route path="/confirmation" element={<ConfirmationPage />} />
-
+        <Route path="/AccountConfirmation" element={<ConfirmationAccountPage />} />
+        <Route path='/tutorSignup' element={<TutorSignup />} />
       </Routes>
     </Router>
   );
