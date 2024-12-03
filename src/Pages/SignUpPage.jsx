@@ -421,21 +421,22 @@ function SignUpPage() {
   return (
     <div className="SignUpPageRootContainer">
       <div className="SignUpPageMainContent">
-        <div className="NewUserPPSec">
-          <img className="NewUserProfile" src={profilePic || userProfilePlaceholder} alt="userProfile" />
-          <button type="button" className="AddNewProfilePicButton" onClick={handleUploadClick}>+</button>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleProfilePicChange}
-            ref={fileInputRef}
-            style={{ display: 'none' }}
-          />
-        </div>
 
-        <h1 className="heading">Create New Account</h1>
+      <form onSubmit={handleFormSubmit}>
+          <div className="NewUserPPSec">
+            <img className="NewUserProfile" src={profilePic || userProfile} alt="userProfile" />
+            <button type="button" className="AddNewProfilePicButton" onClick={handleUploadClick}>+</button>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleProfilePicChange}
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+              />
+          </div>
 
-        <form onSubmit={handleFormSubmit}>
+          <h1 className="heading">Create New Account</h1>
+        
           <div className="InputFirstRow">
             <input
               type="text"
