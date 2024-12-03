@@ -33,6 +33,7 @@ function TutorSignup() {
         description: '',
         education: { school: '', degree: '', graduationYear: '' },
         reviews: { reviewer: '', review: '', rating: '', date: '', photo: '' },
+        tutorSchedule: [{ studentID: '', sessionName: '', time: '', topic: '', meetingType:'', zoomLink:''}],
         goals: ['', '', '', '', ''],
         localTime: '',
         photo:'',
@@ -131,10 +132,10 @@ function TutorSignup() {
                         required
                     >
                         <option value="" className="time">Select time</option>
-                        <option value="morning">Morning</option>
-                        <option value="afternoon">Afternoon</option>
-                        <option value="evening">Evening</option>
-                        <option value="allDays">All Day</option>
+                        <option value="Morning">Morning</option>
+                        <option value="Afternoon">Afternoon</option>
+                        <option value="Evening">Evening</option>
+                        <option value="All Days">All Day</option>
                     </select>
                     </div>
 
@@ -173,10 +174,10 @@ function TutorSignup() {
                         required
                     >
                         <option value="">Select price range</option>
-                        <option value="free">Free</option>
-                        <option value="<20">$20/hour or less</option>
-                        <option value="20-50">$20-$50/hour</option>
-                        <option value=">50">More than $50/hour</option>
+                        <option value="Free">Free</option>
+                        <option value="<$20/hour or less">$20/hour or less</option>
+                        <option value="$20-$50/hour">$20-$50/hour</option>
+                        <option value="More than $50/hour">More than $50/hour</option>
                     </select>
                     </div>
 

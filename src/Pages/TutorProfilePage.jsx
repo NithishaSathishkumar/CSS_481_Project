@@ -327,6 +327,7 @@ const TutorProfilePage = () => {
         </div>
       </div>
     </div>
+    
   );
 };
 

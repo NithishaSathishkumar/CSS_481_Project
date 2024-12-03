@@ -67,9 +67,6 @@ function FAQHelpPage() {
                     </div>
                 ))}
             </div>
-            <Link to="/booking">
-                <button className="backButton"><img src={backButton} alt="Back" /></button>
-            </Link>
 
         </div>
     );
