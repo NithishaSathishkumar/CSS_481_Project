@@ -231,7 +231,7 @@ function BookingPage() {
                             </div>
 
                             <div className="BookingDetailsItem">
-                                <img className="BookingDetailsIcon" src={money} alt="money" />{data.price}
+                                <img className="BookingDetailsIcon" src={money} alt="money" /> ${data.exactPrice}/hr
                             </div>
                         </div>
 
@@ -293,7 +293,7 @@ function BookingPage() {
                                 </div>
                             </div>
 
-                            <div class="BookingConfirmButtonContainer">
+                            <div className="BookingConfirmButtonContainer">
                                 <Link to="/confirmation" state={{ date: date.toDateString(), time: selectedTime }}>
                                         <button className="BookingConfirmButton" disabled={!selectedTime}>Confirm</button>
                                 </Link>
