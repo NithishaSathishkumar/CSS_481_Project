@@ -65,7 +65,7 @@ function App() {
           </Layout>
         } />
 
-        <Route path="/profile" element={
+        <Route path="/edit-profile/" element={
           <Layout>
             <ProfilePage />
           </Layout>

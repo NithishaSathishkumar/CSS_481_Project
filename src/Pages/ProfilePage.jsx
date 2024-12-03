@@ -3,6 +3,7 @@ import styles from '../Styling/ProfilePage.module.css';
 
 function ProfilePage() {
   const [name, setName] = useState('Daniel Jackson');
+  const [username, setUsername] = useState('danieljackson');
   const [email, setEmail] = useState('daniel.jackson@example.com');
   const [profileImage, setProfileImage] = useState('./assets/profile.png');
   const [previewImage, setPreviewImage] = useState(null);
@@ -16,7 +17,7 @@ function ProfilePage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Save the changes, perhaps send to server
-    console.log('Profile updated:', { name, email, profileImage });
+    console.log('Profile updated:', { name, username, email, profileImage });
     // Implement actual save logic here
   };
 
@@ -38,6 +39,15 @@ function ProfilePage() {
             className={styles.fieldInput}
             value={name}
             onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className={styles.profileField}>
+          <label className={styles.fieldLabel}>Username:</label>
+          <input
+            type="text"
+            className={styles.fieldInput}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </div>
         <div className={styles.profileField}>
