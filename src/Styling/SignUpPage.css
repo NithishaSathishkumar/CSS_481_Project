@@ -85,6 +85,16 @@
         height: 30px;
         font-size: 18px;
     }
+
+    .TutorSelectionOptions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .TutorOptionButton {
+        width: 100%;
+        text-align: center;
+    }
 }
 
 .heading {
@@ -157,7 +167,6 @@
 .TermsAndServiceLabel {
     font-size: 1rem;
     font-weight: bold;
-    color: #283618;
 }
 
 .BackButtonSignUpPage {
@@ -172,4 +181,64 @@
 .BackButtonSignUpPage img {
     width: 30px; /* Set your desired size */
     height: auto; /* Maintain aspect ratio */
+}
+
+.TutorSelectionSection {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    gap: 15px;
+    color: #283618;
+}
+
+.TutorSelectionLabel {
+    font-size: 1.2rem;
+    color: #283618;
+    font-weight: bold;
+}
+
+.TutorSelectionOptions {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.TutorOptionButton {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #FEFAE0;
+    background-color: #283618;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.TutorOptionButton:hover {
+    background-color: #B45309;
+    transform: scale(1.05);
+}
+
+.TutorOptionButton.active {
+    background-color: #B45309;
+    transform: scale(1.1);
+}
+
+.TutorOptionNote {
+    font-size: 0.9rem;
+    color: #6B7280; /* Neutral gray */
+    text-align: center;
+}
+
+.TutorSelection label {
+    color: #283618; /* Dark green color */
+    font-weight: bold;
+    padding: 10px;
+}
+  
+.TermsAndServiceSection label {
+    color: #283618; /* Dark green color */
+    font-weight: bold;
+    padding: 10px;
 }

@@ -16,6 +16,7 @@ import TutorProfilePage from './Pages/TutorProfilePage';
 import ProfilePage from './Pages/ProfilePage';
 import PaymentPortal from './Pages/PaymentPage';
 import ChatApp from './Pages/ChatApp';
+import TutorSignup from './Pages/TutorSignup';
 
 function App() {
   return (
@@ -58,7 +59,7 @@ function App() {
           </Layout>
         } />
 
-        <Route path="/tutor" element={
+        <Route path="/tutor/:tutorId" element={
           <Layout>
             <TutorProfilePage />
           </Layout>
@@ -89,6 +90,7 @@ function App() {
         <Route path="/reset" element={<ResetPassword />} />
         <Route path="/confirmation" element={<ConfirmationPage />} />
         <Route path="/AccountConfirmation" element={<ConfirmationAccountPage />} />
+        <Route path='/tutorSignup' element={<TutorSignup />} />
       </Routes>
     </Router>
   );
