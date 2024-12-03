@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../Styling/ProfilePage.module.css';
 
+
 function ProfilePage() {
   const [name, setName] = useState('Daniel Jackson');
   const [username, setUsername] = useState('danieljackson');
