@@ -1,140 +1,211 @@
-:root {
-    min-height: 100vh;
-    background-color: #283618;
-}
-
-.calendar-wrapper button {
-    color: #000000;
-    padding-left: 0;
-    padding-right: 0;
-}
-
-main, .booking-container {
-    background-color: #283618;
-}
-
-.left-part {
-    text-align: center;
-    color: White;
-    font-size: 30px;
-}
-
-.right-part {
-    text-align: center;
-}
-
-.left-content {
-    width: 250px;
-    margin: 0 auto;
-
-}
-
-.right-content {
-    margin: 35px;
-    background-color: #FEFAE0;
-    padding: 50px;
-    text-align: left;
-    border-radius: 15px;
-    position: relative;
-}
-
-#tutor-img {
-    max-width: 200px;
-    height: auto;
-    object-fit: contain;
-    padding-top: 10px;
-}
-
-.tutor-name {
-    background-color: #BC6C25;
-    padding: 10px;
-    width: 100%;
-}
-
-.course {
-    color: white;
-}
-
-.icon {
-    width: 35px;
-}
-
-.clock-money {
-    text-align: left;
-}
-
-.inperson-select {
-    font-size: 20px;
-    margin-left: 10px;
-    background: #606C38;
-    color: white;
-    font-weight: bold;
-    padding: 5px;
-    border-radius: 5px;
-}
-
-.time-list {
+.BookingConfirmationRootContainer {
+    height: 100vh;
     display: flex;
-    flex-wrap: wrap;
+}
+
+.BookingConfirmationMainContent {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-evenly;
+
+    font-size: 1.1rem;
+}
+
+.BookingPageLeftContent {
+    display: flex;
+    width: 30%;
+    flex-direction: column;
+    align-items: center;
+    gap:15px;
+}
+
+#BookingTutorPP {
+    width: 55%;
+    height: 55%; 
+    border-radius: 50%;
+    object-fit: cover; 
+}
+
+.BookingDetailsClockMoney {
+    display: flex;
+    flex-direction: column;
+    gap: 2%;
+}
+
+.BookingDetailsItem {
+    display: flex;
+    align-items: center; 
+    gap: 2%; 
+}
+
+.BookingDetailsIcon {
+    width: 60px; 
+    height: 60px; 
+    margin-right: 5px; 
+}
+
+.BookingPageRightContent {
+    background-color: #FEFAE0;
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+
+    padding: 30px;
+    border-radius: 25px;
+    color: #283618;
+}
+
+.BookingPageMeetingOption {
+    display: flex;
+    align-items: center; 
+    gap: 10px; 
+    margin: 10px 0; 
+}
+
+.BookingPersonIcon {
+    width: 40px; 
+    height: 40px; 
+}
+
+.OnlineInPersonSelect, .BookingTimeZoneSelect{
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    border-radius: 5px;
+    background-color: #283618;
+    color: #FEFAE0;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.OnlineInPersonSelect:hover, .BookingTimeZoneSelect:hover {
+    background-color: #FEFAE0;
+    color: #283618;
+}
+
+.BookingPageRR {
+    display: flex;
+    flex-direction: row;
+}
+
+.BookingPageLRContent, .BookingPageRRContent{
+    display: flex;
+    flex-direction: column;
+}
+
+.BookingPageLRContent {
+    margin-right: 3%;
+}
+
+.BookingPageRRContent {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.BookingCalendar  {
+    display: flex;
+}
+
+.BookingCalendar button {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.react-calendar * {
+    color: black !important; /* Ensures all child elements have black text */
+}
+
+.BookingTimeZone {
+    margin-top: 20px;
+}
+
+.BookingTimeCont {
+    display: flex;
+    justify-content: space-between;
+}
+
+.BookingHelpButton {
+    font-size: .9rem;
+    padding: 10px 20px;
+    background-color: #BC6C25;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.BookingPageAvailableTimes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
 }
 
 .time-slot {
+    padding: 15px 20px;
     background-color: #BC6C25;
-    flex-basis: 40%;
-    margin: 10px;
-    padding: 5px;
-    text-align: center;
-
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .time-slot:hover {
-    background-color: darkorange;
-}
-
-.btn-confirm {
-    color: white;
-    font-weight: bold;
-    background-color: #BC6C25;
-    padding: 3px 40px;
-    border-radius: 20px;
-    margin-top: 30px;
-    margin-left: 25PX;
-}
-
-.btn-confirm:hover {
-    background-color: rgb(126, 76, 76);
-}
-
-.time-zone {
-    margin-top: 30px;
-}
-
-.chat {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    height: 100px;
+    background-color: #A0522D;
 }
 
 .time-slot:disabled {
     background-color: #f0f0f0;
     color: #a0a0a0;
     cursor: not-allowed;
-    border: 1px solid #d0d0d0;
 }
 
-.help {
-    margin-top: 15px;
-    color: black;
-    background-color: darkorange;
-    padding: 5px 10px;
-    /* Adjust padding to make it smaller */
-    font-size: 15px;
-    /* Reduce font size */
-    height: 35px;
-    border-radius: 5px;
+.selected {
+    background-color: #8B4513;
+} 
+
+.BookingConfirmButtonContainer {
+    display: flex;
 }
 
-.help:hover {
-    background-color: chocolate;
+.BookingConfirmButton {
+    padding: 10px 47px;
+    background-color: #BC6C25;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: .9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 1700px) {
+    .BookingPageAvailableTimes {
+        gap: 12px;
+    }
+
+    .time-slot {
+        padding: 13px 15px; /* Reduce padding */
+        font-size: 0.7rem;   /* Reduce font size */
+    }
+}
+
+@media (max-width: 1400px) {
+    .BookingPageAvailableTimes {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .time-slot {
+        padding: 12px 12px; /* Further reduce padding */
+        font-size: 0.7rem; /* Further reduce font size */
+    }
 }
