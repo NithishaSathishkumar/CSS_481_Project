@@ -15,43 +15,50 @@ function LogInPage() {
 
   const fetchData = async (email, password) => {
     const db = getDatabase(app);
-    const dbRef = ref(db, 'account/user');
-    const snapshot = await get(dbRef);
-
-    if (snapshot.exists()) {
-      let emailFound = false;
-      snapshot.forEach((childSnapshot) => {
-        const userData = childSnapshot.val();
-        const storedEmail = userData.email_;
-        const storedPassword = userData.password_;
-
-        // Check if the email matches
-        if (storedEmail === email) {
-          emailFound = true;
-
-          // Compare the entered password with the stored hashed password
-          bcrypt.compare(password, storedPassword, (err, result) => {
-            if (result) {
-              // Password matches, login successful
-              alert('Welcome back!');
-            } else {
-              // Password mismatch
-              alert('Password does not match. Click on Forgot Password to change password');
-            }
-          });
-          return; // Exit the loop once email is found
+    const userRef = ref(db, "account/user");
+    const tutorRef = ref(db, "tutors");
+  
+    // Fetch data from both databases in parallel
+    const [userSnapshot, tutorSnapshot] = await Promise.all([
+      get(userRef),
+      get(tutorRef),
+    ]);
+  
+    let emailFound = false;
+  
+    // Function to check for email and validate password in a given snapshot
+    const validateUser = (snapshot, role) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        for (const key in data) {
+          if (data[key].email === email) {
+            emailFound = true;
+            // Compare the hashed password
+            bcrypt.compare(password, data[key].password, (err, result) => {
+              if (result) {
+                // Password matches
+                alert(`Welcome back! You are logged in as a ${role}.`);
+              } else {
+                // Password mismatch
+                alert("Password does not match. Click on Forgot Password to change password.");
+              }
+            });
+            return true; // Stop further iterations once email is found
+          }
         }
-      });
-
-      if (!emailFound) {
-        // If email was not found in the database
-        alert('Email not found. Please create an account.');
       }
-    } else {
-      alert('No users found in the database.');
-    }
-  };
+      return false;
+    };
+  
+    // Check in both databases
+  const userValidated = validateUser(userSnapshot, "user");
+  const tutorValidated = !userValidated && validateUser(tutorSnapshot, "tutor");
 
+  // If email is not found in either database
+  if (!emailFound) {
+    alert("Email not found. Please create an account.");
+  }
+};
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission (page refresh)
 
@@ -151,4 +158,6 @@ function LogInPage() {
 }
 
 export default LogInPage;
+
+
 

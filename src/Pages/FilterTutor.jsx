@@ -360,10 +360,10 @@ const FilterTutor = () => {
 
     const filterOptions = {
         Day: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-        Time: ['Morning', 'Afternoon', 'Evening', 'All Day'],
+        Time: ['Morning', 'Afternoon', 'Evening', 'All Days'],
         Subject: ['Math', 'Computer Science', 'English', 'Physics', 'Chemistry', 'SAT Prep', 'Other'],
         Price: ['Free', '<$20/hour or less', '$20-$50/hour', 'More than $50/hour'],
-        Rating: ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars'],
+        Rating: ['1 Stars', '2 Stars', '3 Stars', '4 Stars', '5 Stars'],
     };
 
     const fetchTutors = async () => {

@@ -30,12 +30,18 @@ const TutorProfilePage = () => {
     onValue(tutorRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        // Convert reviews object to array
+        // Convert reviews object to array and filter out empty reviews
         if (data.reviews) {
-          data.reviews = Object.values(data.reviews);
+          const reviewsArray = Object.values(data.reviews);
+          const validReviews = reviewsArray.filter(
+            (review) => review.reviewerName || review.rating || review.text
+          );
+          data.reviews = validReviews;
+        } else {
+          data.reviews = [];
         }
 
-        // Compute average rating from reviews
+        // Compute average rating from valid reviews
         if (data.reviews && data.reviews.length > 0) {
           const ratings = data.reviews.map((review) => parseFloat(review.rating));
           const totalRating = ratings.reduce((sum, rating) => sum + rating, 0);
@@ -162,9 +168,8 @@ const TutorProfilePage = () => {
               <div className={styles.profileButtons}>
                 <button className={styles.emailButton}>Send Email</button>
                 <a href={`/booking/${tutorData.id}`}>
-                  <button className={styles.scheduleButton}>Book</button>
+                  <button className={styles.scheduleButton}>Schedule a Meeting</button>
                 </a>
-
               </div>
             </div>
             <button className={styles.editButton} onClick={() => setShowReviewForm(true)}>Add Review</button>
@@ -253,23 +258,25 @@ const TutorProfilePage = () => {
               {tutorData.reviews && tutorData.reviews.length > 0 ? (
                 tutorData.reviews.map((review, index) => (
                   <div className={styles.reviewItem} key={index}>
-                    <div className={styles.reviewInfo}>
-                      <img
-                        className={styles.studentImage}
-                        src={review.reviewerImage || profileImg}
-                        alt="Student"
-                      />
-                      <div className={styles.reviewerDetails}>
-                        <div className={styles.nameAndRating}>
-                          <p className={styles.reviewerName}>{review.reviewerName}</p>
-                          <p className={styles.studentRating}>
-                            <span>{renderStars(review.rating)}</span>
-                          </p>
+                    {review.reviewerName || review.rating || review.text ? (
+                      <div className={styles.reviewInfo}>
+                        <img
+                          className={styles.studentImage}
+                          src={review.reviewerImage || profileImg}
+                          alt="Student"
+                        />
+                        <div className={styles.reviewerDetails}>
+                          <div className={styles.nameAndRating}>
+                            <p className={styles.reviewerName}>{review.reviewerName}</p>
+                            <p className={styles.studentRating}>
+                              <span>{renderStars(review.rating)}</span>
+                            </p>
+                          </div>
+                          <p className={styles.reviewDate}>{new Date(review.date).toLocaleDateString()}</p>
+                          <p className={styles.reviewText}>{review.text}</p>
                         </div>
-                        <p className={styles.reviewDate}>{new Date(review.date).toLocaleDateString()}</p>
-                        <p className={styles.reviewText}>{review.text}</p>
                       </div>
-                    </div>
+                    ) : null}
                   </div>
                 ))
               ) : (
@@ -327,6 +334,7 @@ const TutorProfilePage = () => {
         </div>
       </div>
     </div>
+    
   );
 };
 

@@ -24,6 +24,7 @@ function SignUpPage() {
     username: '',
     email: '',
     password: '',
+    userSchedule: [{ tutorID: '', sessionName: '', time: '', topic: '', meetingType:'', zoomLink:''}],
     signupAsTutor: false,
   });
 
@@ -84,55 +85,6 @@ function SignUpPage() {
     fileInputRef.current.click();
   };
 
-  // const handleFormSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const { email, password, signUpAsTutor, ...userData } = formData;
-    
-  //   const completeUserData = {
-  //     ...userData,
-  //     email,
-  //     password,
-  //   };
-
-  //   if (Object.values(completeUserData).some((field) => field === '')) {
-  //     setErrorMessage('Please fill out all required fields.');
-  //     return;
-  //   }
-
-  //   const termsAccepted = document.getElementById('TermsAndService').checked;
-  //   if (!termsAccepted) {
-  //     setErrorMessage('You must agree to the Terms of Service and Privacy Policy.');
-  //     return;
-  //   }
-
-  //   // Check for existing email
-  //   const db = getDatabase(app);
-  //   const userRef = ref(db, "account/user");
-
-  //   const snapshot = await get(userRef);
-  //   if (snapshot.exists()) {
-  //     const emailExists = Object.values(snapshot.val()).some((user) => user.email_ === email);
-  //     if (emailExists) {
-  //       setErrorMessage('Email already exists. Please log in.');
-  //       return;
-  //     }
-  //   }
-
-  //   setErrorMessage('');
-  //   const hashedPassword = await bcrypt.hash(password, 10);
-  //   const dataToSave = { ...completeUserData, password_: hashedPassword };
-
-  //   if (signUpAsTutor) {
-  //     navigate('/tutorSignup', { state: dataToSave });
-  //   } else {
-  //     // Save user data directly
-  //     const userRef = push(ref(db, "account/user"));
-  //     await set(userRef, dataToSave);
-  //     navigate('/AccountConfirmation');
-  //   }
-  // };
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
   
@@ -166,7 +118,7 @@ function SignUpPage() {
     ]);
   
     const emailExistsInUser = userSnapshot.exists()
-      ? Object.values(userSnapshot.val()).some((user) => user.email_ === email)
+      ? Object.values(userSnapshot.val()).some((user) => user.email === email)
       : false;
   
     const emailExistsInTutor = tutorSnapshot.exists()
@@ -180,7 +132,7 @@ function SignUpPage() {
   
     setErrorMessage('');
     const hashedPassword = await bcrypt.hash(password, 10);
-    const dataToSave = { ...completeUserData, password_: hashedPassword };
+    const dataToSave = { ...completeUserData, password: hashedPassword };
   
     if (signUpAsTutor) {
       navigate('/tutorSignup', { state: dataToSave });
