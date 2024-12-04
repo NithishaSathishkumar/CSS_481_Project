@@ -34,7 +34,7 @@ function TutorSignup() {
         education: { school: '', degree: '', graduationYear: '' },
         reviews: { reviewer: '', review: '', rating: '', date: '', photo: '' },
         tutorSchedule: [{ studentID: '', sessionName: '', time: '', topic: '', meetingType:'', zoomLink:''}],
-        goals: ['', '', '', '', ''],
+        goals: ['', ''],
         localTime: '',
         photo:'',
     });
@@ -114,6 +114,22 @@ function TutorSignup() {
         } catch (error) {
             console.error('Error saving tutor data:', error.message);
             alert(`An error occurred while saving your data: ${error.message}`); // Display error message if saving fails
+        }
+    };
+
+    const handlePriceChange = (e) => {
+        const value = e.target.value;
+        if (value === 'Free') {
+            setFormData((prevState) => ({
+                ...prevState,
+                price: value,
+                exactPrice: '0',
+            }));
+        } else {
+            setFormData((prevState) => ({
+                ...prevState,
+                price: value,
+            }));
         }
     };
   
@@ -288,8 +304,8 @@ function TutorSignup() {
                     </div>
 
                     {/* Goals */}
-                    <div className="inputGroup">
-                    <label>Goals:</label>
+                    {/* <div className="inputGroup">
+                    <label>Goals (Min 2 and Max 5):</label>
                     {formData.goals.map((goal, index) => (
                         <input
                         key={index}
@@ -303,7 +319,53 @@ function TutorSignup() {
                         placeholder={`Goal ${index + 1}`}
                         />
                     ))}
+                    </div> */}
+
+                    <div className="inputGroup">
+                        <label>Goals (Min 2, Max 5):</label>
+                        {formData.goals.map((goal, index) => (
+                            <input
+                                key={index}
+                                type="text"
+                                value={goal}
+                                onChange={(e) => {
+                                    const updatedGoals = [...formData.goals];
+                                    updatedGoals[index] = e.target.value;
+                                    setFormData({ ...formData, goals: updatedGoals });
+                                }}
+                                placeholder={`Goal ${index + 1}`}
+                                required={index < 2}
+                            />
+                        ))}
+                        {formData.goals.length < 5 && (
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    setFormData((prevState) => ({
+                                        ...prevState,
+                                        goals: [...prevState.goals, ''],
+                                    }))
+                                }
+                            >
+                                Add Goal
+                            </button>
+                        )}
+                        {formData.goals.length > 2 && (
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    setFormData((prevState) => {
+                                        const updatedGoals = [...prevState.goals];
+                                        updatedGoals.pop();
+                                        return { ...prevState, goals: updatedGoals };
+                                    })
+                                }
+                            >
+                                Remove Goal
+                            </button>
+                        )}
                     </div>
+
 
                     {/* Local Time */}
                     <div className="inputGroup">
