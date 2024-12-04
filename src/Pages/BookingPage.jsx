@@ -39,7 +39,7 @@ function BookingPage() {
         "06:00 PM",
         "07:00 PM",
     ];
-    
+
     const allDaySlots = morningSlots.concat(afternoonSlots).concat(eveningSlots);
 
 
@@ -78,11 +78,11 @@ function BookingPage() {
     fetchData(tutorId).then(
         (data) => {
             setData(data);
-            if (data.availableTime === "morning")
+            if (data.availableTime === "Morning")
                 setTimeSlots(morningSlots);
-            else if (data.availableTime === "afternoon")
+            else if (data.availableTime === "Afternoon")
                 setTimeSlots(afternoonSlots);
-            else if (data.availableTime === "evening")
+            else if (data.availableTime === "Evening")
                 setTimeSlots(eveningSlots);
             else
                 setTimeSlots(allDaySlots);
@@ -94,7 +94,7 @@ function BookingPage() {
             <div className="BookingConfirmationMainContent">
                 {data != null ?
                     (<div className="BookingPageLeftContent">
-                        <img id="BookingTutorPP" src={data.photo} alt="tutor"/>
+                        <img id="BookingTutorPP" src={data.photo} alt="tutor" />
                         <div>
                             <button className="BookingTutorsName">{data.username}</button>
                         </div>
@@ -118,11 +118,11 @@ function BookingPage() {
 
                 <div className="BookingPageRightContent">
                     <div className="BookingPageMeetingOption">
-                            <img className="BookingPersonIcon" src={inperson}></img>
-                            <select className="OnlineInPersonSelect">
-                                <option>In-Person</option>
-                                <option>Online</option>
-                            </select>
+                        <img className="BookingPersonIcon" src={inperson}></img>
+                        <select className="OnlineInPersonSelect">
+                            <option>In-Person</option>
+                            <option>Online</option>
+                        </select>
                     </div>
 
                     <div className="BookingPageRR">
@@ -171,7 +171,7 @@ function BookingPage() {
 
                             <div className="BookingConfirmButtonContainer">
                                 <Link to="/confirmation" state={{ date: date.toDateString(), time: selectedTime }}>
-                                        <button className="BookingConfirmButton" disabled={!selectedTime}>Confirm</button>
+                                    <button className="BookingConfirmButton" disabled={!selectedTime}>Confirm</button>
                                 </Link>
                             </div>
                         </div>
