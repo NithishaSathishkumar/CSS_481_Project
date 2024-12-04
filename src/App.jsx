@@ -71,7 +71,7 @@ function App() {
           </Layout>
         } />
 
-        <Route path="/payment" element={
+        <Route path="/payment/:tutorId" element={
           <Layout>
             <PaymentPortal />
           </Layout>
