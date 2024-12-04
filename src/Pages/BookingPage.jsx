@@ -168,7 +168,11 @@ function BookingPage() {
                                         CONFIRM
                                     </button>
                                 </Link>
-                                <img className="chat" src={chat}></img>
+                                <Link
+                                    to="/Chat">
+                                    <img className="chat" src={chat}></img>
+                                </Link>
+
                             </div >
                         </div >
                     </div >
