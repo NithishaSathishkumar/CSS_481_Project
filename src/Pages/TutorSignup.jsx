@@ -159,14 +159,21 @@ function TutorSignup() {
 
                     {/* Profile Photo */}
                     <div className="inputGroup">
-                        <label>Profile Photo:</label>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleFileChange}
-                            disabled={loading}
+                    <label>Profile Photo:</label>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        disabled={loading}
+                    />
+                    {formData.photo && (
+                        <img
+                            src={formData.photo}
+                            alt="Tutor Profile"
+                            width="100"
+                            height="100"
                         />
-                        {formData.photo && <img src={formData.photo} alt="Tutor Profile" className="TutorProfilePic" />}
+                    )}
                     </div>
 
                     {/* Time Availability */}
@@ -236,7 +243,6 @@ function TutorSignup() {
                                 value={formData.exactPrice}
                                 onChange={(e) => setFormData({ ...formData, exactPrice: e.target.value })}
                                 placeholder="Enter exact price"
-                                min="0"
                                 required
                             />
                         </div>
