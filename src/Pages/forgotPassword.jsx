@@ -80,7 +80,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Use for navigation
 import { getDatabase, ref, get, child } from "firebase/database"; // Firebase imports
-import app from "../../firebaseConfi"; // Import your Firebase configuration
+import {app} from "../../firebaseConfi"; // Import your Firebase configuration
 import '../Styling/forgotPassword.css';
 
 function ForgotPassword() {

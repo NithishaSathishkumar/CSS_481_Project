@@ -1,0 +1,141 @@
+.ChatAppRootContainer {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ChatAppMainContent {
+    width: 70%;
+    height: 70%;
+    display: flex;
+
+    background-color: #FEFAE0;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px rgb(0, 0, 0);
+    padding: 1%;
+}
+
+.ChatAppLeftSideContent {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+}
+
+.ContactsList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+.TutorContactCard {
+    display: flex;
+    align-items: center;
+    width: 95%;
+    background-color: #606C38;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.TutorCardTutorDetails {
+    display: flex;
+    flex-direction: column;
+}
+
+.TutorContactCard img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+  
+.TutorContactCard:hover {
+    transform: translateY(-3px);
+}
+  
+.TutorContactCard p {
+    margin: 0;
+    color:#FEFAE0;
+}
+
+.ChatAppRightSideContent {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    background-color: #606C38;
+    border-radius: 8px;
+    justify-content: space-between;
+}
+
+.UserChat {
+    margin-bottom: 10px;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.ChatAppUserDetails {
+    display: flex;
+}
+
+.message.sent {
+    display: flex;
+    width: 30%;
+    align-items: center;
+    padding: 5px;
+    color: black;
+    background-color: #e7e7e7;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.message.sent p {
+    font-size: 0.9rem;
+}
+
+
+.message.sent img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.ChatAppSendingMessage {
+    display: flex;
+    justify-content: flex-end;
+    align-items: right;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 10px;
+    gap: 15px;
+}
+
+#UsersTextArea {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    color: #333;
+    background-color: #f8f9fa;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+#UsersTextArea:focus {
+    outline: none;
+}
+  
+#UsersTextArea:hover {
+    border-color: #6c757d;
+}
+
+.SendTextButton {
+}

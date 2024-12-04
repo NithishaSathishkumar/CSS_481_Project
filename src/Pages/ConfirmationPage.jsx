@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 
 function ConfirmationPage() {
     const location = useLocation();
-    const { date, time } = location.state || {}; // Destructure state to get date and time
+    const { date, time } = location.state || {}; // Get date and time from location state
 
 
     const [dimensions, setDimensions] = useState({
@@ -22,6 +22,8 @@ function ConfirmationPage() {
             height: window.innerHeight,
           });
         };
+
+        
     
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);

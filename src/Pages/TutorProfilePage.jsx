@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import styles from "../Styling/tutorprofile.module.css";
 import profileImg from "../assets/6.png";
 import { getDatabase, ref, onValue, push, set } from "firebase/database";
-import app from "/firebaseConfi"; 
+import {app} from "/firebaseConfi"; 
 
 const TutorProfilePage = () => {
   const { tutorId } = useParams();

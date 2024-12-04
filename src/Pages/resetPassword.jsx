@@ -99,7 +99,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { getDatabase, ref, update, get } from "firebase/database";
-import app from "../../firebaseConfi";
+import {app} from "../../firebaseConfi";
 import "../Styling/resetPassword.css";
 import bcrypt from "bcryptjs"; // Import bcrypt
 

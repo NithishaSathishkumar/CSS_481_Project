@@ -1,27 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../Styling/ProfilePage.module.css';
+import { useAuth } from '/AuthContext';
+import { auth, db } from '/firebaseConfi';
+import { ref, update } from "firebase/database"; 
 
 
 function ProfilePage() {
-  const [name, setName] = useState('Daniel Jackson');
-  const [username, setUsername] = useState('danieljackson');
-  const [email, setEmail] = useState('daniel.jackson@example.com');
+  const { currentUser } = useAuth(); 
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [profileImage, setProfileImage] = useState('./assets/profile.png');
   const [previewImage, setPreviewImage] = useState(null);
 
+  
+  useEffect(() => {
+    if (currentUser) {
+      console.log(currentUser);
+      setName(currentUser.firstName || ''); 
+      setUsername(currentUser.displayName || '');
+      setEmail(currentUser.email || '');
+      setProfileImage(currentUser.profileImage || './assets/profile.png');
+    }
+  }, [currentUser]);
+
+  // Handle profile image changes
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setProfileImage(file);
-    setPreviewImage(URL.createObjectURL(file));
+    if (file) {
+      setProfileImage(file);
+      setPreviewImage(URL.createObjectURL(file)); // Show a preview
+    }
   };
 
-  const handleSubmit = (e) => {
+  // Handle form submission
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Save the changes, perhaps send to server
-    console.log('Profile updated:', { name, username, email, profileImage });
-    // Implement actual save logic here
+  
+    try {
+      const updatedProfile = {
+        name,
+        username,
+        email,
+        profileImage: previewImage || profileImage,
+      };
+  
+      // Update the Realtime Database
+      if (db && currentUser) {
+        const userRef = ref(db, `users/${currentUser.uid}`);
+        await update(userRef, updatedProfile);
+  
+        console.log('Profile updated:', updatedProfile);
+        alert('Profile updated successfully!');
+      } else {
+        console.error('No user logged in or database not initialized.');
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Failed to update profile. Please try again.');
+    }
   };
-
+  
   return (
     <div className={styles.pageContainer}>
       <form className={styles.editProfileForm} onSubmit={handleSubmit}>
@@ -38,7 +78,7 @@ function ProfilePage() {
           <input
             type="text"
             className={styles.fieldInput}
-            placeholder={name}
+            value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
@@ -47,7 +87,7 @@ function ProfilePage() {
           <input
             type="text"
             className={styles.fieldInput}
-            placeholder={username}
+            value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
@@ -56,7 +96,7 @@ function ProfilePage() {
           <input
             type="email"
             className={styles.fieldInput}
-            placeholder={email}
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>

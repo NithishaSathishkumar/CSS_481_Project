@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getDatabase, ref, get } from 'firebase/database';
 import bcrypt from 'bcryptjs'; // Import bcryptjs to compare passwords
-import app from '../../firebaseConfi';
+import {app} from '../../firebaseConfi';
 
 import '../Styling/LogInPage.css';
 import loginIcon from '../assets/9.png';

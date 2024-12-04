@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { getDatabase, ref, set, push } from "firebase/database";
-import app from '../../firebaseConfi';  // Ensure this import points to your Firebase config
+import {app} from '../../firebaseConfi';  // Ensure this import points to your Firebase config
 import '../Styling/TutorSignup.css';  // Add your styles as needed
 import bcrypt from 'bcryptjs';
 

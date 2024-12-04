@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate, Navigate } from "react-router-dom";
-import '../Styling/paymentpage.css';
+import '../Styling/paymentpage.module.css';
 import { getDatabase, ref, get } from 'firebase/database';
 import { Link } from 'react-router-dom';
 

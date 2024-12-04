@@ -1,17 +1,19 @@
+// src/components/SignUpPage.js
 import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import backButton from '../assets/ReturnArrow.png';
-import userProfile from '../assets/6.png';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { ref, set, push } from 'firebase/database';
+import { auth, db } from '/firebaseConfi';
+import backButton from '../assets/ReturnArrow.png'; // Ensure the path is correct
+import userProfile from '../assets/6.png'; // Ensure the path is correct
 import '../Styling/SignUpPage.css';
-import { getDatabase, ref, set, push, get } from "firebase/database";
-import app from '../../firebaseConfi';
-import bcrypt from 'bcryptjs';
 
 function SignUpPage() {
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedState, setSelectedState] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [profilePic, setProfilePic] = useState(null);
+  const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -24,9 +26,8 @@ function SignUpPage() {
     username: '',
     email: '',
     password: '',
-    userSchedule: [{ tutorID: '', sessionName: '', time: '', topic: '', meetingType: '', zoomLink: '' }],
-    card:[{cardNumber: '', cvc:'', address:'', nameOnCard:'', zipcode:'', exp:'', state:'', city:''}],
     signupAsTutor: false,
+    photo: '',
   });
 
   const navigate = useNavigate();
@@ -75,73 +76,108 @@ function SignUpPage() {
     }));
   };
 
-  const handleProfilePicChange = (e) => {
+  const handleProfilePicChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProfilePic(URL.createObjectURL(file));
+      setLoading(true); // Show loading state during upload
+      const formData = new FormData();
+      formData.append('image', file);
+
+      try {
+        const response = await fetch('https://api.imgbb.com/1/upload?key=85b4f85673d02f9b9c9dc739f12c4b26', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          setProfilePic(data.data.url);
+          setFormData((prevState) => ({
+            ...prevState,
+            photo: data.data.url, // Set photo URL in formData
+          }));
+        } else {
+          alert('Failed to upload image');
+        }
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        alert('Error uploading the photo. Please try again.');
+      } finally {
+        setLoading(false); // Hide loading state after upload
+      }
     }
   };
-    
+
   const handleUploadClick = () => {
     fileInputRef.current.click();
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-  
-    const { email, password, signUpAsTutor, ...userData } = formData;
-  
-    const completeUserData = {
-      ...userData,
-      email,
-      password,
-    };
-  
-    if (Object.values(completeUserData).some((field) => field === '')) {
+
+    // Ensure photo is set; if not, use default
+    if (!formData.photo) {
+      setFormData((prevData) => ({
+        ...prevData,
+        photo: userProfile,
+      }));
+    }
+
+    const { email, password, signupAsTutor, ...userData } = formData;
+
+    // Basic form validation
+    if (
+      !formData.firstName ||
+      !formData.lastName ||
+      !formData.country ||
+      !formData.state ||
+      !formData.city ||
+      !formData.postalCode ||
+      !formData.username ||
+      !formData.email ||
+      !formData.password
+    ) {
       setErrorMessage('Please fill out all required fields.');
       return;
     }
-  
+
     const termsAccepted = document.getElementById('TermsAndService').checked;
     if (!termsAccepted) {
       setErrorMessage('You must agree to the Terms of Service and Privacy Policy.');
       return;
     }
-  
-    // Check for existing email in both 'account/user' and 'tutors'
-    const db = getDatabase(app);
-    const userRef = ref(db, "account/user");
-    const tutorRef = ref(db, "tutors");
-  
-    const [userSnapshot, tutorSnapshot] = await Promise.all([
-      get(userRef),
-      get(tutorRef),
-    ]);
-  
-    const emailExistsInUser = userSnapshot.exists()
-      ? Object.values(userSnapshot.val()).some((user) => user.email === email)
-      : false;
-  
-    const emailExistsInTutor = tutorSnapshot.exists()
-      ? Object.values(tutorSnapshot.val()).some((tutor) => tutor.email === email)
-      : false;
-  
-    if (emailExistsInUser || emailExistsInTutor) {
-      setErrorMessage('Email already exists. Please log in.');
-      return;
-    }
-  
-    setErrorMessage('');
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const dataToSave = { ...completeUserData, password: hashedPassword };
-  
-    if (signUpAsTutor) {
-      navigate('/tutorSignup', { state: dataToSave });
-    } else {
-      // Save user data directly
-      const userRef = push(ref(db, "account/user"));
-      await set(userRef, dataToSave);
-      navigate('/AccountConfirmation');
+
+    const authInstance = auth;
+    try {
+      // Create user with Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(authInstance, email, password);
+      const user = userCredential.user;
+
+      // Update the user's displayName and photoURL in Firebase Auth
+      await updateProfile(user, {
+        displayName: formData.username,
+        photoURL: formData.photo || userProfile,
+      });
+
+      // Add user data to Firebase Realtime Database
+      const db1 = db;
+      const userRef = ref(db1, signupAsTutor ? "tutors" : "account/user");
+      const newUserRef = push(userRef);
+
+      await set(newUserRef, { 
+        ...userData, 
+        username: formData.username, 
+        uid: user.uid,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+      });
+
+      // Navigate based on user type
+      navigate(signupAsTutor ? '/tutorSignup' : '/AccountConfirmation');
+
+    } catch (error) {
+      console.error('Error signing up:', error.message);
+      setErrorMessage(error.message);
     }
   };
 
@@ -149,21 +185,23 @@ function SignUpPage() {
     <div className="SignUpPageRootContainer">
       <div className="SignUpPageMainContent">
 
-      <form onSubmit={handleFormSubmit}>
+        <form onSubmit={handleFormSubmit}>
           <div className="NewUserPPSec">
             <img className="NewUserProfile" src={profilePic || userProfile} alt="userProfile" />
-            <button type="button" className="AddNewProfilePicButton" onClick={handleUploadClick}>+</button>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleProfilePicChange}
-                ref={fileInputRef}
-                style={{ display: 'none' }}
-              />
+            <button type="button" className="AddNewProfilePicButton" onClick={handleUploadClick} disabled={loading}>
+              +
+            </button>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleProfilePicChange}
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+            />
           </div>
 
           <h1 className="heading">Create New Account</h1>
-        
+
           <div className="InputFirstRow">
             <input
               type="text"
@@ -171,6 +209,7 @@ function SignUpPage() {
               name="firstName"
               placeholder="First Name*"
               required
+              value={formData.firstName}
               onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
             />
 
@@ -180,6 +219,7 @@ function SignUpPage() {
               name="lastName"
               placeholder="Last Name*"
               required
+              value={formData.lastName}
               onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
             />
           </div>
@@ -212,19 +252,21 @@ function SignUpPage() {
               name="city"
               placeholder="City*"
               required
+              value={formData.city}
               onChange={(e) => setFormData({ ...formData, city: e.target.value })}
             />
 
             <input
-              type="number"
+              type="text"
               id="postalCode"
               name="postalCode"
               placeholder="Postal Code*"
               required
+              value={formData.postalCode}
               onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
             />
           </div>
- 
+
           <div className="InputThirdSection">
             <input
               type="text"
@@ -232,6 +274,7 @@ function SignUpPage() {
               name="username"
               placeholder="Username*"
               required
+              value={formData.username}
               onChange={(e) => setFormData({ ...formData, username: e.target.value })}
             />
 
@@ -241,6 +284,7 @@ function SignUpPage() {
               name="newEmail"
               placeholder="Email*"
               required
+              value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
 
@@ -250,6 +294,7 @@ function SignUpPage() {
               name="newUserPassword"
               placeholder="Password*"
               required
+              value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
 
@@ -258,22 +303,24 @@ function SignUpPage() {
                 type="checkbox"
                 id="signUpAsTutor"
                 name="signUpAsTutor"
-                checked={formData.signUpAsTutor}
-                onChange={(e) => setFormData({ ...formData, signUpAsTutor: e.target.checked })}
+                checked={formData.signupAsTutor}
+                onChange={(e) => setFormData({ ...formData, signupAsTutor: e.target.checked })}
               />
               <label htmlFor="signUpAsTutor">Sign up as a Tutor</label>
             </div>
 
             <div className="TermsAndServiceSection">
               <input type="checkbox" id="TermsAndService" required />
-              <label className="TermsAndServiceLabel" htmlFor="TermsAndService">I agree to the Terms of Service and Privacy Policy</label>
+              <label className="TermsAndServiceLabel" htmlFor="TermsAndService">
+                I agree to the Terms of Service and Privacy Policy
+              </label>
             </div>
           </div>
 
           {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-          <button className="LogInPageButtons" type="submit">
-            {formData.signUpAsTutor ? 'Next' : 'Sign Up'}
+          <button className="LogInPageButtons" type="submit" disabled={loading}>
+            {formData.signupAsTutor ? 'Next' : 'Sign Up'}
           </button>
         </form>
 

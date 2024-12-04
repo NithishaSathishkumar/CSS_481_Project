@@ -2,16 +2,23 @@ import React, { useState, useEffect } from 'react';
 import ReactConfetti from 'react-confetti';
 import { Link } from 'react-router-dom';
 import '../Styling/ConfirmationAccountPage.css';
+import { useAuth } from '/AuthContext';
 
 function ConfirmationAccountPage() {
-  const [username, setUsername] = useState('User'); // Default to 'User' until fetched
+
+  const { currentUser } = useAuth(); 
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
-    // Retrieve the username from localStorage
-    const storedUsername = localStorage.getItem('username');
-    if (storedUsername) {
-      setUsername(storedUsername);
+    // Retrieve the username from auth
+
+    if (currentUser) {
+      console.log(currentUser);
+      setUsername(currentUser.displayName || '');
+
     }
+    
+    
   }, []);
 
   const [dimensions, setDimensions] = useState({
@@ -25,7 +32,10 @@ function ConfirmationAccountPage() {
         width: window.innerWidth,
         height: window.innerHeight,
       });
+      
     };
+
+    
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
