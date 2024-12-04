@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate, Navigate } from "react-router-dom";
-import '../Styling/paymentpage.module.css';
+import '../Styling/paymentpage.css';
 import { getDatabase, ref, get } from 'firebase/database';
 import { Link } from 'react-router-dom';
 
@@ -11,6 +11,13 @@ const PaymentPortal = () => {
   const location = useLocation();
   const db = getDatabase();
   const navigate = useNavigate();
+
+
+const { date, time } = location.state || {}; // Get date and time from BookingPage
+
+const handlePaymentSuccess = () => {
+    navigate('/confirmation', { state: { date, time } });
+};
 
   const [tutorData, setTutorData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -90,6 +97,10 @@ const PaymentPortal = () => {
         script.onload = initializeGooglePay;
         document.body.appendChild(script);
       }
+    };
+    
+    const handlePaymentSuccess = () => {
+        navigate('/confirmation', { state: { date, time } });
     };
 
     const initializeGooglePay = () => {
@@ -407,7 +418,7 @@ const PaymentPortal = () => {
 
               className="paymentPage-payment-submit"
 
-              onClick={() => navigate("/confirmation")}
+              onClick={() => handlePaymentSuccess()}
             >
               Complete Purchase
             </button>

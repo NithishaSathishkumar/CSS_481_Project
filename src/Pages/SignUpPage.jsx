@@ -80,13 +80,13 @@ function SignUpPage() {
     const file = e.target.files[0];
     if (file) {
       setLoading(true); // Show loading state during upload
-      const formData = new FormData();
-      formData.append('image', file);
+      const uploadData = new FormData();
+      uploadData.append('image', file);
 
       try {
         const response = await fetch('https://api.imgbb.com/1/upload?key=85b4f85673d02f9b9c9dc739f12c4b26', {
           method: 'POST',
-          body: formData,
+          body: uploadData,
         });
 
         const data = await response.json();
@@ -159,21 +159,26 @@ function SignUpPage() {
         photoURL: formData.photo || userProfile,
       });
 
-      // Add user data to Firebase Realtime Database
-      const db1 = db;
-      const userRef = ref(db1, signupAsTutor ? "tutors" : "account/user");
-      const newUserRef = push(userRef);
+      if (!signupAsTutor) {
+        // If not signing up as a tutor, add user data to Firebase Realtime Database
+        const db1 = db;
+        const userRef = ref(db1, "account/user");
+        const newUserRef = push(userRef);
 
-      await set(newUserRef, { 
-        ...userData, 
-        username: formData.username, 
-        uid: user.uid,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-      });
+        await set(newUserRef, { 
+          ...userData, 
+          username: formData.username, 
+          uid: user.uid,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+        });
 
-      // Navigate based on user type
-      navigate(signupAsTutor ? '/tutorSignup' : '/AccountConfirmation');
+        // Navigate to Account Confirmation
+        navigate('/AccountConfirmation');
+      } else {
+        // If signing up as a tutor, navigate to TutorSignup and pass necessary data
+        navigate('/tutorSignup', { state: { formData: formData, uid: user.uid } });
+      }
 
     } catch (error) {
       console.error('Error signing up:', error.message);

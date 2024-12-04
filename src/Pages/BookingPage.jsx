@@ -110,9 +110,9 @@ function BookingPage() {
             <div className="BookingConfirmationMainContent">
                 {data != null ?
                     (<div className="BookingPageLeftContent">
-                        <img id="BookingTutorPP" src={data.photo} alt="tutor" />
+                        <img id="BookingTutorPP" src={data.photo} alt="tutor"/>
                         <div>
-                            <button className="BookingTutorsName">{data.firstName}-{data.lastName}</button>
+                            <button className="BookingTutorsName">{data.username}</button>
                         </div>
 
                         <div className="BookingTutorsCourse">Tutoring: {data.primarySubject}</div>
@@ -128,9 +128,9 @@ function BookingPage() {
                             </div>
                         </div>
                     </div>
-                    ) : (
-                        <p>Loading tutor information...</p>
-                    )}
+                ) : (
+                    <p>Loading tutor information...</p>
+                )}
 
                 <div className="BookingPageRightContent">
                     <div className="BookingPageMeetingOption">

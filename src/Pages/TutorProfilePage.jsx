@@ -2,21 +2,23 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
+import { useAuth } from '/AuthContext';
 import styles from "../Styling/tutorprofile.module.css";
 import profileImg from "../assets/6.png";
 import { getDatabase, ref, onValue, push, set } from "firebase/database";
-import {app} from "/firebaseConfi"; 
+import {app, auth} from "/firebaseConfi"; 
 
 const TutorProfilePage = () => {
   const { tutorId } = useParams();
   const [tutorData, setTutorData] = useState(null);
   const [similarTutors, setSimilarTutors] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { currentUser } = useAuth(); // Get the current user from AuthContext
+
 
   // State for review form
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [reviewFormData, setReviewFormData] = useState({
-    reviewerName: '',
     rating: '',
     text: '',
   });
@@ -112,7 +114,7 @@ const TutorProfilePage = () => {
     event.preventDefault();
 
     const newReview = {
-      reviewerName: reviewFormData.reviewerName,
+      reviewerName: currentUser.displayName,
       rating: reviewFormData.rating,
       text: reviewFormData.text,
       date: new Date().toISOString(),
@@ -175,7 +177,15 @@ const TutorProfilePage = () => {
                 </a>
               </div>
             </div>
-            <button className={styles.editButton} onClick={() => setShowReviewForm(true)}>Add Review</button>
+            {currentUser ? (
+              <button className={styles.editButton} onClick={() => setShowReviewForm(true)}>
+              Add Review
+              </button>
+            ) : (
+                  <button className={styles.editButton} disabled title="You must be logged in to add a review">
+                  Add Review (Login Required)
+                  </button>
+                )}
           </div>
 
           {/* Approved Qualifications */}
@@ -292,16 +302,6 @@ const TutorProfilePage = () => {
           {showReviewForm && (
             <div className={styles.reviewFormContainer}>
               <form onSubmit={handleReviewSubmit} className={styles.reviewForm}>
-                <label>
-                  Name:
-                  <input
-                    type="text"
-                    name="reviewerName"
-                    value={reviewFormData.reviewerName}
-                    onChange={handleReviewInputChange}
-                    required
-                  />
-                </label>
                 <label>
                   Rating:
                   <select

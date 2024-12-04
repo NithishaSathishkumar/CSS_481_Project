@@ -35,6 +35,7 @@ function ChatRoom() {
   const { currentUser } = useAuth(); 
 
   const [username, setUsername] = useState('');
+  const [profileImage, setProfileImage] = useState('');
 
   // Fetch messages collection from Firestore
   const messagesRef = collection(firestore, 'messages');
@@ -49,6 +50,8 @@ function ChatRoom() {
 
     if (currentUser) {
       setUsername(currentUser.displayName || '');
+      setProfileImage(currentUser.photoURL || '');
+      console.log(currentUser);
     }
   }, [currentUser]);
 
@@ -146,7 +149,7 @@ function ChatRoom() {
                   <h2>Chat with {selectedTutor.firstName} {selectedTutor.lastName}</h2>
                   {messages && messages
                     .filter((msg) => msg.tutorId === selectedTutor.id) // Filter messages based on selected tutor
-                    .map((msg) => <ChatMessage key={msg.id} message={msg} user = {username} />)}
+                    .map((msg) => <ChatMessage key={msg.id} message={msg} user = {username} prof = {profileImage} />)}
                   <span ref={dummy}></span>
                 </div>
 

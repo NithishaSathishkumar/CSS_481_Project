@@ -1,8 +1,8 @@
+// src/components/LogInPage.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { getDatabase, ref, get } from 'firebase/database';
-import bcrypt from 'bcryptjs'; // Import bcryptjs to compare passwords
-import {app} from '../../firebaseConfi';
+import { Link, useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from 'firebase/auth';
+import { auth } from '../../firebaseConfi'; // Ensure this import points to your Firebase config
 
 import '../Styling/LogInPage.css';
 import loginIcon from '../assets/9.png';
@@ -12,54 +12,10 @@ import backButton from '../assets/ReturnArrow.png';
 function LogInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const fetchData = async (email, password) => {
-    const db = getDatabase(app);
-    const userRef = ref(db, "account/user");
-    const tutorRef = ref(db, "tutors");
-  
-    // Fetch data from both databases in parallel
-    const [userSnapshot, tutorSnapshot] = await Promise.all([
-      get(userRef),
-      get(tutorRef),
-    ]);
-  
-    let emailFound = false;
-  
-    // Function to check for email and validate password in a given snapshot
-    const validateUser = (snapshot, role) => {
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        for (const key in data) {
-          if (data[key].email === email) {
-            emailFound = true;
-            // Compare the hashed password
-            bcrypt.compare(password, data[key].password, (err, result) => {
-              if (result) {
-                // Password matches
-                alert(`Welcome back! You are logged in as a ${role}.`);
-              } else {
-                // Password mismatch
-                alert("Password does not match. Click on Forgot Password to change password.");
-              }
-            });
-            return true; // Stop further iterations once email is found
-          }
-        }
-      }
-      return false;
-    };
-  
-    // Check in both databases
-  const userValidated = validateUser(userSnapshot, "user");
-  const tutorValidated = !userValidated && validateUser(tutorSnapshot, "tutor");
-
-  // If email is not found in either database
-  if (!emailFound) {
-    alert("Email not found. Please create an account.");
-  }
-};
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission (page refresh)
 
     // Client-side validation: Check if email and password are filled in
@@ -68,8 +24,35 @@ function LogInPage() {
       return;
     }
 
-    // Call fetchData to validate credentials after basic validation
-    fetchData(email, password);
+    setLoading(true); // Start loading
+
+    try {
+      // Handle "Remember Me" functionality
+      const rememberMe = document.getElementById('rememberMe').checked;
+      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+
+      // Authenticate user with Firebase Auth
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+
+
+      alert('Welcome back! You are successfully logged in.');
+      navigate('/'); // Navigate to the home page
+    } catch (error) {
+      console.error('Error logging in:', error);
+      let errorMessage = 'An error occurred during login. Please try again.';
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = 'No account found with this email.';
+      } else if (error.code === 'auth/wrong-password') {
+        errorMessage = 'Incorrect password. Please try again.';
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'Invalid email address.';
+      }
+      alert(errorMessage);
+    } finally {
+      setLoading(false); // End loading
+    }
   };
 
   return (
@@ -120,9 +103,9 @@ function LogInPage() {
                 </label>
               </div>
 
-              {/* Submit button should not trigger default form submission */}
-              <button className="LogInPageButtons" type="submit">
-                Log In
+              {/* Submit button */}
+              <button className="LogInPageButtons" type="submit" disabled={loading}>
+                {loading ? 'Logging In...' : 'Log In'}
               </button>
 
               <Link to="/forgotPassword" className="ForgotPasswordLink">
@@ -130,7 +113,7 @@ function LogInPage() {
               </Link>
 
               <Link to="/">
-                <button className="backButton">
+                <button className="backButton" type="button">
                   <img src={backButton} alt="Back" />
                 </button>
               </Link>
@@ -158,6 +141,3 @@ function LogInPage() {
 }
 
 export default LogInPage;
-
-
-
