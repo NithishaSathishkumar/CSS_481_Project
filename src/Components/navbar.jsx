@@ -66,7 +66,6 @@ const Navbar = () => {
                     <ul className="nav_links">
                         <li><Link to="/about" onClick={closeMenu}>About us</Link></li>
                         <li><Link to="/tutorFind" onClick={closeMenu}>Tutor</Link></li>
-                        <li><a href="#" onClick={closeMenu}>Student</a></li>
                         <li><Link to="/faq" onClick={closeMenu}>FAQ</Link></li>
                         <li><Link to="/Chat" onClick={closeMenu}>Chat</Link></li>
                     </ul>
