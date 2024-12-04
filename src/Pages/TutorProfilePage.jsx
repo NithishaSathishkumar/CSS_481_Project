@@ -166,7 +166,9 @@ const TutorProfilePage = () => {
                 <span>{renderStars(tutorData.rating)}</span>
               </p>
               <div className={styles.profileButtons}>
-                <button className={styles.emailButton}>Send Email</button>
+                <button className={styles.emailButton} onClick={() => window.location.href = `mailto:${tutorData.email}`}>
+                  Send Email
+                </button>
                 <a href={`/booking/${tutorData.id}`}>
                   <button className={styles.scheduleButton}>Schedule a Meeting</button>
                 </a>

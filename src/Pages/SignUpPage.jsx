@@ -24,7 +24,8 @@ function SignUpPage() {
     username: '',
     email: '',
     password: '',
-    userSchedule: [{ tutorID: '', sessionName: '', time: '', topic: '', meetingType:'', zoomLink:''}],
+    userSchedule: [{ tutorID: '', sessionName: '', time: '', topic: '', meetingType: '', zoomLink: '' }],
+    card:[{cardNumber: '', cvc:'', address:'', nameOnCard:'', zipcode:'', exp:'', state:'', city:''}],
     signupAsTutor: false,
   });
 
