@@ -141,8 +141,9 @@ const PaymentPortal = () => {
           googlePayClient
             .loadPaymentData(paymentDataRequest)
             .then((paymentData) => {
-                <Link to = "/confirmation" ></Link>
+                
               console.log("Payment successful!", paymentData);
+              
               navigate("/confirmation");
               // Handle successful payment here (e.g., navigate to confirmation page)
             })

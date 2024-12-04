@@ -38,7 +38,7 @@ function ProfilePage() {
           <input
             type="text"
             className={styles.fieldInput}
-            value={name}
+            placeholder={name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
@@ -47,7 +47,7 @@ function ProfilePage() {
           <input
             type="text"
             className={styles.fieldInput}
-            value={username}
+            placeholder={username}
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
@@ -56,7 +56,7 @@ function ProfilePage() {
           <input
             type="email"
             className={styles.fieldInput}
-            value={email}
+            placeholder={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>

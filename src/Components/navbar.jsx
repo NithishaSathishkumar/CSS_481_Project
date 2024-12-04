@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 import '/src/Components/ComponentStyling/navbar.css'; // Optional: for component-specific styling
 
 // IMPORTING PICTURES
@@ -8,6 +10,8 @@ import logOut from '../assets/9.png';
 
 const Navbar = () => {
     const [username, setUsername] = useState('User'); // Default to 'User'
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Retrieve the username from localStorage when the component mounts
@@ -85,7 +89,7 @@ const Navbar = () => {
                                 <h3>Welcome, {username}</h3> {/* Display the username here */}
                             </div>
 
-                            <a href="#" className="sub-menu-link" onClick={closeMenu}>
+                            <a href="" className="sub-menu-link" onClick={() => navigate("/edit-profile")}>
                                 <img src={profilePic} alt="profile" width="63" height="65" />
                                 <p>Edit profile</p>
                                 <span></span>
