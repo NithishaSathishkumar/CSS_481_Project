@@ -30,6 +30,8 @@ const TutorProfilePage = () => {
     onValue(tutorRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
+
+        data.id = tutorId;
         // Convert reviews object to array and filter out empty reviews
         if (data.reviews) {
           const reviewsArray = Object.values(data.reviews);
@@ -166,9 +168,8 @@ const TutorProfilePage = () => {
                 <span>{renderStars(tutorData.rating)}</span>
               </p>
               <div className={styles.profileButtons}>
-                <button className={styles.emailButton} onClick={() => window.location.href = `mailto:${tutorData.email}`}>
-                  Send Email
-                </button>
+                <a href={`mailto:${tutorData.email}`}> <button className={styles.emailButton} >Send Email</button> </a>
+                
                 <a href={`/booking/${tutorData.id}`}>
                   <button className={styles.scheduleButton}>Schedule a Meeting</button>
                 </a>
