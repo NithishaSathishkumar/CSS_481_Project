@@ -74,11 +74,11 @@ function BookingPage() {
                 setData(fetchedData);
 
                 // Set time slots based on available time
-                if (fetchedData.availableTime === "morning") {
+                if (fetchedData.availableTime === "Morning") {
                     setTimeSlots(morningSlots);
-                } else if (fetchedData.availableTime === "afternoon") {
+                } else if (fetchedData.availableTime === "Afternoon") {
                     setTimeSlots(afternoonSlots);
-                } else if (fetchedData.availableTime === "evening") {
+                } else if (fetchedData.availableTime === "Evening") {
                     setTimeSlots(eveningSlots);
                 } else {
                     setTimeSlots(allDaySlots);
@@ -108,9 +108,9 @@ function BookingPage() {
     return (
         <div className="BookingConfirmationRootContainer">
             <div className="BookingConfirmationMainContent">
-                {data != null ? (
-                    <div className="BookingPageLeftContent">
-                        <img id="BookingTutorPP" src={data.photo || tutor} alt="tutor" />
+                {data != null ?
+                    (<div className="BookingPageLeftContent">
+                        <img id="BookingTutorPP" src={data.photo} alt="tutor"/>
                         <div>
                             <button className="BookingTutorsName">{data.username}</button>
                         </div>
