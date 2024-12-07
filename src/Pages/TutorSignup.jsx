@@ -141,7 +141,7 @@ function TutorSignup() {
             setFormData((prevState) => ({
                 ...prevState,
                 price: value,
-                exactPrice: '0',
+                exactPrice: '',
             }));
         } else {
             setFormData((prevState) => ({

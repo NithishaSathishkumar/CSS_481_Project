@@ -331,8 +331,11 @@ a {
     margin: 12px 0;
 }
 
-.sub-menu-link p{
-    width: 100%;
+.sub-menu-link img{
+    width: 60px;
+    height: 60px;
+    padding: 8px;
+    margin-right: 15px;
 }
 
 .sub-menu-link img{

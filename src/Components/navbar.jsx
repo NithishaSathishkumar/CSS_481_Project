@@ -112,7 +112,6 @@ const Navbar = () => {
               </Link>
 
               <button className="sub-menu-link" onClick={handleLogout}>
-                <img src={logOut} alt="Logout" width="63" height="65" />
                 <p>Logout</p>
               </button>
             </div>

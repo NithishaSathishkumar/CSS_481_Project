@@ -238,7 +238,7 @@ function SignUpPage() {
               ))}
             </select>
 
-            <select id="state" name="state" value={formData.state} onChange={handleStateChange} required>
+            <select id="signUpPageState" name="state" value={formData.state} onChange={handleStateChange} required>
               <option value="" disabled>Select your state</option>
               {selectedCountry === 'usa' ? (
                 usStates.map((state) => (
@@ -253,7 +253,7 @@ function SignUpPage() {
 
             <input
               type="text"
-              id="city"
+              id="signUpPageCity"
               name="city"
               placeholder="City*"
               required
