@@ -1,4 +1,6 @@
+// ResetPassword.jsx
 
+// Import necessary libraries and modules
 import React, { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { getDatabase, ref, update, get } from "firebase/database";
@@ -6,6 +8,7 @@ import {app} from "../../firebaseConfi";
 import "../Styling/resetPassword.css";
 import bcrypt from "bcryptjs"; // Import bcrypt
 
+// Main component for ResetPassword
 function ResetPassword() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -14,6 +17,7 @@ function ResetPassword() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -73,6 +77,7 @@ function ResetPassword() {
     }
   };
 
+  // Return JSX for the Reset Password page
   return (
     <div className="reset-password-page">
       <div className="reset-password-container">
@@ -80,6 +85,7 @@ function ResetPassword() {
           <h1>Reset Password</h1>
           <p>Please enter your new password and confirm it to reset.</p>
 
+          {/* Form for entering the new password */}
           <form className="reset-password-form" onSubmit={handleSubmit}>
             <input
               type="password"
@@ -102,8 +108,10 @@ function ResetPassword() {
             <button type="submit">Reset Password</button>
           </form>
 
+          {/* Display error message if any */}
           {errorMessage && <p className="error-message">{errorMessage}</p>}
 
+          {/* Link to navigate back to the login page */}
           <div className="links">
             <Link to="/login">Back to Login</Link>
           </div>
