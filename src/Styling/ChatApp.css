@@ -82,7 +82,7 @@
     display: flex;
 }
 
-.message.sent {
+.message {
     display: flex;
     width: 30%;
     align-items: center;
@@ -95,12 +95,11 @@
     gap: 10px;
 }
 
-.message.sent p {
+.message p {
     font-size: 0.9rem;
 }
 
-
-.message.sent img {
+.message img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -135,7 +134,4 @@
   
 #UsersTextArea:hover {
     border-color: #6c757d;
-}
-
-.SendTextButton {
 }

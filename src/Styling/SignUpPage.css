@@ -42,13 +42,13 @@
 }
 
 .NewUserProfile {
-    width: 200px; /* Set a fixed width */
-    height: 200px; /* Set a fixed height */
-    border-radius: 50%; /* Make the image circular */
+    width: 200px;
+    height: 200px;
+    border-radius: 50%; 
     margin-bottom: 30px;
-    object-fit: cover; /* Ensure the image covers the circle without distortion */
-    background-color: #f0f0f0; /* Optional: Background color for empty state */
-    border: 2px solid #ccc; /* Optional: Add a border to match your design */
+    object-fit: cover; 
+    background-color: #f0f0f0; 
+    border: 2px solid #ccc;
 }
 
 .AddNewProfilePicButton {
@@ -62,7 +62,7 @@
     font-size: 40px;
     border: none;
     border-radius: 100px;
-    padding: 0; /* Remove extra padding to keep button consistent */
+    padding: 0; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -180,8 +180,8 @@
 }
 
 .BackButtonSignUpPage img {
-    width: 30px; /* Set your desired size */
-    height: auto; /* Maintain aspect ratio */
+    width: 30px;
+    height: auto; 
 }
 
 .TutorSelectionSection {
@@ -228,18 +228,18 @@
 
 .TutorOptionNote {
     font-size: 0.9rem;
-    color: #6B7280; /* Neutral gray */
+    color: #6B7280; 
     text-align: center;
 }
 
 .TutorSelection label {
-    color: #283618; /* Dark green color */
+    color: #283618; 
     font-weight: bold;
     padding: 10px;
 }
   
 .TermsAndServiceSection label {
-    color: #283618; /* Dark green color */
+    color: #283618; 
     font-weight: bold;
     padding: 10px;
 }
