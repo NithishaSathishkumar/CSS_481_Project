@@ -20,7 +20,10 @@ import TutorSignup from './Pages/TutorSignup';
 
 function App() {
   return (
+    
     <Router>
+
+      {/* Routes with the navbar layout */}
       <Routes>
         Route for LandingPage with Layout (Navbar)
         <Route path="/" element={

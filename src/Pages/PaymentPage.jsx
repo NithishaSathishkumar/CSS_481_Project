@@ -1,5 +1,3 @@
-// PaymentPortal.jsx
-
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate, Navigate } from "react-router-dom";
 import '../Styling/paymentpage.css';
@@ -13,7 +11,8 @@ const PaymentPortal = () => {
   const navigate = useNavigate();
 
 
-const { date, time } = location.state || {}; // Get date and time from BookingPage
+// Get date and time from BookingPage (already commented)
+const { date, time } = location.state || {};
 
 const handlePaymentSuccess = () => {
     navigate('/confirmation', { state: { date, time } });
@@ -24,7 +23,7 @@ const handlePaymentSuccess = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [sessionType, setSessionType] = useState("30-minute meeting");
 
-  // Form state
+  // Form fields state
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cardName, setCardName] = useState("");
@@ -34,10 +33,10 @@ const handlePaymentSuccess = () => {
   const [zipCode, setZipCode] = useState("");
   const [stateValue, setStateValue] = useState("");
 
-  // Error state
+  // To track validation errors
   const [errors, setErrors] = useState({});
 
-  // Fetch tutor data from Firebase
+  // Fetch tutor data from Firebase once component mounts
   useEffect(() => {
     const fetchTutorData = async () => {
       try {
@@ -58,16 +57,15 @@ const handlePaymentSuccess = () => {
     fetchTutorData();
   }, [db, tutorId]);
 
-  // Calculate total price based on session type and tutor's price
+  // Recalculate total price whenever sessionType or tutorData change
   useEffect(() => {
     if (tutorData) {
       let pricePerHour = parseFloat(tutorData.exactPrice) || 0;
 
-      // Define session durations and multipliers
+      // Different session durations affect total price
       const sessionDetails = {
         "30-minute meeting": pricePerHour / 2,
         "1-hour meeting": pricePerHour,
-        // Add more session types if needed
       };
 
       const calculatedPrice = sessionDetails[sessionType] || 0;
@@ -75,14 +73,15 @@ const handlePaymentSuccess = () => {
     }
   }, [tutorData, sessionType]);
 
-  // Google Pay Integration (unchanged)
+  // Google Pay Integration
   useEffect(() => {
-    if (!tutorData) return;
+    if (!tutorData) return; // Wait until tutor data is fetched
 
     const googlePayButtonContainer = document.getElementById("google-pay-button-container");
     let scriptLoaded = false;
 
     const loadGooglePay = () => {
+      // Load the Google Pay script if not already loaded
       if (
         window.google &&
         window.google.payments &&
@@ -98,11 +97,12 @@ const handlePaymentSuccess = () => {
         document.body.appendChild(script);
       }
     };
-    
+
     const handlePaymentSuccess = () => {
         navigate('/confirmation', { state: { date, time } });
     };
 
+    // Setup Google Pay in test environment (already commented)
     const initializeGooglePay = () => {
       if (!window.google || !window.google.payments) {
         console.error("Google Pay SDK failed to load.");
@@ -110,7 +110,7 @@ const handlePaymentSuccess = () => {
       }
 
       const googlePayClient = new window.google.payments.api.PaymentsClient({
-        environment: "TEST",
+        environment: "TEST", // Using test environment (already commented)
       });
 
       const allowedPaymentMethods = [
@@ -130,6 +130,7 @@ const handlePaymentSuccess = () => {
         },
       ];
 
+      // Configure payment details for Google Pay
       const paymentDataRequest = {
         apiVersion: 2,
         apiVersionMinor: 0,
@@ -144,6 +145,7 @@ const handlePaymentSuccess = () => {
         },
       };
 
+      // Create the Google Pay button
       const button = googlePayClient.createButton({
         buttonColor: "default",
         buttonType: "buy",
@@ -152,19 +154,16 @@ const handlePaymentSuccess = () => {
           googlePayClient
             .loadPaymentData(paymentDataRequest)
             .then((paymentData) => {
-                
               console.log("Payment successful!", paymentData);
-              
-              navigate("/confirmation");
-              // Handle successful payment here (e.g., navigate to confirmation page)
+              navigate("/confirmation"); // Go to confirmation on success
             })
             .catch((err) => {
               console.error("Google Pay Error: ", err);
-              // Handle payment errors here
             });
         },
       });
 
+      // Clear any existing button and add the new one
       googlePayButtonContainer.innerHTML = "";
       googlePayButtonContainer.appendChild(button);
     };
@@ -172,7 +171,7 @@ const handlePaymentSuccess = () => {
     loadGooglePay();
   }, [tutorData, totalPrice]);
 
-  // Validation functions
+  // Basic validation functions for form fields
   const validateCardNumber = (number) => {
     const cleaned = number.replace(/\s+/g, '');
     const isValid = /^\d{16}$/.test(cleaned);
@@ -183,7 +182,7 @@ const handlePaymentSuccess = () => {
     if (!/^\d{2}\/\d{2}$/.test(date)) return false;
     const [month, year] = date.split('/').map(Number);
     if (month < 1 || month > 12) return false;
-    const currentYear = new Date().getFullYear() % 100; // Get last two digits
+    const currentYear = new Date().getFullYear() % 100; // comparing only last two digits
     const currentMonth = new Date().getMonth() + 1;
     if (year < currentYear || (year === currentYear && month < currentMonth)) {
       return false;
@@ -195,11 +194,11 @@ const handlePaymentSuccess = () => {
     return /^\d{3,4}$/.test(cvv);
   };
   
-
   const validateZipCode = (zip) => {
     return /^\d{5}$/.test(zip);
   };
 
+  // Handle form submission and show errors if fields are invalid
   const handleSubmit = (e) => {
     e.preventDefault();
     let formErrors = {};
@@ -239,9 +238,8 @@ const handlePaymentSuccess = () => {
     setErrors(formErrors);
 
     if (Object.keys(formErrors).length === 0) {
-      // All validations passed
-      alert("Payment submitted! (Implement actual payment handling)");
-      // Here you can handle the payment processing
+      // If no errors, proceed with payment
+      alert("Payment submitted!");
     }
   };
 
@@ -260,6 +258,7 @@ const handlePaymentSuccess = () => {
       </div>
       <div className="paymentPage-payment-body">
         <div className="paymentPage-payment-body-left">
+          {/* The main payment form */}
           <form className="paymentPage-payment-form" onSubmit={handleSubmit}>
             <p className="paymentPage-section-title">Card Info</p>
             <div className="paymentPage-form-row">
@@ -272,11 +271,11 @@ const handlePaymentSuccess = () => {
                   placeholder="1234 5678 9101 1121"
                   value={cardNumber}
                   onChange={(e) => {
-                    // Allow only digits and spaces
+                    // Let the user input only digits and spaces for the card number
                     const value = e.target.value.replace(/[^\d\s]/g, '');
                     setCardNumber(value);
                   }}
-                  maxLength="19" // 16 digits + 3 spaces
+                  maxLength="19"
                   required
                 />
                 {errors.cardNumber && <span className="error">{errors.cardNumber}</span>}
@@ -290,6 +289,7 @@ const handlePaymentSuccess = () => {
                   placeholder="MM/YY"
                   value={expiryDate}
                   onChange={(e) => {
+                    // Format expiry date as user types
                     let value = e.target.value.replace(/[^\d]/g, '');
                     if (value.length > 4) value = value.slice(0,4);
                     if (value.length > 2) {
@@ -326,7 +326,8 @@ const handlePaymentSuccess = () => {
                   placeholder="123"
                   value={cvv}
                   onChange={(e) => {
-                    const value = e.target.value.replace(/\D/g, '').slice(0,4);
+                    // CVV should be numeric and up to 3 digits
+                    const value = e.target.value.replace(/\D/g, '').slice(0,3);
                     setCvv(value);
                   }}
                   maxLength="4"
@@ -375,6 +376,7 @@ const handlePaymentSuccess = () => {
                   placeholder="12345"
                   value={zipCode}
                   onChange={(e) => {
+                    // Allow only 5 digits for zip
                     const value = e.target.value.replace(/\D/g, '').slice(0,5);
                     setZipCode(value);
                   }}
@@ -413,11 +415,10 @@ const handlePaymentSuccess = () => {
                 {errors.state && <span className="error">{errors.state}</span>}
               </div>
             </div>
+            {/* Complete purchase button triggers payment success flow */}
             <button
               type="submit"
-
               className="paymentPage-payment-submit"
-
               onClick={() => handlePaymentSuccess()}
             >
               Complete Purchase
@@ -425,6 +426,7 @@ const handlePaymentSuccess = () => {
           </form>
         </div>
         <div className="paymentPage-payment-body-right">
+          {/* Display chosen session and total price */}
           <div className="paymentPage-payment-total">
             <h2>Order Summary</h2>
             <div className="paymentPage-payment-total-items">
@@ -441,6 +443,7 @@ const handlePaymentSuccess = () => {
           <div className="paymentPage-payment-express">
             <h2>Express Checkout</h2>
             <div className="paymentPage-payment-express-buttons">
+              {/* Google Pay button gets rendered here */}
               <div id="google-pay-button-container"></div>
             </div>
           </div>
