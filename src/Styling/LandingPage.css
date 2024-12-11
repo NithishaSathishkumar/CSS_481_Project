@@ -14,6 +14,9 @@
   justify-content: space-between;
 }
 
+/* 
+    Styling for left side of LandingPage
+*/
 /* Container for left side of LandingPage (Texts and Buttons) */
 .LandingPageLeft {
   max-width: 40%;
@@ -49,6 +52,9 @@
   background-color: #606C38;
 }
 
+/* 
+    Styling for right side of LandingPage
+*/
 /* Container for right side of LandingPage (Images) */
 .LandingPageRight {
   display: flex;

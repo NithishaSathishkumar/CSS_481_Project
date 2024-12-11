@@ -1,27 +1,25 @@
+/*
+  Idea Credit: https://www.youtube.com/watch?v=zQyrwxMPm88
+  Creator's Github Repo: https://github.com/fireship-io/react-firebase-chat
+
+  Note: This file is incomplete and requires additional work for full implementation.
+*/
 import React, { useRef, useState, useEffect } from 'react';
 import '../Styling/ChatApp.css';
 import { useAuth } from '/AuthContext';
 
-// Import Firebase app from firebaseConfig.js
-import {app} from '/firebaseConfi.js';
+//Firebase
+import { app } from '/firebaseConfi.js'; //Importing Firebase app
+import { getDatabase, ref, get } from 'firebase/database'; //Realtime Database functions
+import { getFirestore, collection, addDoc, query, orderBy, limit, serverTimestamp } from 'firebase/firestore'; //Firestore SDK
+import { useCollectionData } from 'react-firebase-hooks/firestore'; //Hooks for Firestore collections
 
-// Import Realtime Database functions from Firebase
-import { getDatabase, ref, get } from 'firebase/database';
-
-// Import the functions you need from the Firestore SDK
-import { getFirestore, collection, addDoc, query, orderBy, limit, serverTimestamp } from 'firebase/firestore';
-
-// Import hooks for Firestore collections
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-
-// Initialize Firestore and Realtime Database using the imported app
 const firestore = getFirestore(app);
 const database = getDatabase(app);
 
 function ChatApp() {
   return (
     <div className="App">
-      <header></header>
       <section>
         <ChatRoom />
       </section>
@@ -30,45 +28,42 @@ function ChatApp() {
 }
 
 function ChatRoom() {
+  //Variables
   const dummy = useRef();
-
-  const { currentUser } = useAuth(); 
-
+  const { currentUser } = useAuth(); //Get the current logged-in user
   const [username, setUsername] = useState('');
   const [profileImage, setProfileImage] = useState('');
+  const [tutors, setTutors] = useState([]); //Tutors from Realtime Database
+  const [selectedTutor, setSelectedTutor] = useState(null); //Selected tutor
+  const [formValue, setFormValue] = useState(''); //Chat input field
 
-  // Fetch messages collection from Firestore
+  //Fetch messages collection from Firestore
   const messagesRef = collection(firestore, 'messages');
   const [messages] = useCollectionData(query(messagesRef, orderBy('createdAt'), limit(25)), { idField: 'id' });
 
-  // State for tutors data from Realtime Database
-  const [tutors, setTutors] = useState([]);
-  const [selectedTutor, setSelectedTutor] = useState(null); // State to track selected tutor
-
-  //set chat username
+  //Set username and profile image when user logs in
   useEffect(() => {
-
     if (currentUser) {
-      setUsername(currentUser.displayName || '');
+      setUsername(currentUser.displayName || 'Anonymous User');
       setProfileImage(currentUser.photoURL || '');
-      console.log(currentUser);
     }
   }, [currentUser]);
 
-  // Fetch tutors data from Realtime Database using `get` method
+  // Fetch tutors data from Realtime Database
   useEffect(() => {
     const fetchTutors = async () => {
       try {
-        const tutorsRef = ref(database, 'tutors');
-        const snapshot = await get(tutorsRef);
+        const tutorsRef = ref(database, 'tutors');  //Reference to the 'tutors' path in the Firebase Realtime Database
+        const snapshot = await get(tutorsRef);  //Fetch the data from the database
 
         if (snapshot.exists()) {
-          const data = snapshot.val();
-          const tutorsList = Object.keys(data).map((key) => ({
+          //If the data exists, convert it into an array of tutor objects
+          const tutorsList = Object.keys(snapshot.val()).map((key) => ({
             id: key,
-            ...data[key],
+            ...snapshot.val()[key],
           }));
-          setTutors(tutorsList);
+          setTutors(tutorsList);  //Update the tutors state with the fetched data
+
         } else {
           console.log('No tutors data available');
         }
@@ -80,25 +75,24 @@ function ChatRoom() {
     fetchTutors();
   }, []);
 
-  const [formValue, setFormValue] = useState('');
-
+  //Send a message
   const sendMessage = async (e) => {
     e.preventDefault();
 
     if (!selectedTutor) {
-      alert('Please select a tutor to start the chat');
+      alert('Please select a tutor to start the chat'); //Deafult Message, user need to click on a tutor
       return;
     }
 
-    const uid = 'anonymous'; // Placeholder UID for messages without login
-    const photoURL = 'https://api.adorable.io/avatars/23/abott@adorable.png';
+    const uid = currentUser?.uid || 'anonymous'; //Use actual user ID if logged in
+    const photoURL = profileImage; //Default profile image 
 
     await addDoc(messagesRef, {
       text: formValue,
       createdAt: serverTimestamp(),
       uid,
       photoURL,
-      tutorId: selectedTutor.id // Attach the selected tutor's ID to the message
+      tutorId: selectedTutor.id, //Attach the selected tutor's ID to the message
     });
 
     setFormValue('');
@@ -106,94 +100,87 @@ function ChatRoom() {
   };
 
   return (
-    <>
-      <div className="ChatAppRootContainer">
-        <div className="ChatAppMainContent">
-          <div className="ChatAppLeftSideContent">
-            <h1>Contact List</h1>
-            <div className="ContactsList">
-              {tutors.length > 0 ? (
-                tutors.map((tutor) => (
-                  <div
-                    key={tutor.id}
-                    className={`TutorContactCard ${selectedTutor && selectedTutor.id === tutor.id ? 'selected' : ''}`}
-                    onClick={() => setSelectedTutor(tutor)} // Set selected tutor on click
-                  >
-                    <img
-                      src={tutor.photo}
-                      alt="Tutor Avatar"
-                      className="TutorAvatar"
-                    />
-
-                    <div className="TutorCardTutorDetails">
-                      <p>
-                        <b>{tutor.firstName} {tutor.lastName}</b>
-                      </p>
-
-                      <p>
-                        {tutor.email}
-                      </p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p>No tutors available</p>
-              )}
-            </div>
-          </div>
-
-          <div className="ChatAppRightSideContent">
-            {selectedTutor ? (
-              <>
-                <div className="UserChat">
-                  <h2>Chat with {selectedTutor.firstName} {selectedTutor.lastName}</h2>
-                  {messages && messages
-                    .filter((msg) => msg.tutorId === selectedTutor.id) // Filter messages based on selected tutor
-                    .map((msg) => <ChatMessage key={msg.id} message={msg} user = {username} prof = {profileImage} />)}
-                  <span ref={dummy}></span>
-                </div>
-
-                <form className="ChatAppSendingMessage" onSubmit={sendMessage}>
-                  <input
-                    id="UsersTextArea"
-                    value={formValue}
-                    onChange={(e) => setFormValue(e.target.value)}
-                    placeholder={`Message ${selectedTutor.firstName}`}
+    <div className="ChatAppRootContainer">
+      <div className="ChatAppMainContent">
+        <div className="ChatAppLeftSideContent">
+          <h1>Contact List</h1>
+          <div className="ContactsList">
+            {tutors.length > 0 ? (
+              tutors.map((tutor) => (
+                <div
+                  key={tutor.id}
+                  className={`TutorContactCard ${selectedTutor?.id === tutor.id ? 'selected' : ''}`}
+                  onClick={() => setSelectedTutor(tutor)} //Set selected tutor
+                >
+                  <img
+                    src={tutor.photo || 'https://via.placeholder.com/50'}
+                    alt="Tutor Avatar"
+                    className="TutorAvatar"
                   />
-                  <button className="SendTextButton" type="submit" disabled={!formValue}>
-                    Send
-                  </button>
-                </form>
-              </>
+
+                  <div className="TutorCardTutorDetails">
+                    <p>
+                      <b>{tutor.firstName} {tutor.lastName}</b>
+                    </p>
+                    <p>{tutor.email}</p>
+                  </div>
+                </div>
+              ))
             ) : (
-              <p>Please select a tutor to start chatting</p>
+              <p>No tutors available</p>
             )}
           </div>
         </div>
+
+        <div className="ChatAppRightSideContent">
+          {selectedTutor ? (
+            <>
+              <div className="UserChat">
+                <h2>Chat with {selectedTutor.firstName} {selectedTutor.lastName}</h2>
+                {messages &&
+                  messages
+                    .filter((msg) => msg.tutorId === selectedTutor.id) //Show messages for selected tutor
+                    .map((msg) => (
+                      <ChatMessage
+                        key={msg.id}
+                        message={msg}
+                        user={username}
+                      />
+                    ))}
+                <span ref={dummy}></span>
+              </div>
+
+              <form className="ChatAppSendingMessage" onSubmit={sendMessage}>
+                <input
+                  id="UsersTextArea"
+                  value={formValue}
+                  onChange={(e) => setFormValue(e.target.value)}
+                  placeholder={`Message ${selectedTutor.firstName}`}
+                />
+                <button className="SendTextButton" type="submit" disabled={!formValue}>
+                  Send
+                </button>
+              </form>
+            </>
+          ) : (
+            <p>Please select a tutor to start chatting</p>
+          )}
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 
 function ChatMessage(props) {
-  const { text, uid, photoURL, user } = props.message;
-
-  const messageClass = uid === 'anonymous' ? 'sent' : 'received';
+  const { text, photoURL } = props.message;
+  const { user } = props;
 
   return (
-    <div className={`message ${messageClass}`}>
-      <img
-        src={
-          photoURL ||
-          'https://t3.ftcdn.net/jpg/02/99/04/20/360_F_299042079_vGBD7wIlSeNl7vOevWHiL93G4koMM967.jpg'
-        }
-        alt="Avatar"
-        className="MessageAvatar"
-      />
-
+    <div className="message">
+      <img src={photoURL || 'https://via.placeholder.com/50'} alt="Avatar" className="MessageAvatar" />
       <div className="MessageSentUserDetails">
         <p>
-          <b>{props.user}</b>
+          <b>{user}</b>
         </p>
         <p>{text}</p>
       </div>

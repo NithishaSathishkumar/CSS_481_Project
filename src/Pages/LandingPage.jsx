@@ -3,6 +3,9 @@ import '../Styling/LandingPage.css';
 import franInnocentiUnsplash from '../assets/franInnocentiUnsplash.jpg';
 
 function LandingPage() {
+  /*
+    HTML Section
+  */
   return (
     <div className="LandingPageRootContainer">
       <div className="LandingPageMainContent">
@@ -15,6 +18,7 @@ function LandingPage() {
             anytime learning.
           </p>
 
+          {/* button section that links the button to different pages */}
           <div className="ButtonSection">
             <Link to="/Login">
               <button id="LogInButton">Log In</button>

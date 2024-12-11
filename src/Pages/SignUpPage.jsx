@@ -1,16 +1,14 @@
-// SignUpPage.jsx
-
-// Import necessary libraries and modules
+//Import necessary libraries and modules
 import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'; // Firebase auth functions
-import { ref, set, push } from 'firebase/database'; // Firebase database functions
-import { auth, db } from '/firebaseConfi'; // Firebase configuration
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'; //Firebase auth functions
+import { ref, set, push } from 'firebase/database'; //Firebase database functions
+import { auth, db } from '/firebaseConfi'; //Firebase configuration
 import backButton from '../assets/ReturnArrow.png'; 
 import userProfile from '../assets/6.png';
 import '../Styling/SignUpPage.css';
 
-// Main component for Signup Page
+//Main component for Signup Page
 function SignUpPage() {
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedState, setSelectedState] = useState('');
@@ -19,7 +17,7 @@ function SignUpPage() {
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
 
-  // State to manage form data with default or initial values
+  //State to manage form data with default or initial values set = empty ('')
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -36,7 +34,7 @@ function SignUpPage() {
 
   const navigate = useNavigate();
 
-  // List of countries for dropdown
+  //List of countries for the dropdown menu
   const countries = [
     { value: '', label: 'Select your country' },
     { value: 'usa', label: 'United States' },
@@ -51,7 +49,7 @@ function SignUpPage() {
     { value: 'india', label: 'India' },
   ];
 
-  // List of U.S. states for dropdown
+  //List of U.S. states for the dropdown menu
   const usStates = [
     'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
     'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
@@ -62,56 +60,60 @@ function SignUpPage() {
     'West Virginia', 'Wisconsin', 'Wyoming'
   ];
 
-  // Handler for country dropdown selection
+  //Handler for country dropdown selection
   const handleCountryChange = (e) => {
-    const value = e.target.value;
-    setSelectedCountry(value);
+    const value = e.target.value;   //Get Selected country value
+    setSelectedCountry(value);    //Update the country to value
     setFormData((prevFormData) => ({
-      ...prevFormData,
-      country: value,
+      ...prevFormData,  //Keep the existing form data
+      country: value,   //Update the country field with the selected value
       state: '',
     }));
     setSelectedState('');
   };
 
-  // Handler for state dropdown selection
+  //Handler for state dropdown selection
   const handleStateChange = (e) => {
-    const value = e.target.value;
-    setSelectedState(value);
+    const value = e.target.value; //Get selected state value
+    setSelectedState(value);  //Updated the state to value
     setFormData((prevFormData) => ({
-      ...prevFormData,
-      state: value,
+      ...prevFormData,  //Keep the existing form data
+      state: value,   //Update the state field with the selected value
     }));
   };
 
+  //Handler for changing the profile picture based on user's upload submission
   const handleProfilePicChange = async (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]; //Getting file input from user
     if (file) {
-      setLoading(true); // Show loading state during upload
+      setLoading(true); //Show loading state during upload
       const uploadData = new FormData();
       uploadData.append('image', file);
 
       try {
-        const response = await fetch('https://api.imgbb.com/1/upload?key=85b4f85673d02f9b9c9dc739f12c4b26', {
+        //Sending a POST request to the imgbb API to upload the image
+        const response = await fetch('https://api.imgbb.com/1/upload?key=85b4f85673d02f9b9c9dc739f12c4b26', { //Where we store our images
           method: 'POST',
           body: uploadData,
         });
 
         const data = await response.json();
+
+        //If the upload is successful, update the profile picture URL
         if (data.success) {
           setProfilePic(data.data.url);
           setFormData((prevState) => ({
             ...prevState,
-            photo: data.data.url, // Set photo URL in formData
+            photo: data.data.url, //Set photo URL in formData
           }));
         } else {
-          alert('Failed to upload image');
+          alert('Failed to upload image');  //Alert the user if the upload fails
         }
       } catch (error) {
         console.error('Error uploading image:', error);
         alert('Error uploading the photo. Please try again.');
       } finally {
-        setLoading(false); // Hide loading state after upload
+        setLoading(false); //Hide loading state after upload
       }
     }
   };
@@ -119,11 +121,12 @@ function SignUpPage() {
   const handleUploadClick = () => {
     fileInputRef.current.click();
   };
-
+  
+  //Handler for when the user clicks on sign up, subnmitting all data in the form
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    // Ensure photo is set; if not, use default
+    //Ensure photo is set; if not, use default
     if (!formData.photo) {
       setFormData((prevData) => ({
         ...prevData,
@@ -133,7 +136,7 @@ function SignUpPage() {
 
     const { email, password, signupAsTutor, ...userData } = formData;
 
-    // Basic form validation
+    //Basic form validation
     if (
       !formData.firstName ||
       !formData.lastName ||
@@ -149,6 +152,7 @@ function SignUpPage() {
       return;
     }
 
+    //Use this to help chceck if the user has checked the term and service agrrement
     const termsAccepted = document.getElementById('TermsAndService').checked;
     if (!termsAccepted) {
       setErrorMessage('You must agree to the Terms of Service and Privacy Policy.');
@@ -157,22 +161,23 @@ function SignUpPage() {
 
     const authInstance = auth;
     try {
-      // Create user with Firebase Auth
+      //Create user with Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(authInstance, email, password);
       const user = userCredential.user;
 
-      // Update the user's displayName and photoURL in Firebase Auth
+      //Update the user's displayName and photoURL in Firebase Auth
       await updateProfile(user, {
         displayName: formData.username,
         photoURL: formData.photo || userProfile,
       });
 
       if (!signupAsTutor) {
-        // If not signing up as a tutor, add user data to Firebase Realtime Database
+        //If not signing up as a tutor, add user data to Firebase Realtime Database
         const db1 = db;
         const userRef = ref(db1, "account/user");
         const newUserRef = push(userRef);
 
+        //save the new user's data to the Realtime Database with additional fields
         await set(newUserRef, { 
           ...userData, 
           username: formData.username, 
@@ -181,10 +186,10 @@ function SignUpPage() {
           lastName: formData.lastName,
         });
 
-        // Navigate to Account Confirmation
+        //Navigate to Account Confirmation
         navigate('/AccountConfirmation');
       } else {
-        // If signing up as a tutor, navigate to TutorSignup and pass necessary data
+        //If signing up as a tutor, navigate to TutorSignup and pass necessary data
         navigate('/tutorSignup', { state: { formData: formData, uid: user.uid } });
       }
 
@@ -194,7 +199,8 @@ function SignUpPage() {
     }
   };
 
-  // Return JSX for the Signup Page
+  //Return JSX for the Signup Page
+  //HTML
   return (
     <div className="SignUpPageRootContainer">
       <div className="SignUpPageMainContent">
