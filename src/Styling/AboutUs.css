@@ -1,14 +1,17 @@
+/* Root variables for color scheme */
 :root{
-    --bg-color: #FEFAE0;
-    --text-color: #283618;
-    --contact-bg: #BC6C25;
-    --light-green: #606C38;
+    --bg-color: #FEFAE0; /* Background color */
+    --text-color: #283618; /* Text color */
+    --contact-bg: #BC6C25; /* Background color for contact section */
+    --light-green: #606C38; /* Light green color */
 }
 
+/* General Styles */
 .AboutUsMainContent {
     width: 100%;
 }
 
+/* Universal styling for all elements */
 *{
     padding: 0;
     margin: 0;
@@ -19,11 +22,13 @@
     font-variation-settings: "wdth" 100;
 }
 
+/* Sections Styles */
 .section1, .section2, .section3, .section4, .section5{
     margin: auto;
     width: 80%;
 }
 
+/* Section 1: Introduction or title section */
 .section1{
     color: #FEFAE0;
     font-size: 28px;
@@ -33,12 +38,13 @@
     padding: 50px;
 }
 
+/* General paragraph styles */
 p{
     font-size: 20px;
     font-weight: normal;
 }
 
-/*Section 2*/
+/* Section 2 Styles: Another section with a dark green background */
 .section2{
     background-color: #606C38;
     color: #FEFAE0;
@@ -48,10 +54,13 @@ p{
     align-items: center;
     padding: 50px;
 }
+
+/* Specific styling for a title inside section 2 */
 .title2{
     text-align: right;
 }
 
+/* List styling for section 2 */
 .ul2 li{
     size: 28px;
     padding: 10px;
@@ -59,19 +68,22 @@ p{
     color: #FEFAE0;
 }
 
+/* Additional padding for specific information in section 2 */
 .info2{
     padding-right: 100px;
 }
 
+/* Rotate image inside section 2 */
 .imgInfo2{
     transform: rotate(-10deg);
 } 
 
+/* Section 3 Styles: Light background with dark text */
 .main2{
     background-color: #606C38;
 }
 
-/*Section 3*/
+/* Section 3 Styles: Light background with dark text */
 .section3{
     background-color:#FEFAE0;
     color:#283618;
@@ -82,16 +94,18 @@ p{
     padding: 100px;
 }
 
+/* Padding adjustments for list items inside section 3 */
 .p3{
     margin: 10px;
 }
 
+/* Styling for list items inside section 3 */
 .ul3 li{
     margin-left: 73px;
     padding: 10px;
 }
 
-/*Section 4*/
+/* Section 4 Styles: A grid layout with centered content */
 .section4{
     color: #FEFAE0;
     font-size: 28px;
@@ -103,12 +117,7 @@ p{
     text-align: center;
 }
 
-p{
-    font-size: 20px;
-    font-weight: normal;
-}
-
-/*Section 5*/
+/* Section 5 Styles: Similar to section 2 with dark green background */
 .section5{
     background-color: #606C38;
     color: #FEFAE0;
@@ -120,11 +129,13 @@ p{
     text-align: center;
 }
 
+/* Paragraph styling within section 5 */
 .info5 p{
     color: #FEFAE0;
     margin: 10px;
 }
 
+/* Styling for signup button inside section 5 */
 .signup_button{
     margin-top: 20px;
 }
