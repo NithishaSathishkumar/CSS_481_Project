@@ -1,3 +1,6 @@
+// AboutUs.jsx
+
+// Import necessary libraries and modules
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '/src/Styling/AboutUs.css'; // Optional: for component-specific styling
@@ -8,25 +11,27 @@ import mission from '../assets/7.png';
 import whyChoose from '../assets/8.png';
 import team from '../assets/5.png';
 
+// Main component for About us
 const AboutUs = () => {
+    // Return JSX for the About us
     return (
         <>
             <div className="AboutUsMainContent">
                 <div id="nav-placeholder"></div>
 
+                {/* Section 1: About Us */}
                 <main class="section1">
                     <div class="info">
                         <h2>About Us</h2>
                         <p class="p3">Welcome to MentorMe – Your Path to Personalized Learning! At MentorMe, we believe in the transformative power of education and the right of every student to access high-quality tutoring, regardless of background or location. Our mission is to bridge educational gaps by offering flexible, accessible, and affordable tutoring solutions for students of all ages and learning needs</p>
                         <p class="p3">Our Vision We envision a world where everyone has access to the resources they need to thrive academically. MentorMe aims to close educational inequalities by making tutoring services accessible and customizable. We believe in nurturing academic confidence and helping students achieve their personal best by providing a virtual learning environment tailored to meet diverse needs.</p>
                     </div>
-
                     <div class="imgInfo">
                         <img src={aboutUs} alt="location" width="400px"></img>
                         </div>
                 </main>
 
-                
+                {/* Section 2: Our Mission */}
                 <main class="section2">
                     <div class="imgInfo2">
                         <img src={mission} alt="location" width="400px"></img>
@@ -42,6 +47,7 @@ const AboutUs = () => {
                     </div>
                 </main>
 
+                {/* Section 3: Why Choose MentorMe */}
                 <main class="section3">
                     <div class="info3">
                         <h2 class="title3">Why Choose MentorMe?</h2>
@@ -53,12 +59,12 @@ const AboutUs = () => {
                             <li><p><strong>Customized Learning:</strong> MentorMe's platform lets students personalize their learning by selecting tutors based on their academic goals, learning pace, and personal preferences.</p></li>
                         </ul>
                     </div>
-
                     <div class="imgInfo3">
                         <img src={whyChoose} alt="location" width="400px"></img>
                     </div>
                 </main>
 
+                {/* Section 4: Meet Our Team */}
                 <main class="section4">
                     <h2>Meet Our Team</h2>
                     <div class="content4">
@@ -70,6 +76,7 @@ const AboutUs = () => {
                     </div>  
                 </main>
 
+                {/* Section 5: Call to Action */}
                 <main class="section5">
                     <div class="imgInfo5">
                         <h2 class="title5">Join Us in Our Journey</h2>
@@ -89,4 +96,4 @@ const AboutUs = () => {
     )
 }
 
-export default AboutUs;
+export default AboutUs; // Export component

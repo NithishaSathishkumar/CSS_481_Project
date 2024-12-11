@@ -1,20 +1,25 @@
-// src/components/LogInPage.js
+// LogInPage.jsx
+
+// Import necessary libraries and modules
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from 'firebase/auth';
 import { auth } from '../../firebaseConfi'; // Ensure this import points to your Firebase config
-
 import '../Styling/LogInPage.css';
+
+// IMPORTING PICTURES
 import loginIcon from '../assets/9.png';
 import wavingIcon from '../assets/wavingIcon.png';
 import backButton from '../assets/ReturnArrow.png';
 
+// Main component for LogInPage
 function LogInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission (page refresh)
 
@@ -35,12 +40,12 @@ function LogInPage() {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-
-
       alert('Welcome back! You are successfully logged in.');
       navigate('/'); // Navigate to the home page
     } catch (error) {
       console.error('Error logging in:', error);
+
+      // Display custom error messages based on the Firebase error codes
       let errorMessage = 'An error occurred during login. Please try again.';
       if (error.code === 'auth/user-not-found') {
         errorMessage = 'No account found with this email.';
@@ -55,6 +60,7 @@ function LogInPage() {
     }
   };
 
+  // Return JSX for the Login in page
   return (
     <div className="LogInPageRootContainer">
       <div className="LogInPageMainContent">
@@ -64,6 +70,7 @@ function LogInPage() {
           </h1>
 
           {/* Ensure the form uses onSubmit */}
+          {/* Email */}
           <form className="LoginForm" onSubmit={handleSubmit}>
             <div className="FormGroupLogInPage">
               <label className="labelForEmail" htmlFor="email">
@@ -79,7 +86,7 @@ function LogInPage() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-
+            {/* Password */}
             <div className="FormGroupLogInPage">
               <label className="labelForPass" htmlFor="password">
                 Password
@@ -95,6 +102,7 @@ function LogInPage() {
               />
             </div>
 
+            {/* Remember me */}
             <div className="FormActions">
               <div className="RememberMeSection">
                 <input type="checkbox" id="rememberMe" />
@@ -108,10 +116,12 @@ function LogInPage() {
                 {loading ? 'Logging In...' : 'Log In'}
               </button>
 
+              {/* forgot password button */}
               <Link to="/forgotPassword" className="ForgotPasswordLink">
                 Forgot Password?
               </Link>
 
+              {/* Previous Page button */}
               <Link to="/">
                 <button className="backButton" type="button">
                   <img src={backButton} alt="Back" />
@@ -127,8 +137,10 @@ function LogInPage() {
             <img id="wavingIcon" src={wavingIcon} alt="wavingIcon" />
           </div>
 
+          {/* Sign up encouragement */}
           <h2 className="SignUpEnc">Don't have an account? Sign up today!</h2>
 
+          {/* Link to sign up page */}
           <Link to="/CreateAccount" className="SignUpButtonContainer">
             <button className="SignUpButton" type="button">
               Sign Up
@@ -140,4 +152,4 @@ function LogInPage() {
   );
 }
 
-export default LogInPage;
+export default LogInPage; // Export component

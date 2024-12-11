@@ -15,9 +15,7 @@ function ConfirmationAccountPage() {
     if (currentUser) {
       console.log(currentUser);
       setUsername(currentUser.displayName || '');
-
     }
-    
     
   }, []);
 
