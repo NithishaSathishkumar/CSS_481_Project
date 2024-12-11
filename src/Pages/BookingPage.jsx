@@ -1,25 +1,29 @@
+// Import necessary hooks and components from React and React Router
 import { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+// Import Firebase database functions
+import { getDatabase, ref, get } from 'firebase/database';
+// Import custom styling and imgs
 import '../Styling/BookingPage.css';
-import tutor from '../assets/16.png';
 import clock from '../assets/17.png';
 import money from '../assets/18.png';
 import inperson from '../assets/inperson.png';
-import chat from '../assets/chat.png';
-import globe from '../assets/globe.png';
+// Import calendar component and its CSS
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { Link, useParams } from 'react-router-dom';
-import { getDatabase, ref, get } from 'firebase/database';
+
 
 function BookingPage() {
+    // Retrieve the `tutorId` from the route parameters
     const { tutorId } = useParams();
-    const db = getDatabase();
-
+    const db = getDatabase(); // Initialize Firebase database instance
+    // State to manage the selected date, time, and available time slots
     const [date, setDate] = useState(new Date());
     const [selectedTime, setSelectedTime] = useState(null);
     const [timeSlots, setTimeSlots] = useState([]);
     const [data, setData] = useState(null);
 
+    // Predefined time slots for different periods of the day
     const morningSlots = [
         "09:00 AM",
         "10:00 AM",
@@ -42,6 +46,7 @@ function BookingPage() {
 
     const allDaySlots = morningSlots.concat(afternoonSlots).concat(eveningSlots);
 
+    // Function to handle time slot selection
     const handleTimeClick = (time) => {
         if (selectedTime === time) {
             setSelectedTime(null);
@@ -54,7 +59,7 @@ function BookingPage() {
     useEffect(() => {
         const fetchData = async (recordId) => {
             try {
-                const recordRef = ref(db, `tutors/${recordId}`);
+                const recordRef = ref(db, `tutors/${recordId}`);// Reference to the specific tutor record
                 const snapshot = await get(recordRef);
 
                 if (snapshot.exists()) {
@@ -85,9 +90,9 @@ function BookingPage() {
                 }
             }
         });
-    }, [tutorId]);
+    }, [tutorId]);// Run effect when tutorId changes
 
-    // Implement tileDisabled function
+    // Function to disable unavailable dates on the calendar
     const tileDisabled = ({ date: tileDate, view }) => {
         if (view === 'month') {
             const dayOfWeek = tileDate.getDay(); // 0 (Sunday) to 6 (Saturday)
@@ -108,11 +113,12 @@ function BookingPage() {
     return (
         <div className="BookingConfirmationRootContainer">
             <div className="BookingConfirmationMainContent">
+                {/* Left content with tutor details */}
                 {data != null ?
                     (<div className="BookingPageLeftContent">
-                        <img id="BookingTutorPP" src={data.photo} alt="tutor"/>
+                        <img id="BookingTutorPP" src={data.photo} alt="tutor" />
                         <div>
-                            <button className="BookingTutorsName">{data.username}</button>
+                            <button className="BookingTutorsName">{data.firstName} {data.lastName}</button>
                         </div>
 
                         <div className="BookingTutorsCourse">Tutoring: {data.primarySubject}</div>
@@ -128,10 +134,10 @@ function BookingPage() {
                             </div>
                         </div>
                     </div>
-                ) : (
-                    <p>Loading tutor information...</p>
-                )}
-
+                    ) : (
+                        <p>Loading tutor information...</p>
+                    )}
+                {/* Right content for booking options */}
                 <div className="BookingPageRightContent">
                     <div className="BookingPageMeetingOption">
                         <img className="BookingPersonIcon" src={inperson} alt="Meeting Option" />
@@ -140,7 +146,7 @@ function BookingPage() {
                             <option>Online</option>
                         </select>
                     </div>
-
+                    {/* Calendar and time selection */}
                     <div className="BookingPageRR">
                         <div className="BookingPageLRContent">
                             <div className="row">
@@ -171,7 +177,7 @@ function BookingPage() {
                                 </div>
                             </div>
                         </div>
-
+                        {/* Display time slots and confirm booking */}
                         <div className="BookingPageRRContent">
                             <div className="BookingPageButtons">
                                 <h3>{date.toDateString()}</h3>
@@ -188,7 +194,7 @@ function BookingPage() {
                                     ))}
                                 </div>
                             </div>
-
+                            {/* Confirm button redirects to payment or confirmation page */}
                             <div className="BookingConfirmButtonContainer">
                                 {data?.exactPrice === "" ? (
                                     <Link to="/confirmation" state={{ date: date.toDateString(), time: selectedTime }}>
@@ -208,5 +214,5 @@ function BookingPage() {
         </div>
     );
 }
-
+// Export the BookingPage component
 export default BookingPage;

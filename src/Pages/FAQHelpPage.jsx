@@ -1,8 +1,8 @@
+// Import necessary hook(useState) and styling 
 import '../Styling/FAQHelpPage.css';
 import React, { useState } from 'react';
-import backButton from '../assets/ReturnArrow.png';
-import { Link } from 'react-router-dom';  // import Link
 
+// Main component for the FAQ page
 function FAQHelpPage() {
     // State to track which question is active
     const [activeQuestion, setActiveQuestion] = useState(null);
@@ -50,6 +50,7 @@ function FAQHelpPage() {
 
     return (
         <div className="faq-container">
+            {/* Page header */}
             <h2 className="head">Frequently Asked Questions</h2>
             <div className="faq-list">
                 {questions.map((item, index) => (
@@ -59,8 +60,10 @@ function FAQHelpPage() {
                             onClick={() => toggleQuestion(index)}
                         >
                             {item.question}
+                            {/* Display an arrow indicating the toggle state */}
                             <span>{activeQuestion === index ? '▲' : '▼'}</span>
                         </div>
+                        {/* Conditionally render the answer if the question is active */}
                         {activeQuestion === index && (
                             <div className="faq-answer">{item.answer}</div>
                         )}
@@ -71,5 +74,5 @@ function FAQHelpPage() {
         </div>
     );
 }
-
+// Export the FAQHelpPage component
 export default FAQHelpPage;
