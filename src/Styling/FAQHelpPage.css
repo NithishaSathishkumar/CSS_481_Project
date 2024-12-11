@@ -12,7 +12,7 @@ main,
 }
 
 .head {
-    color: white;
+    color: #FEFAE0;
     text-align: center;
     padding-top: 20px;
     margin-bottom: 30px;
@@ -21,8 +21,7 @@ main,
 /* Container for the FAQ section */
 
 .faq-item {
-    border: 1px solid #ccc;
-    background-color: #3f503f;
+    background-color: #606C38;
     border-radius: 2px;
     margin-bottom: 0.8rem;
     /* 间隔设置 */
@@ -37,8 +36,8 @@ main,
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #3f3f3f;
-    background-color: #f5f5dc;
+    color: #283618;
+    background-color: #FEFAE0;
     /* 乳白色背景 */
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -53,8 +52,8 @@ main,
 
 .faq-answer {
     padding: 1rem;
-    background-color: #526b52;
-    color: #e8e5d8;
+    background-color: #606C38;
+    color: #FEFAE0;
     font-size: 1rem;
     border-top: 1px solid #ccc;
 }

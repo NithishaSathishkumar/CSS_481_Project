@@ -11,7 +11,7 @@ import team from '../assets/5.png';
 const AboutUs = () => {
     return (
         <>
-            <div>
+            <div className="AboutUsMainContent">
                 <div id="nav-placeholder"></div>
 
                 <main class="section1">

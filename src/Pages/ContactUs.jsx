@@ -1,5 +1,5 @@
 import React from 'react';
-import '../Styling/ContactPage.css'; // Optional: for component-specific styling
+import '../Styling/ContactUs.css'; // Optional: for component-specific styling
 
 // IMPORTING PICTURES
 import location from '../assets/2.png';

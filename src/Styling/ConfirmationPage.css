@@ -1,29 +1,28 @@
-:root {
-    min-height: 100vh;
-    background-color: #283618;
+.ConfirmationBookingContainer {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
 }
 
-@media (prefers-color-scheme: light) {
-    :root {
-        min-height: 100vh;
-        background-color: #283618;
-    }
+.ConfirmationBookingMainContent {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
 }
-
-main,
-.confirmation-container {
-
-    background-color: #283618;
-}
-
 
 .mid-part {
-    color: white;
-
+    color: #FEFAE0;
     align-items: center;
     text-align: center;
-    margin-top: 200px;
-    margin-bottom: 300px;
+}
+
+.mid-part h1 {
+    color: #FEFAE0;
 }
 
 .right-part {
@@ -34,44 +33,29 @@ main,
     position: relative;
 }
 
-.balloon-left {
-    right: 0;
-}
-
-.balloon-right {
-    left: 0;
-}
-
-.balloon-left,
-.balloon-right {
-    top: 50px;
-    position: absolute;
-    max-width: 70%;
-}
-
 .celebration-left {
     right: 0;
     bottom: 0;
+    transform: scaleX(-1);
 }
 
 .celebration-right {
     left: 0;
     bottom: 0;
-    transform: scaleX(-1);
+    transform: scaleX(1);
 }
 
 .celebration-left,
 .celebration-right {
     position: absolute;
-    max-width: 70%;
+    width: 30%;
 }
 
 
 .button-cancle {
     margin-top: 100px;
-    color: white;
+    color: #FEFAE0;
     background-color: #BC6C25;
-    padding: 3px 40px;
     border-radius: 20px;
 }
 
@@ -79,5 +63,5 @@ main,
     margin-top: 50px;
     font-weight: bold;
     font-size: 50px;
-    color: bisque;
+    color: #FEFAE0;
 }
