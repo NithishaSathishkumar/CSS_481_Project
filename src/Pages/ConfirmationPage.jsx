@@ -1,31 +1,36 @@
+// Import custom styling and imgs
 import '../Styling/ConfirmationPage.css';
-import balloon from '../assets/15.png';
 import celebrationCorn from '../assets/13.png';
-import { Link, useLocation } from 'react-router-dom';  // import Link
+// import Link and location
+import { Link, useLocation } from 'react-router-dom';
+// import condetti to add the interactive element on the page
 import ReactConfetti from 'react-confetti';
+// import hook
 import React, { useState, useEffect } from 'react';
 
 function ConfirmationPage() {
+    // Access location object to retrieve state (date and time of booking)
     const location = useLocation();
     const { date, time } = location.state || {}; // Get date and time from location state
 
-
+    // Define state to store the current window dimensions
     const [dimensions, setDimensions] = useState({
         width: window.innerWidth,
         height: window.innerHeight,
-      });
-    
-      useEffect(() => {
+    });
+    // Hook to handle window resizing and update dimensions state
+    useEffect(() => {
         const handleResize = () => {
-          setDimensions({
-            width: window.innerWidth,
-            height: window.innerHeight,
-          });
+            setDimensions({
+                width: window.innerWidth,
+                height: window.innerHeight,
+            });
         };
 
-        
-    
+
+        // Add event listener to handle window resize
         window.addEventListener('resize', handleResize);
+        // Cleanup event listener on component unmount
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
@@ -39,13 +44,12 @@ function ConfirmationPage() {
                 initialVelocityY={30}
                 recycle={true}
                 colors={['#FFD700', '#FFFFFF', '#BC6C25']}
-             />
+            />
 
             <div className="ConfirmationBookingMainContent">
                 <div className="LeftContainer">
-                    {/* <img className="balloon-left" src={balloon} ></img> */}
                     <img className="celebration-right" src={celebrationCorn} ></img>
-                </div>    
+                </div>
 
                 <div className="mid-part">
                     <h1>Your Booking was successful!</h1>
@@ -65,7 +69,6 @@ function ConfirmationPage() {
                 </div>
 
                 <div className="RightContainer">
-                    {/* <img className="balloon-right" src={balloon} ></img> */}
                     <img className="celebration-left" src={celebrationCorn} ></img>
                 </div>
             </div>
@@ -73,4 +76,4 @@ function ConfirmationPage() {
     )
 }
 
-export default ConfirmationPage
+export default ConfirmationPage // Export the ConfirmationPage component
