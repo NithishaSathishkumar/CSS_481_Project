@@ -1,44 +1,43 @@
-// src/components/Navbar.js
+// Import necessary libraries and modules
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-
-import '/src/Components/ComponentStyling/navbar.css'; // Ensure the path is correct
-
-// IMPORTING PICTURES
+// Import styles and assets
+import '/src/Components/ComponentStyling/navbar.css';
 import defaultprofilePic from '../assets/6.png';
 import logOut from '../assets/9.png';
 
 const Navbar = () => {
+  // State to manage the user's username and profile picture
   const [username, setUsername] = useState('User'); // Default to 'User'
   const [profilePic, setProfilePic] = useState(defaultprofilePic);
-
+  // React Router's navigate function for programmatic navigation
   const navigate = useNavigate();
-
+  // Effect to monitor authentication state and update user info
   useEffect(() => {
-    const auth = getAuth();
+    const auth = getAuth();// Get Firebase Auth instance
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in
+        // If user is signed in, update the username and profile picture
         setUsername(user.displayName || 'User');
         setProfilePic(user.photoURL || defaultprofilePic);
       } else {
-        // No user is signed in
+        // If no user is signed in, reset to default values
         setUsername('User');
         setProfilePic(defaultprofilePic);
       }
     });
 
     return () => unsubscribe();
-  }, []);
-
+  }, []);// Cleanup subscription 
+  // Function to toggle the visibility of the dropdown menu
   const toggleMenu = () => {
     const subMenu = document.getElementById("subMenu");
     if (subMenu) {
       subMenu.classList.toggle("open-menu");
     }
   };
-
+  // Function to close the dropdown menu
   const closeMenu = () => {
     const subMenu = document.getElementById("subMenu");
     if (subMenu && subMenu.classList.contains("open-menu")) {
@@ -60,7 +59,7 @@ const Navbar = () => {
       document.removeEventListener("click", handleOutsideClick);
     };
   }, []);
-
+  // Function to handle user logout
   const handleLogout = () => {
     const auth = getAuth();
 
@@ -78,12 +77,13 @@ const Navbar = () => {
 
   return (
     <>
+      {/* Main Navbar structure */}
       <header className="navbarContent">
         <nav className="leftSideNavbarContent">
           <Link to="/" onClick={closeMenu}>
             <h1>MentorMe</h1>
           </Link>
-
+          {/* Navigation links for the left navbar */}
           <ul className="nav_links">
             <li><Link to="/about" onClick={closeMenu}>About us</Link></li>
             <li><Link to="/tutorFind" onClick={closeMenu}>Tutor</Link></li>
@@ -91,7 +91,7 @@ const Navbar = () => {
             <li><Link to="/Chat" onClick={closeMenu}>Chat</Link></li>
           </ul>
         </nav>
-
+        {/* Right side navbar, 'contact us' and profile section */}
         <div className="contact_profile_container">
           <Link className="contact_button" to="/contact" onClick={closeMenu}>
             <button>Contact Us</button>
@@ -99,7 +99,7 @@ const Navbar = () => {
           <div className="profile" onClick={toggleMenu}>
             <img src={profilePic} alt="profile" width="63" height="65" />
           </div>
-
+          {/* Dropdown menu  of the profile  */}
           <div className="sub-menu-wrap" id="subMenu">
             <div className="sub-menu">
               <div className="user-info">
@@ -121,5 +121,5 @@ const Navbar = () => {
     </>
   );
 };
-
+// Export the Navbar component for use in other parts of the app
 export default Navbar;
