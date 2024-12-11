@@ -1,5 +1,6 @@
-// TutorProfilePage.js
+// TutorProfilePage.jsx
 
+// Import necessary libraries and modules
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { useAuth } from '/AuthContext';
@@ -8,6 +9,7 @@ import profileImg from "../assets/6.png";
 import { getDatabase, ref, onValue, push, set } from "firebase/database";
 import {app, auth} from "/firebaseConfi"; 
 
+// Main component for Tutor Profile Page
 const TutorProfilePage = () => {
   const { tutorId } = useParams();
   const [tutorData, setTutorData] = useState(null);
@@ -15,8 +17,7 @@ const TutorProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const { currentUser } = useAuth(); // Get the current user from AuthContext
 
-
-  // State for review form
+ // State for review form visibility and form data.
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [reviewFormData, setReviewFormData] = useState({
     rating: '',
@@ -26,15 +27,16 @@ const TutorProfilePage = () => {
   useEffect(() => {
     if (!tutorId) return;
 
-    const db = getDatabase(app);
-    const tutorRef = ref(db, `tutors/${tutorId}`);
+    const db = getDatabase(app); // Initialize Firebase database
+    const tutorRef = ref(db, `tutors/${tutorId}`); // Reference to the tutor's data in the database
 
+    // Fetch tutor data from Firebase
     onValue(tutorRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
 
         data.id = tutorId;
-        // Convert reviews object to array and filter out empty reviews
+        // Process reviews: convert object to array and filter out empty reviews
         if (data.reviews) {
           const reviewsArray = Object.values(data.reviews);
           const validReviews = reviewsArray.filter(
@@ -45,7 +47,7 @@ const TutorProfilePage = () => {
           data.reviews = [];
         }
 
-        // Compute average rating from valid reviews
+        // Calculate and update average rating
         if (data.reviews && data.reviews.length > 0) {
           const ratings = data.reviews.map((review) => parseFloat(review.rating));
           const totalRating = ratings.reduce((sum, rating) => sum + rating, 0);
@@ -68,7 +70,7 @@ const TutorProfilePage = () => {
           set(tutorRatingRef, data.rating);
         }
 
-        setTutorData(data);
+        setTutorData(data); // Update state with tutor data
 
         // Fetch all tutors to find similar ones
         const tutorsRef = ref(db, 'tutors');
@@ -98,6 +100,7 @@ const TutorProfilePage = () => {
     });
   }, [tutorId]);
 
+  // Render stars for a given rating
   const renderStars = (rating) => {
     const ratingNumber = parseInt(rating, 10) || 0;
     const fullStars = ratingNumber;
@@ -105,11 +108,13 @@ const TutorProfilePage = () => {
     return '★'.repeat(fullStars) + '☆'.repeat(emptyStars);
   };
 
+  // Handle changes in the review form input fields
   const handleReviewInputChange = (event) => {
     const { name, value } = event.target;
     setReviewFormData({ ...reviewFormData, [name]: value });
   };
 
+  // Handle the review form submission
   const handleReviewSubmit = (event) => {
     event.preventDefault();
 
@@ -124,14 +129,14 @@ const TutorProfilePage = () => {
     const db = getDatabase(app);
     const reviewsRef = ref(db, `tutors/${tutorId}/reviews`);
 
-    push(reviewsRef, newReview)
+    push(reviewsRef, newReview) // Push the new review to Firebase
       .then(() => {
         setReviewFormData({
           reviewerName: '',
           rating: '',
           text: '',
         });
-        setShowReviewForm(false);
+        setShowReviewForm(false);  // Hide the review form after submission
       })
       .catch((error) => {
         console.error('Error adding review:', error);
@@ -139,17 +144,18 @@ const TutorProfilePage = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>; // Display loading indicator
   }
 
   if (!tutorData) {
-    return <div>Tutor not found.</div>;
+    return <div>Tutor not found.</div>; // Display message if tutor data is not available
   }
 
+  // Return JSX for the Tutor Profile Page
   return (
     <div className={styles.container}>
       <div className={styles.mainContent}>
-        {/* Left Section */}
+        {/* Left Section: Profile and Qualifications */}
         <div className={styles.profileLeft}>
           {/* Profile Info */}
           <div className={styles.profileInfo}>
@@ -254,7 +260,7 @@ const TutorProfilePage = () => {
           </div>
         </div>
 
-        {/* Right Section */}
+        {/* Right Section: About and Reviews */}
         <div className={styles.profileRight}>
           {/* About Section */}
           <div className={styles.profileAbout}>
@@ -341,4 +347,4 @@ const TutorProfilePage = () => {
   );
 };
 
-export default TutorProfilePage;
+export default TutorProfilePage; // Export component

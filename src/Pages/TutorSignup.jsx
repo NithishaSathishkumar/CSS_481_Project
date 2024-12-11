@@ -1,19 +1,22 @@
-// src/components/TutorSignup.js
+// TutorSignup.jsx
+
+// Import necessary libraries and modules
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getDatabase, ref, set } from "firebase/database";
-import { auth } from '../../firebaseConfi';  // Ensure this import points to your Firebase config
-import '../Styling/TutorSignup.css';  // Add your styles as needed
+import { auth } from '../../firebaseConfi';  // Firebase configuration file
+import '../Styling/TutorSignup.css';  // Custom CSS for the component
 
+// Main component for Tutor Signup
 function TutorSignup() {
     const navigate = useNavigate();
     const location = useLocation();
     const [loading, setLoading] = useState(false);
 
-    // Retrieve formData and uid from location.state
+    // Extract initial form data and user ID from the location state
     const { formData: initialFormData, uid } = location.state || {};
 
-    // Initialize formData with initial data and tutor-specific fields
+    // State to manage form data with default or initial values
     const [formData, setFormData] = useState({
         firstName: initialFormData?.firstName || '',
         lastName: initialFormData?.lastName || '',
@@ -35,21 +38,22 @@ function TutorSignup() {
         about: '',
         description: '',
         education: { school: '', degree: '', graduationYear: '' },
-        reviews: [], // Changed to an array to hold multiple reviews
+        reviews: [], // Array to hold reviews
         tutorSchedule: [{ studentID: '', sessionName: '', time: '', topic: '', meetingType:'', zoomLink:''}],
-        goals: ['', ''],
+        goals: ['', ''], // Default minimum goals
         localTime: '',
     });
 
-    // Handle file input change and upload image to ImgBB
+    // Handle file uploads for tutor profile photo
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            setLoading(true);
+            setLoading(true); // Indicate loading during the upload
             const uploadData = new FormData();
             uploadData.append('image', file);
     
             try {
+                // Upload image to ImgBB API
                 const response = await fetch('https://api.imgbb.com/1/upload?key=85b4f85673d02f9b9c9dc739f12c4b26', {
                     method: 'POST',
                     body: uploadData,
@@ -57,6 +61,7 @@ function TutorSignup() {
     
                 const data = await response.json();
                 if (data.success) {
+                    // Update photo URL in formData
                     setFormData((prevState) => ({
                         ...prevState,
                         photo: data.data.url,
@@ -68,17 +73,19 @@ function TutorSignup() {
                 console.error('Error uploading image:', error);
                 alert('Error uploading the photo. Please try again.');
             } finally {
-                setLoading(false);
+                setLoading(false); // Reset loading state
             }
         }
     };
 
+    // Handle form submission for tutor data
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
+        // Destructure necessary fields for validation
         const { availableTime, daysAvailable, price, subjects, primarySubject, description, about, education, goals, localTime, photo } = formData;
         
-        // Basic form validation
+        // Basic validation to ensure required fields are completed
         if (
             !availableTime || 
             !daysAvailable.length || 
@@ -97,51 +104,52 @@ function TutorSignup() {
             return;
         }
 
+        // Validate goals for empty strings
         if (goals.some(goal => goal.trim() === '')) {
             alert('Please fill out all goal fields.');
             return;
         }
 
+        // Validate price and exactPrice fields
         if (price === 'Free' && formData.exactPrice) {
             alert('Please do not enter an exact price if the price is "Free".');
             return;
         }
     
-        saveTutorData(formData);
+        saveTutorData(formData); // Save validated data to Firebase
     };
 
+    // Save tutor data to Firebase Realtime Database
     const saveTutorData = async (data) => {
         try {
-            setLoading(true);
-            // Get the reference to Firebase Realtime Database
-            const db = getDatabase();
-            const tutorRef = ref(db, `tutors/${uid}`); // Use uid as the key to ensure uniqueness
+            setLoading(true); // Indicate loading during save
+            const db = getDatabase(); // Get Firebase database reference
+            const tutorRef = ref(db, `tutors/${uid}`); // Unique reference for tutor based on uid
             
             await set(tutorRef, {
                 ...data, 
                 uid: uid,
-                // Optionally, you can remove the password as it's handled by Firebase Auth
-                // password: undefined,
             });
                 
-            // Navigate to Account Confirmation or Tutor Dashboard
+            // Navigate to account confirmation or tutor dashboard
             navigate('/AccountConfirmation');
     
         } catch (error) {
             console.error('Error saving tutor data:', error.message);
             alert(`An error occurred while saving your data: ${error.message}`); // Display error message if saving fails
         } finally {
-            setLoading(false);
+            setLoading(false); // Reset loading state
         }
     };
 
+    // Handle changes to the price field
     const handlePriceChange = (e) => {
         const value = e.target.value;
         if (value === 'Free') {
             setFormData((prevState) => ({
                 ...prevState,
                 price: value,
-                exactPrice: '',
+                exactPrice: '', // Clear exactPrice if price is Free
             }));
         } else {
             setFormData((prevState) => ({
@@ -151,6 +159,7 @@ function TutorSignup() {
         }
     };
   
+    // Return JSX for the Tutor Signup form
     return (
         <div className="space">
             <div className="TutorSignupPage">
@@ -412,4 +421,4 @@ function TutorSignup() {
     );
 }
 
-export default TutorSignup;
+export default TutorSignup; // Export component
