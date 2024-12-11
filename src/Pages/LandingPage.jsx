@@ -16,7 +16,7 @@ function LandingPage() {
           </p>
 
           <div className="ButtonSection">
-            <Link to="/login">
+            <Link to="/Login">
               <button id="LogInButton">Log In</button>
             </Link>
 

@@ -25,7 +25,7 @@
 
 #MentorMeLP {
   font-size: 3em;
-  color:#FEFAE0;
+  color: #FEFAE0;
   font-weight: 800;
   margin-top: 0;
 }
@@ -42,7 +42,7 @@
   margin-top: auto;
   max-width: 100%;
   display: flex;
-  justify-content: space-between 
+  justify-content: space-between
 }
 
 #LogInButton {
