@@ -1,5 +1,5 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client;
+import { createRoot } from 'react-dom/client';
 import '../src/Styling/index.css';
 import App from './App'
 import { AuthProvider } from '../AuthContext';
