@@ -113,6 +113,7 @@ function BookingPage() {
     return (
         <div className="BookingConfirmationRootContainer">
             <div className="BookingConfirmationMainContent">
+                {/* Left content with tutor details */}
                 {data != null ?
                     (<div className="BookingPageLeftContent">
                         <img id="BookingTutorPP" src={data.photo} alt="tutor" />
@@ -136,7 +137,7 @@ function BookingPage() {
                     ) : (
                         <p>Loading tutor information...</p>
                     )}
-
+                {/* Right content for booking options */}
                 <div className="BookingPageRightContent">
                     <div className="BookingPageMeetingOption">
                         <img className="BookingPersonIcon" src={inperson} alt="Meeting Option" />
@@ -145,7 +146,7 @@ function BookingPage() {
                             <option>Online</option>
                         </select>
                     </div>
-
+                    {/* Calendar and time selection */}
                     <div className="BookingPageRR">
                         <div className="BookingPageLRContent">
                             <div className="row">
@@ -176,7 +177,7 @@ function BookingPage() {
                                 </div>
                             </div>
                         </div>
-
+                        {/* Display time slots and confirm booking */}
                         <div className="BookingPageRRContent">
                             <div className="BookingPageButtons">
                                 <h3>{date.toDateString()}</h3>
@@ -193,7 +194,7 @@ function BookingPage() {
                                     ))}
                                 </div>
                             </div>
-
+                            {/* Confirm button redirects to payment or confirmation page */}
                             <div className="BookingConfirmButtonContainer">
                                 {data?.exactPrice === "" ? (
                                     <Link to="/confirmation" state={{ date: date.toDateString(), time: selectedTime }}>
