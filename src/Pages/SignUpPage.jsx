@@ -1,13 +1,16 @@
-// src/components/SignUpPage.js
+// SignUpPage.jsx
+
+// Import necessary libraries and modules
 import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { ref, set, push } from 'firebase/database';
-import { auth, db } from '/firebaseConfi';
-import backButton from '../assets/ReturnArrow.png'; // Ensure the path is correct
-import userProfile from '../assets/6.png'; // Ensure the path is correct
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'; // Firebase auth functions
+import { ref, set, push } from 'firebase/database'; // Firebase database functions
+import { auth, db } from '/firebaseConfi'; // Firebase configuration
+import backButton from '../assets/ReturnArrow.png'; 
+import userProfile from '../assets/6.png';
 import '../Styling/SignUpPage.css';
 
+// Main component for Signup Page
 function SignUpPage() {
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedState, setSelectedState] = useState('');
@@ -16,6 +19,7 @@ function SignUpPage() {
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
 
+  // State to manage form data with default or initial values
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -32,6 +36,7 @@ function SignUpPage() {
 
   const navigate = useNavigate();
 
+  // List of countries for dropdown
   const countries = [
     { value: '', label: 'Select your country' },
     { value: 'usa', label: 'United States' },
@@ -46,6 +51,7 @@ function SignUpPage() {
     { value: 'india', label: 'India' },
   ];
 
+  // List of U.S. states for dropdown
   const usStates = [
     'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
     'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
@@ -56,6 +62,7 @@ function SignUpPage() {
     'West Virginia', 'Wisconsin', 'Wyoming'
   ];
 
+  // Handler for country dropdown selection
   const handleCountryChange = (e) => {
     const value = e.target.value;
     setSelectedCountry(value);
@@ -67,6 +74,7 @@ function SignUpPage() {
     setSelectedState('');
   };
 
+  // Handler for state dropdown selection
   const handleStateChange = (e) => {
     const value = e.target.value;
     setSelectedState(value);
@@ -186,6 +194,7 @@ function SignUpPage() {
     }
   };
 
+  // Return JSX for the Signup Page
   return (
     <div className="SignUpPageRootContainer">
       <div className="SignUpPageMainContent">
@@ -337,4 +346,4 @@ function SignUpPage() {
   );
 }
 
-export default SignUpPage;
+export default SignUpPage; // Export component
