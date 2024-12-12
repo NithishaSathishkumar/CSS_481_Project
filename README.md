@@ -66,4 +66,22 @@ MentorMe is a tutoring platform offering accessible and affordable education. St
    ```bash  
    npm run dev 
    ```
-Note: Additional libraries may need to be installed as specified in the package.json file.
+Note: Additional libraries may need to be installed as specified in the package.json file. However, here are the main dependencies we used for our website:
+
+**Main Dependencies** 
+   ```bash  
+   npm install <the following dependencies> 
+   ```
+- @fortawesome/fontawesome-free
+- @fortawesome/fontawesome-svg-core
+- @fortawesome/react-fontawesome
+- @popperjs/core
+- bcryptjs
+- firebase
+- react
+- react-calendar
+- react-confetti
+- react-dom
+- react-firebase-hooks
+- react-router-dom
+- react-us
